@@ -1,4 +1,18 @@
-const GameCard = ({ title, image, price, genres, rating, releaseDate, platforms }) => {
+const GameCard = ({
+  title,
+  image,
+  price,
+  genres,
+  rating,
+  releaseDate,
+  platforms,
+  onDetailsClick,
+  id,
+}) => {
+  const handleDetailsClick = () => {
+    onDetailsClick(id);
+  };
+
   return (
     <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl overflow-hidden hover:bg-white/20 transition-all max-w-xs">
       <div className="h-48 p-2">
@@ -37,6 +51,9 @@ const GameCard = ({ title, image, price, genres, rating, releaseDate, platforms 
             ))}
           </div>
         )}
+        <button className="bg-gray-700 w-full rounded-full cursor-pointer hover:bg-gray-300">
+          View Details
+        </button>
       </div>
     </div>
   );
