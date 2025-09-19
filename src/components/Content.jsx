@@ -13,7 +13,7 @@ const Content = () => {
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
 
-      setGames(data);
+      setGames(data.results);
       console.log(data);
     } catch (error) {
       console.error("Failed to fetch data", error);
@@ -26,7 +26,23 @@ const Content = () => {
     fetchGames();
   }, []);
 
-  return <div>{games.length > 0 && <GameCard games={games} />}</div>;
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-20">
+      {games.length > 0 &&
+        games.map((game) => (
+          <GameCard
+            key={game.id}
+            title={game.name}
+            image={game.background_image}
+            price={game.price || "N/A"}
+            genres={game.genres?.map((g) => g.name)}
+            rating={game.rating}
+            releaseDate={game.released}
+            platforms={game.platforms?.map((p) => p.platform.name)}
+          />
+        ))}
+    </div>
+  );
 };
 
 export default Content;
