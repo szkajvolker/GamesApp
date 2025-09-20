@@ -7,8 +7,9 @@ const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
 const Content = () => {
   const [games, setGames] = useState([]);
-  const [game, setGame] = useState({});
+  const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
+  const [gameScreenShots, setGameScreenShots] = useState([]);
 
   const fetchGames = async () => {
     try {
@@ -26,14 +27,33 @@ const Content = () => {
 
   const fetchGameDetail = async (id) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/games/${id}`);
+      const res = await fetch(`${API_BASE_URL}/games/${id}?key=${API_KEY}`);
       if (!res.ok) throw new Error("Failed to fetch!");
-      const data = res.json();
+      const data = await res.json();
       setGame(data);
       setSelectedGame(id);
+      console.log(data);
+      console.log(selectedGame);
     } catch (error) {
       console.error("Failed to fetch data", error);
     }
+  };
+
+  const fetchScreenShots = async (id) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/games/${id}/screenshots?key=${API_KEY}`);
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setGameScreenShots(data.results);
+      console.log(data);
+    } catch (error) {
+      console.error("Failed to fetch data", error);
+    }
+  };
+
+  const handleDetailsClick = async (id) => {
+    await fetchGameDetail(id);
+    await fetchScreenShots(id);
   };
 
   useEffect(() => {
@@ -48,19 +68,23 @@ const Content = () => {
             <GameCard
               key={game.id}
               title={game.name}
+              metacritic={game.metacritic}
               image={game.background_image}
-              price={game.price || "N/A"}
               genres={game.genres?.map((g) => g.name)}
               rating={game.rating}
               releaseDate={game.released}
               platforms={game.platforms?.map((p) => p.platform.name)}
-              onDetailsClick={fetchGameDetail}
+              onDetailsClick={handleDetailsClick}
               id={game.id}
             />
           ))}
       </div>
       {selectedGame && game && (
-        <MoreDetailsModal game={game} onClose={() => setSelectedGame(null)} />
+        <MoreDetailsModal
+          game={game}
+          gameScreenShots={gameScreenShots}
+          onClose={() => setSelectedGame(null)}
+        />
       )}
     </>
   );
