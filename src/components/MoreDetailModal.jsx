@@ -3,10 +3,8 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center z-50">
-      {/* Main wrapper - flex col, 500px wide, centered */}
       <div className="flex flex-col w-7xl h-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-y-auto m-4 relative">
         <div className="flex flex-row justify-between p-4">
-          {/* Close button */}
           <div className="flex-1">
             <h1 className="text-xl font-bold text-white">{game.name}</h1>
           </div>
@@ -18,7 +16,6 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
           </button>
         </div>
 
-        {/* Row 2 - flex-row */}
         <div className="flex flex-row p-4 border-b border-white/10">
           <div className="flex flex-row flex-1">
             <div className="flex-1">
@@ -32,7 +29,6 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
           </div>
         </div>
 
-        {/* Row 3 - flex-row */}
         <div className="flex flex-row p-4">
           <div className="flex flex-row flex-1">
             <div className="flex-1">
@@ -57,7 +53,7 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
             </div>
           </div>
         </div>
-        {/* 4 flex-row */}
+
         <div className="flex flex-row p-4">
           <div className="flex flex-row flex-1">
             <div className="flex-1">
@@ -82,7 +78,7 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
             </div>
           </div>
         </div>
-        {/* Row 1 - flex-row */}
+
         <div className="flex flex-row p-4 border-b border-white/10">
           <div className="flex flex-row flex-1">
             <div className="flex-1">
@@ -92,7 +88,7 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
             </div>
           </div>
         </div>
-        {/* Screenshoots */}
+
         <div className="flex flex-row p-4 justify-center">
           <div className="flex overflow-x-auto pb-2 gap-2">
             {gameScreenShots?.length > 0 &&

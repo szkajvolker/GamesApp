@@ -5,18 +5,23 @@ import MoreDetailsModal from "./MoreDetailModal";
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
-const Content = () => {
+const Content = ({ searchTerm = "" }) => {
   const [games, setGames] = useState([]);
   const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
 
-  const fetchGames = async () => {
+  const fetchGames = async (search = "") => {
     try {
-      const res = await fetch(`${API_BASE_URL}/games?key=${API_KEY}`);
+      let url = `${API_BASE_URL}/games?key=${API_KEY}`;
+      if (search && search.trim()) {
+        url += `&search=${encodeURIComponent(search)}`;
+      } else {
+        url += `&ordering=-rating&metacritic=90,100`;
+      }
+      const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
-
       setGames(data.results);
     } catch (error) {
       console.error("Failed to fetch data", error);
@@ -57,8 +62,8 @@ const Content = () => {
   };
 
   useEffect(() => {
-    fetchGames();
-  }, []);
+    fetchGames(searchTerm);
+  }, [searchTerm]);
 
   return (
     <>
