@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Content from "./components/Content";
 import Footer from "./components/Footer";
-import Home from "./components/Home";
+import Hero from "./components/Hero";
 import NavBar from "./components/NavBar";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
   return (
     <main>
       <NavBar onSearch={setSearchTerm} />
-      <Home />
+      <Hero />
       <Content searchTerm={searchTerm} />
       <Footer />
     </main>

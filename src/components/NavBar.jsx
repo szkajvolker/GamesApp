@@ -10,7 +10,7 @@ const NavBar = ({ onSearch }) => {
 
           <div className="flex space-x-8">
             <a
-              href="#"
+              href="#content"
               className="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Games
@@ -28,7 +28,7 @@ const NavBar = ({ onSearch }) => {
               About
             </a>
             <a
-              href="#"
+              href="#hero"
               className="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Home

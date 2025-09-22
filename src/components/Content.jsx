@@ -66,7 +66,7 @@ const Content = ({ searchTerm = "" }) => {
   }, [searchTerm]);
 
   return (
-    <>
+    <div className="bg-gray-900" id="content">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-20">
         {games.length > 0 &&
           games.map((game) => (
@@ -91,7 +91,7 @@ const Content = ({ searchTerm = "" }) => {
           onClose={() => setSelectedGame(null)}
         />
       )}
-    </>
+    </div>
   );
 };
 
