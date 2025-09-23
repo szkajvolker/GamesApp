@@ -10,6 +10,13 @@ const Hero = () => {
   const animationRef = useRef(null);
 
   const fetchFeaturedGames = async () => {
+    const cacheKey = "featuredGames";
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const cachedGames = JSON.parse(cached);
+      setFeaturedGames([...cachedGames, ...cachedGames, ...cachedGames]);
+      return;
+    }
     try {
       const res = await fetch(
         `${API_BASE_URL}/games?key=${API_KEY}&ordering=-rating&metacritic=90,100&page_size=12`
@@ -17,6 +24,7 @@ const Hero = () => {
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setFeaturedGames([...data.results, ...data.results, ...data.results]);
+      localStorage.setItem(cacheKey, JSON.stringify(data.results));
     } catch (error) {
       console.error("Failed to fetch featured games", error);
     }
