@@ -3,6 +3,8 @@ import GameCard from "./GameCard";
 import MoreDetailsModal from "./MoreDetailModal";
 import gsap from "gsap";
 import { toast } from "sonner";
+import { TRIPLE_GENRES } from "../constants";
+import { GENRES } from "../constants";
 
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -13,7 +15,6 @@ const Content = ({ searchTerm = "" }) => {
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [genres, setGenres] = useState([]);
   const genreScrollRef = useRef(null);
   const genreAnimationRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -21,13 +22,11 @@ const Content = ({ searchTerm = "" }) => {
   const fetchGames = async (search = "", genreIds = []) => {
     const cacheKey = `games_${search}_${genreIds.join(",")}`;
 
-    if (genreIds.length > 0 || (search && search.trim())) {
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) {
-        setGames(JSON.parse(cached));
-        toast.info("Games loaded from cache", { duration: 2000 });
-        return;
-      }
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      setGames(JSON.parse(cached));
+      toast.info("Games loaded from cache", { duration: 2000 });
+      return;
     }
     setLoading(true);
     try {
@@ -44,13 +43,8 @@ const Content = ({ searchTerm = "" }) => {
       const data = await res.json();
       setGames(data.results);
 
-      if (genreIds.length > 0 || (search && search.trim())) {
-        localStorage.setItem(cacheKey, JSON.stringify(data.results));
-      }
-
-      const cacheStatus =
-        genreIds.length > 0 || (search && search.trim()) ? "cached" : "fresh data";
-      toast.success(`Games loaded successfully! (${cacheStatus})`);
+      sessionStorage.setItem(cacheKey, JSON.stringify(data.results));
+      toast.success(`Games loaded successfully! (fresh data)`);
     } catch (error) {
       console.error("Failed to fetch data", error);
       toast.error("Failed to load games. Please try again.");
@@ -61,7 +55,7 @@ const Content = ({ searchTerm = "" }) => {
 
   const fetchGameDetail = async (id) => {
     const cacheKey = `gameDetail${id}`;
-    const cached = localStorage.getItem(cacheKey);
+    const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
       setGame(JSON.parse(cached));
       setSelectedGame(id);
@@ -74,7 +68,7 @@ const Content = ({ searchTerm = "" }) => {
       const data = await res.json();
       setGame(data);
       setSelectedGame(id);
-      localStorage.setItem(cacheKey, JSON.stringify(data));
+      sessionStorage.setItem(cacheKey, JSON.stringify(data));
     } catch (error) {
       console.error("Failed to fetch data", error);
     } finally {
@@ -85,7 +79,7 @@ const Content = ({ searchTerm = "" }) => {
 
   const fetchScreenShots = async (id) => {
     const cacheKey = `screenshots_${id}`;
-    const cached = localStorage.getItem(cacheKey);
+    const cached = sessionStorage.getItem(cacheKey);
     if (cached) {
       setGameScreenShots(JSON.parse(cached));
       return;
@@ -96,34 +90,11 @@ const Content = ({ searchTerm = "" }) => {
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setGameScreenShots(data.results);
-      localStorage.setItem(cacheKey, JSON.stringify(data.results));
+      sessionStorage.setItem(cacheKey, JSON.stringify(data.results));
     } catch (error) {
       console.error("Failed to fetch data", error);
     } finally {
       console.log("Screenshots fetched");
-      setLoading(false);
-    }
-  };
-
-  const fetchGenres = async () => {
-    const cacheKey = "genres";
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      const originalGenres = JSON.parse(cached);
-      setGenres([...originalGenres, ...originalGenres, ...originalGenres]);
-      return;
-    }
-    setLoading(true);
-    try {
-      const res = await fetch(`${API_BASE_URL}/genres?key=${API_KEY}`);
-      if (!res.ok) throw new Error("Failed to fetch genres");
-      const data = await res.json();
-      setGenres([...data.results, ...data.results, ...data.results]);
-      localStorage.setItem(cacheKey, JSON.stringify(data.results));
-    } catch (error) {
-      console.error("Failed to fetch genres", error);
-    } finally {
-      console.log("Genres fetched");
       setLoading(false);
     }
   };
@@ -160,18 +131,16 @@ const Content = ({ searchTerm = "" }) => {
   }, [searchTerm, selectedGenres]);
 
   useEffect(() => {
-    fetchGenres();
-  }, []);
-
-  useEffect(() => {
-    if (genres.length > 0 && genreScrollRef.current) {
+    if (genreScrollRef.current) {
       const container = genreScrollRef.current;
-      const cardWidth = 200;
-      const totalWidth = cardWidth * (genres.length / 3);
+      const cardWidth = 300;
+      const singleSetWidth = cardWidth * GENRES.length;
+
+      gsap.set(container, { x: 0 });
 
       genreAnimationRef.current = gsap.to(container, {
-        x: -totalWidth,
-        duration: 100,
+        x: -singleSetWidth,
+        duration: 30,
         ease: "none",
         repeat: -1,
         paused: false,
@@ -191,7 +160,7 @@ const Content = ({ searchTerm = "" }) => {
         }
       };
     }
-  }, [genres]);
+  }, []);
 
   loading && (
     <div>
@@ -203,7 +172,19 @@ const Content = ({ searchTerm = "" }) => {
     <div className="bg-gray-900" id="content">
       <div className="px-20 py-8">
         <h2 className="text-white text-2xl font-bold mb-6">Browse by Genre</h2>
+
+        <button
+          onClick={() => setSelectedGenres([])}
+          className={`flex-shrink-0 px-6 py-3 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
+            selectedGenres.length === 0
+              ? "bg-blue-600 text-white shadow-lg scale-105"
+              : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+          }`}
+        >
+          All games
+        </button>
         <div className="relative overflow-hidden rounded-lg">
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-gray-900 via-transparent to-gray-900 z-10"></div>
           <div ref={genreScrollRef} className="flex space-x-4">
             <button
               onClick={() => handleGenreClick(null)}
@@ -212,15 +193,13 @@ const Content = ({ searchTerm = "" }) => {
                   ? "bg-blue-600 text-white shadow-lg scale-105"
                   : "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
               }`}
-            >
-              All Games
-            </button>
+            ></button>
 
-            {genres.map((genre, i) => (
+            {TRIPLE_GENRES.map((genre, i) => (
               <button
                 key={`${genre.id}-${i}`}
                 onClick={() => handleGenreClick(genre.id)}
-                className={`genre-card flex-shrink-0 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                className={`genre-card flex-shrink-0 px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all duration-300 ${
                   selectedGenres.includes(genre.id)
                     ? "bg-blue-600 text-white shadow-lg scale-105"
                     : "bg-gray-700 text-gray-300 hover:bg-gray-600"
