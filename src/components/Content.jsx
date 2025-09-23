@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import GameCard from "./GameCard";
 import MoreDetailsModal from "./MoreDetailModal";
 import gsap from "gsap";
+import { toast } from "sonner";
 
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -15,14 +16,20 @@ const Content = ({ searchTerm = "" }) => {
   const [genres, setGenres] = useState([]);
   const genreScrollRef = useRef(null);
   const genreAnimationRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchGames = async (search = "", genreIds = []) => {
     const cacheKey = `games_${search}_${genreIds.join(",")}`;
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      setGames(JSON.parse(cached));
-      return;
+
+    if (genreIds.length > 0 || (search && search.trim())) {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        setGames(JSON.parse(cached));
+        toast.info("Games loaded from cache", { duration: 2000 });
+        return;
+      }
     }
+    setLoading(true);
     try {
       let url = `${API_BASE_URL}/games?key=${API_KEY}`;
       if (search && search.trim()) {
@@ -37,11 +44,18 @@ const Content = ({ searchTerm = "" }) => {
       const data = await res.json();
       setGames(data.results);
 
-      localStorage.setItem(cacheKey, JSON.stringify(data.results));
+      if (genreIds.length > 0 || (search && search.trim())) {
+        localStorage.setItem(cacheKey, JSON.stringify(data.results));
+      }
+
+      const cacheStatus =
+        genreIds.length > 0 || (search && search.trim()) ? "cached" : "fresh data";
+      toast.success(`Games loaded successfully! (${cacheStatus})`);
     } catch (error) {
       console.error("Failed to fetch data", error);
+      toast.error("Failed to load games. Please try again.");
     } finally {
-      console.log("Data successfully fetched");
+      setLoading(false);
     }
   };
 
@@ -53,6 +67,7 @@ const Content = ({ searchTerm = "" }) => {
       setSelectedGame(id);
       return;
     }
+    setLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/games/${id}?key=${API_KEY}`);
       if (!res.ok) throw new Error("Failed to fetch!");
@@ -64,6 +79,7 @@ const Content = ({ searchTerm = "" }) => {
       console.error("Failed to fetch data", error);
     } finally {
       console.log("game detail fetched");
+      setLoading(false);
     }
   };
 
@@ -74,6 +90,7 @@ const Content = ({ searchTerm = "" }) => {
       setGameScreenShots(JSON.parse(cached));
       return;
     }
+    setLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/games/${id}/screenshots?key=${API_KEY}`);
       if (!res.ok) throw new Error("Failed to fetch");
@@ -84,6 +101,7 @@ const Content = ({ searchTerm = "" }) => {
       console.error("Failed to fetch data", error);
     } finally {
       console.log("Screenshots fetched");
+      setLoading(false);
     }
   };
 
@@ -95,6 +113,7 @@ const Content = ({ searchTerm = "" }) => {
       setGenres([...originalGenres, ...originalGenres, ...originalGenres]);
       return;
     }
+    setLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/genres?key=${API_KEY}`);
       if (!res.ok) throw new Error("Failed to fetch genres");
@@ -105,6 +124,7 @@ const Content = ({ searchTerm = "" }) => {
       console.error("Failed to fetch genres", error);
     } finally {
       console.log("Genres fetched");
+      setLoading(false);
     }
   };
 
@@ -130,7 +150,13 @@ const Content = ({ searchTerm = "" }) => {
   };
 
   useEffect(() => {
-    fetchGames(searchTerm, selectedGenres);
+    fetchGames("", []);
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm.trim() || selectedGenres.length > 0) {
+      fetchGames(searchTerm, selectedGenres);
+    }
   }, [searchTerm, selectedGenres]);
 
   useEffect(() => {
@@ -166,6 +192,12 @@ const Content = ({ searchTerm = "" }) => {
       };
     }
   }, [genres]);
+
+  loading && (
+    <div>
+      <p>LOADING</p>
+    </div>
+  );
 
   return (
     <div className="bg-gray-900" id="content">
