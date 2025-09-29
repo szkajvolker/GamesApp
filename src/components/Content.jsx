@@ -11,6 +11,7 @@ const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
 const Content = ({ searchTerm = "" }) => {
   const [games, setGames] = useState([]);
+  const [page, setPage] = useState(1);
   const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
@@ -19,18 +20,11 @@ const Content = ({ searchTerm = "" }) => {
   const genreAnimationRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchGames = async (search = "", genreIds = []) => {
-    const cacheKey = `games_${search}_${genreIds.join(",")}`;
-
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      setGames(JSON.parse(cached));
-      toast.info("Games loaded from cache", { duration: 2000 });
-      return;
-    }
+  const fetchGames = async (search = "", genreIds = [], pageNum = 1) => {
+    if (loading) return;
     setLoading(true);
     try {
-      let url = `${API_BASE_URL}/games?key=${API_KEY}`;
+      let url = `${API_BASE_URL}/games?key=${API_KEY}&page=${pageNum}`;
       if (search && search.trim()) {
         url += `&search=${encodeURIComponent(search)}`;
       } else if (genreIds.length > 0) {
@@ -41,10 +35,7 @@ const Content = ({ searchTerm = "" }) => {
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
-      setGames(data.results);
-
-      sessionStorage.setItem(cacheKey, JSON.stringify(data.results));
-      toast.success(`Games loaded successfully! (fresh data)`);
+      setGames((prev) => (pageNum === 1 ? data.results : [...prev, ...data.results]));
     } catch (error) {
       console.error("Failed to fetch data", error);
       toast.error("Failed to load games. Please try again.");
@@ -61,6 +52,7 @@ const Content = ({ searchTerm = "" }) => {
       setSelectedGame(id);
       return;
     }
+    if (loading) return;
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/games/${id}?key=${API_KEY}`);
@@ -84,6 +76,7 @@ const Content = ({ searchTerm = "" }) => {
       setGameScreenShots(JSON.parse(cached));
       return;
     }
+    if (loading) return;
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/games/${id}/screenshots?key=${API_KEY}`);
@@ -121,13 +114,22 @@ const Content = ({ searchTerm = "" }) => {
   };
 
   useEffect(() => {
-    fetchGames("", []);
-  }, []);
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+        setPage((prev) => prev + 1);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading]);
 
   useEffect(() => {
-    if (searchTerm.trim() || selectedGenres.length > 0) {
-      fetchGames(searchTerm, selectedGenres);
-    }
+    fetchGames(searchTerm, selectedGenres, page);
+  }, [searchTerm, selectedGenres, page]);
+
+  useEffect(() => {
+    setGames([]);
+    setPage(1);
   }, [searchTerm, selectedGenres]);
 
   useEffect(() => {
@@ -140,7 +142,7 @@ const Content = ({ searchTerm = "" }) => {
 
       genreAnimationRef.current = gsap.to(container, {
         x: -singleSetWidth,
-        duration: 30,
+        duration: 80,
         ease: "none",
         repeat: -1,
         paused: false,
@@ -169,7 +171,7 @@ const Content = ({ searchTerm = "" }) => {
   );
 
   return (
-    <div className="bg-gray-900" id="content">
+    <div className="bg-gray-900" id="Games">
       <div className="px-20 py-8">
         <h2 className="text-white text-2xl font-bold mb-6">Browse by Genre</h2>
 

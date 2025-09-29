@@ -46,3 +46,10 @@ export const platformIcons = {
     return "N/A";
   },
 };
+
+export const navLinks = [
+  { name: "Home" },
+  { name: "Categories" },
+  { name: "About" },
+  { name: "Games" },
+];

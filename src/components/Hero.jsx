@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -38,59 +40,78 @@ const Hero = () => {
       const container = scrollContainerRef.current;
       const cardWidth = 256 + 24;
       const totalWidth = cardWidth * (featuredGames.length / 3);
-      animationRef.current = gsap.to(container, {
-        x: -totalWidth,
-        duration: 40,
-        ease: "none",
-        repeat: -1,
-        paused: false,
-      });
+
+      const tl = gsap.timeline({ repeat: -1, defaults: { ease: "none" } });
+      tl.to(container, { x: -totalWidth, duration: 40 });
+      animationRef.current = tl;
+
       const cards = container.querySelectorAll(".game-card");
       cards.forEach((card) => {
         card.addEventListener("mouseenter", () => {
-          gsap.to(animationRef.current, { timeScale: 0.2, duration: 0.5 });
+          tl.timeScale(0.2);
           gsap.to(card, { scale: 1.1, duration: 0.3, ease: "power2.out" });
         });
         card.addEventListener("mouseleave", () => {
-          gsap.to(animationRef.current, { timeScale: 1, duration: 0.5 });
+          tl.timeScale(1);
           gsap.to(card, { scale: 1, duration: 0.3, ease: "power2.out" });
         });
       });
       return () => {
-        if (animationRef.current) {
-          animationRef.current.kill();
-        }
+        tl.kill();
       };
     }
   }, [featuredGames]);
 
+  useEffect(() => {
+    const words = document.querySelectorAll(".hero-anim-word");
+    if (words.length) {
+      const tl = gsap.timeline();
+      words.forEach((el, i) => {
+        tl.fromTo(
+          el,
+          { x: -100, opacity: 0 },
+          { x: 0, opacity: 1, duration: i === 0 ? 0.4 : 0.6, ease: "power2.inOut" },
+          i === 0 ? 0 : i * 0.8
+        );
+      });
+      return () => tl.kill();
+    }
+  }, []);
   return (
     <div
-      className="min-h-screen bg-gray-900 text-white py-20 overflow-hidden mt-15 w-full"
-      id="hero"
+      className="flex flex-col justify-between min-h-screen bg-gray-900 text-white py-20 overflow-hidden mt-15 w-full"
+      id="Home"
     >
-      <div className="text-center mb-16">
-        <h1 className="text-6xl md:text-7xl font-bold mb-6 tracking-thight">
+      <div className="text-center">
+        <h1 className="text-6xl md:text-7xl font-bold tracking-wide">
           <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
             GAMESTORE
           </span>
         </h1>
-        <p className="text-xl md:text-2xl text-gray-400 font-light">
+        <p className="text-xl md:text-2xl text-gray-500 font-light">
           Search for any game you like...
         </p>
       </div>
-      <div className="relative overflow-hidden rounded-lg p-5">
+      <div className="relative overflow-hidden rounded-lg p-2">
         <div ref={scrollContainerRef} className="flex space-x-6">
           {featuredGames.map((game, i) => (
             <div
               key={`${game.id}-${i}`}
-              className="game-card flex-shrink-0 w-64 h-36 bg-gray-800 rounded-lg overflow-hidden relative cursor-pointer"
+              className="game-card flex-shrink-0 w-64 h-36 bg-gray-800 rounded-lg overflow-hidden relative"
             >
               <img src={game.background_image} alt={game.title} />
             </div>
           ))}
         </div>
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-gray-900 via-transparent  to-gray-900 z-10"></div>
+      </div>
+      <div className="flex flex-col items-center justify-center mb-10">
+        <h1 className="text-5xl md:text-6xl font-bold tracking-wide bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <span className="hero-anim-word">All Games.</span>
+          <span className="hero-anim-word ml-4">All Platforms.</span>
+          <span className="hero-anim-word ml-4"> One Place.</span>
+        </h1>
+        <FontAwesomeIcon className="mt-5 text-7xl animate-pulse text-gray-600" icon={faArrowDown} />
       </div>
     </div>
   );
