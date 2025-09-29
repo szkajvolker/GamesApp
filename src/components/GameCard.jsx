@@ -12,7 +12,7 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
       </div>
 
       <div className="p-5">
-        <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
+        <h3 className="text-lg font-semibold dark:text-white text-gray-500 mb-2">{title}</h3>
 
         <div className="flex justify-between items-center mb-3">
           <span

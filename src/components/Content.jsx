@@ -171,7 +171,7 @@ const Content = ({ searchTerm = "" }) => {
   );
 
   return (
-    <div className="bg-gray-900" id="Games">
+    <div className="bg-white dark:bg-gray-900" id="Games">
       <div className="px-20 py-8">
         <h2 className="text-white text-2xl font-bold mb-6">Browse by Genre</h2>
 
