@@ -1,42 +1,36 @@
-# 🎮 GamesApp
-
-Modern gaming website built with React, Tailwind CSS, and GSAP animations.
-
-## ✨ Features
-
-- **Hero Section** - GSAP infinite scrolling game showcase
-- **Game Search** - Real-time search with debouncing (1s delay)
-- **Game Cards** - Responsive grid with platform icons
-- **Game Details** - Modal with screenshots and game info
-- **Smooth Animations** - Hover effects and interactive elements
-- **Mobile Responsive** - Works on all devices
-
-## 🛠️ Tech Stack
-
-- **React** - Component-based UI
-- **Vite** - Fast build tool
-- **Tailwind CSS** - Utility-first styling
-- **GSAP** - Professional animations
-- **RAWG API** - Game database
-- **use-debounce** - Search optimization
-
-## 🚀 Installation
-
-```bash
-# Clone repository
 git clone https://github.com/szkajvolker/GamesApp.git
 
-# Install dependencies
-npm install
+# GamesApp
 
-# Add your RAWG API key to .env
-VITE_RAWG_API_KEY=your_api_key_here
+A modern React-based game search app powered by the RAWG API.
 
-# Start development server
-npm run dev
-```
+## Main Features
 
-## 🎯 Current Status
+- 🔍 Search for games
+- 🌑 Dark mode (toggle between light/dark theme)
+- 🎮 Filter by genre
+- 📊 Display Metacritic and ratings
+- 🖱️ Lazy loading, infinite scroll
+- 📱 Responsive, mobile-friendly UI
+
+## Tech Stack
+
+- **React** (Vite)
+- **RAWG API** (game data)
+- **Zustand** (state management)
+- **Tailwind CSS** (modern, responsive design)
+- **Session/local storage** (reduce API calls, cache)
+- **FontAwesome** (icons)
+
+## Developer Tips
+
+- Add your API key in `.env`: `VITE_RAWG_API_KEY=...`
+- Start: `npm install && npm run dev`
+- The dark mode toggle uses Zustand store, theme is also saved in session storage.
+
+---
+
+Created by: Istvan Szabo
 
 ✅ Hero section with infinite scroll  
 ✅ Game search functionality  
