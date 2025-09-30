@@ -171,13 +171,13 @@ const Content = ({ searchTerm = "" }) => {
   );
 
   return (
-    <div className="bg-white dark:bg-gray-900" id="Games">
+    <div className="bg-white dark:bg-gray-900 transition-colors duration-300" id="Games">
       <div className="px-20 py-8">
         <h2 className="text-white text-2xl font-bold mb-6">Browse by Genre</h2>
 
         <button
           onClick={() => setSelectedGenres([])}
-          className={`flex-shrink-0 px-6 py-3 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
+          className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
             selectedGenres.length === 0
               ? "bg-blue-600 text-white shadow-lg scale-105"
               : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -186,7 +186,7 @@ const Content = ({ searchTerm = "" }) => {
           All games
         </button>
         <div className="relative overflow-hidden rounded-lg">
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-gray-900 via-transparent to-gray-900 z-10"></div>
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 from-white via-transparent dark:to-gray-900 to-white z-10"></div>
           <div ref={genreScrollRef} className="flex space-x-4">
             <button
               onClick={() => handleGenreClick(null)}

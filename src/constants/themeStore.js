@@ -1,7 +1,12 @@
 import { create } from "zustand";
 
 export const useThemeStore = create((set) => ({
-  theme: "dark",
+  theme: sessionStorage.getItem("theme") || "light",
   setTheme: (theme) => set({ theme }),
-  toggleTheme: () => set((state) => ({ theme: state.theme === "dark" ? "light" : "dark" })),
+  toggleTheme: () =>
+    set((state) => {
+      const newTheme = state.theme === "dark" ? "light" : "dark";
+      sessionStorage.setItem("theme", newTheme);
+      return { theme: newTheme };
+    }),
 }));

@@ -16,10 +16,12 @@ const NavBar = ({ onSearch }) => {
   }, []);
 
   return (
-    <div className="fixed top-0 w-full dark:bg-gray-800/30 bg-gray-100/30 backdrop-blur-lg border-black/30 shadow-md z-3 p-5 h-20">
+    <div className="fixed top-0 w-full dark:bg-gray-800/30 bg-gray-100/30 backdrop-blur-lg border-black/30 shadow-md z-3 p-5 h-20 transition-colors duration-300">
       <div className="flex flex-row justify-between">
         <div className="flex items-center lg:gap-8 gap-4">
-          <h1 className="text text-2xl font-bold dark:text-gray-400 text-gray-700">GameStore</h1>
+          <h1 className="text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent from-purple-400 to-blue-400">
+            GameStore.
+          </h1>
           <SearchBar onSearch={onSearch} />
         </div>
 
@@ -34,7 +36,7 @@ const NavBar = ({ onSearch }) => {
               <a
                 key={link.name}
                 href={`#${link.name}`}
-                className="text-gray-700 dark:text-gray-400 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="hover:brightness-120 hover:scale-120 px-3 py-2 rounded-md font-bold text-lg bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent transition-transform duration-300"
               >
                 {link.name}
               </a>

@@ -11,7 +11,7 @@ const SearchBar = ({ onSearch, placeholder = "Search any games..." }) => {
   }, [debouncedSearchTerm, onSearch]);
 
   return (
-    <div className="relative">
+    <div className="relative transition-colors duration-300">
       <div>
         <img
           src={searchIcon}

@@ -9,7 +9,6 @@ import { useThemeStore } from "./constants/themeStore";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const theme = useThemeStore((state) => state.theme);
-  console.log(theme);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");

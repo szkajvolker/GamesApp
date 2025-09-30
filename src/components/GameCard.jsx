@@ -2,7 +2,7 @@ import { platformIcons } from "../constants";
 
 const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetailsClick, id }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl overflow-hidden hover:bg-white/20 transition-all max-w-xs">
+    <div className="bg-gray-800/30 backdrop-blur-md  border-gray-500 border-2 rounded-xl dark:shadow-xl shadow-2xl  overflow-hidden hover:bg-white/20 transition-all max-w-xs">
       <div className="h-48">
         <img
           src={image}

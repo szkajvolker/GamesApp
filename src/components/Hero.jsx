@@ -79,12 +79,12 @@ const Hero = () => {
   }, []);
   return (
     <div
-      className="flex flex-col justify-between min-h-screen dark:bg-gray-900  bg-white  text-white py-20 overflow-hidden w-full"
+      className="flex flex-col justify-between min-h-screen dark:bg-gray-900  bg-white  text-white py-20 overflow-hidden w-full transition-colors duration-300"
       id="Home"
     >
       <div className="text-center mt-20">
         <h1 className="text-6xl md:text-7xl font-bold tracking-wide">
-          <span className="bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
             GAMESTORE
           </span>
         </h1>
@@ -97,13 +97,13 @@ const Hero = () => {
           {featuredGames.map((game, i) => (
             <div
               key={`${game.id}-${i}`}
-              className="game-card flex-shrink-0 w-64 h-36 bg-gray-800 rounded-lg overflow-hidden relative"
+              className="game-card flex-shrink-0 w-64 h-36 bg-gray-800 rounded-lg overflow-hidden relative "
             >
               <img src={game.background_image} alt={game.title} />
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-gray-900 via-transparent  to-gray-900 z-10"></div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-500 via-transparent to-gray-500 z-10"></div>
       </div>
       <div className="flex flex-col items-center justify-center mb-10">
         <h1 className="text-5xl md:text-6xl font-bold tracking-wide bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
