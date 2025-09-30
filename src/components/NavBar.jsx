@@ -16,18 +16,17 @@ const NavBar = ({ onSearch }) => {
   }, []);
 
   return (
-    <div className="fixed top-0 w-full dark:bg-gray-800/30 bg-gray-100/30 backdrop-blur-lg border-black/30 shadow-md z-3 p-5 h-20 transition-colors duration-300">
-      <div className="flex flex-row justify-between">
-        <div className="flex items-center lg:gap-8 gap-4">
-          <h1 className="text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent from-purple-400 to-blue-400">
+    <div className="fixed top-0 w-full border-b-2 border-gray-200 dark:border-gray-900 dark:bg-gray-800/30 bg-white/80 backdrop-blur-lg  shadow-lg z-3 h-20 transition-colors duration-300">
+      <div className="flex flex-row pt-2 m-2 justify-between">
+        <div className="flex items-center justify-center lg:gap-8 gap-2">
+          <h1 className="text-md lg:text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent from-purple-500 to-blue-500 transition-colors duration-300">
             GameStore.
           </h1>
           <SearchBar onSearch={onSearch} />
         </div>
-
         {isMobile && (
           <button onClick={() => setIsMenuOpen(true)}>
-            <FontAwesomeIcon icon={faBars} size="2x" className="text-gray-400" />
+            <FontAwesomeIcon icon={faBars} size="2x" className="text-gray-500" />
           </button>
         )}
         {!isMobile && (
@@ -36,7 +35,7 @@ const NavBar = ({ onSearch }) => {
               <a
                 key={link.name}
                 href={`#${link.name}`}
-                className="hover:brightness-120 hover:scale-120 px-3 py-2 rounded-md font-bold text-lg bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent transition-transform duration-300"
+                className="hover:brightness-120 hover:scale-120 px-3 py-2 rounded-md font-bold text-lg bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300"
               >
                 {link.name}
               </a>
@@ -60,7 +59,7 @@ const NavBar = ({ onSearch }) => {
             ))}
           </div>
         )}
-        <ToggleDarkmode />
+        <ToggleDarkmode isMobile={isMobile} />
       </div>
     </div>
   );

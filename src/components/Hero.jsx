@@ -83,8 +83,8 @@ const Hero = () => {
       id="Home"
     >
       <div className="text-center mt-20">
-        <h1 className="text-6xl md:text-7xl font-bold tracking-wide">
-          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+        <h1 className="lg:text-7xl text-5xl md:text-6xl font-bold tracking-wide">
+          <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300">
             GAMESTORE
           </span>
         </h1>
@@ -103,15 +103,17 @@ const Hero = () => {
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-500 via-transparent to-gray-500 z-10"></div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-500 via-transparent to-gray-500 z-10 transition-colors duration-300"></div>
       </div>
-      <div className="flex flex-col items-center justify-center mb-10">
-        <h1 className="text-5xl md:text-6xl font-bold tracking-wide bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold tracking-wide bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent transition-colors duration-300 mt-12">
           <span className="hero-anim-word">All Games.</span>
           <span className="hero-anim-word ml-4">All Platforms.</span>
           <span className="hero-anim-word ml-4"> One Place.</span>
         </h1>
-        <FontAwesomeIcon className="mt-5 text-7xl animate-pulse text-gray-600" icon={faArrowDown} />
+      </div>
+      <div className="w-full flex items-center justify-center">
+        <FontAwesomeIcon className="text-7xl animate-pulse text-gray-600" icon={faArrowDown} />
       </div>
     </div>
   );
