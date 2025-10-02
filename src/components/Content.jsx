@@ -9,7 +9,7 @@ import { GENRES } from "../constants";
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
-const Content = ({ searchTerm = "" }) => {
+const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
   const [game, setGame] = useState(null);
@@ -19,6 +19,7 @@ const Content = ({ searchTerm = "" }) => {
   const genreScrollRef = useRef(null);
   const genreAnimationRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchGames = async (search = "", genreIds = [], pageNum = 1) => {
     if (loading) return;
@@ -36,6 +37,9 @@ const Content = ({ searchTerm = "" }) => {
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setGames((prev) => (pageNum === 1 ? data.results : [...prev, ...data.results]));
+      if (!data.next) {
+        setHasMore(false);
+      }
     } catch (error) {
       console.error("Failed to fetch data", error);
       toast.error("Failed to load games. Please try again.");
@@ -64,7 +68,6 @@ const Content = ({ searchTerm = "" }) => {
     } catch (error) {
       console.error("Failed to fetch data", error);
     } finally {
-      console.log("game detail fetched");
       setLoading(false);
     }
   };
@@ -87,7 +90,6 @@ const Content = ({ searchTerm = "" }) => {
     } catch (error) {
       console.error("Failed to fetch data", error);
     } finally {
-      console.log("Screenshots fetched");
       setLoading(false);
     }
   };
@@ -95,6 +97,7 @@ const Content = ({ searchTerm = "" }) => {
   const handleDetailsClick = async (id) => {
     await fetchGameDetail(id);
     await fetchScreenShots(id);
+    setIsModalOpen(true);
   };
 
   const handleGenreClick = (genreId) => {
@@ -115,13 +118,17 @@ const Content = ({ searchTerm = "" }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
+        !loading &&
+        hasMore
+      ) {
         setPage((prev) => prev + 1);
       }
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading]);
+  }, [loading, hasMore]);
 
   useEffect(() => {
     fetchGames(searchTerm, selectedGenres, page);
@@ -130,6 +137,7 @@ const Content = ({ searchTerm = "" }) => {
   useEffect(() => {
     setGames([]);
     setPage(1);
+    setHasMore(true);
   }, [searchTerm, selectedGenres]);
 
   useEffect(() => {
@@ -171,7 +179,12 @@ const Content = ({ searchTerm = "" }) => {
   );
 
   return (
-    <div className="bg-white dark:bg-gray-900 transition-colors duration-300" id="Games">
+    <div
+      className={`${
+        isModalOpen === "true" ? "pointer-events-none" : ""
+      }bg-white dark:bg-gray-900 transition-colors duration-300`}
+      id="Games"
+    >
       <div className="px-20 py-8">
         <h2 className="text-white text-2xl font-bold mb-6">Browse by Genre</h2>
 
@@ -186,7 +199,7 @@ const Content = ({ searchTerm = "" }) => {
           All games
         </button>
         <div className="relative overflow-hidden rounded-lg">
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 from-white via-transparent dark:to-gray-900 to-white z-10"></div>
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 from-gray-500 via-transparent dark:to-gray-900 to-gray-500"></div>
           <div ref={genreScrollRef} className="flex space-x-4">
             <button
               onClick={() => handleGenreClick(null)}
@@ -232,9 +245,13 @@ const Content = ({ searchTerm = "" }) => {
       </div>
       {selectedGame && game && (
         <MoreDetailsModal
+          className="z-50"
           game={game}
           gameScreenShots={gameScreenShots}
-          onClose={() => setSelectedGame(null)}
+          onClose={() => {
+            setSelectedGame(null);
+            setIsModalOpen(false);
+          }}
         />
       )}
     </div>

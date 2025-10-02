@@ -2,11 +2,12 @@ import { platformIcons } from "../constants";
 
 const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetailsClick, id }) => {
   return (
-    <div className="bg-gray-800/30 backdrop-blur-md  border-gray-500 border-2 rounded-xl dark:shadow-xl shadow-2xl  overflow-hidden hover:bg-white/20 transition-all max-w-xs">
+    <div className="bg-gray-900/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-2xl shadow-black/60 overflow-hidden hover:bg-white/20 duration-600 transition-all ease-in-out">
       <div className="h-48">
         <img
           src={image}
           alt={title}
+          loading="lazy"
           className="w-full h-full object-cover rounded-xl hover:scale-110 transition-transform duration-300"
         />
       </div>
@@ -24,7 +25,7 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
           </span>
           {rating && (
             <span className="text-sm text-yellow-500 bg-gray-500 rounded-xl pr-2 pl-2 border border-yellow-500">
-              ⭐{rating.toFixed(1)}
+              ⭐{rating ? rating.toFixed(1) : "N/A"}
             </span>
           )}
         </div>
@@ -50,7 +51,7 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
                   key={index}
                   className="flex items-center gap-2 bg-gray-600/50 border border-gray-500 text-white py-1 px-3 rounded-xl"
                 >
-                  {icon && <img src={icon} alt={platform} className="w-5 h-5" />}
+                  {icon && <img src={icon} loading="lazy" alt={platform} className="w-5 h-5" />}
                 </div>
               );
             })}

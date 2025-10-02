@@ -1,4 +1,12 @@
-import { windowsIcon, xboxIcon, playStationIcon, linuxIcon, appleIcon } from "../assets";
+import {
+  windowsIcon,
+  xboxIcon,
+  playStationIcon,
+  linuxIcon,
+  appleIcon,
+  nintendoIcon,
+  androidIcon,
+} from "../assets";
 
 export const GENRES = [
   { id: 4, name: "Action" },
@@ -40,8 +48,20 @@ export const platformIcons = {
     if (platform.includes("linux")) {
       return linuxIcon;
     }
-    if (platform.includes("apple") || platform.includes("macos")) {
+    if (platform.includes("apple") || platform.includes("macos") || platform.includes("iOS")) {
       return appleIcon;
+    }
+    if (platform.includes("android")) {
+      return androidIcon;
+    }
+    if (platform.includes("wii u")) {
+      return nintendoIcon;
+    }
+    if (platform.includes("nintendo")) {
+      return nintendoIcon;
+    }
+    if (platform.includes("macOS")) {
+      return nintendoIcon;
     }
     return "N/A";
   },

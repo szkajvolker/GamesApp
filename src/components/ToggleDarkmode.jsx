@@ -1,4 +1,6 @@
 import { useThemeStore } from "../constants/themeStore";
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ToggleDarkmode = () => {
   const theme = useThemeStore((state) => state.theme);
@@ -15,7 +17,7 @@ const ToggleDarkmode = () => {
           theme === "dark" ? "translate-x-full" : "translate-x-0"
         }`}
       >
-        {theme === "dark" ? "🌙" : "🌞"}
+        <FontAwesomeIcon icon={theme === "dark" ? faMoon : faSun} className="text-yellow-500" />
       </div>
     </div>
   );

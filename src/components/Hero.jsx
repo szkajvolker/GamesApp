@@ -99,17 +99,19 @@ const Hero = () => {
               key={`${game.id}-${i}`}
               className="game-card flex-shrink-0 w-64 h-36 bg-gray-800 rounded-lg overflow-hidden relative "
             >
-              <img src={game.background_image} alt={game.title} />
+              <img src={game.background_image} alt={game.title} loading="lazy" />
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-500 via-transparent to-gray-500 z-10 transition-colors duration-300"></div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-500 via-transparent to-gray-500 transition-colors duration-300"></div>
       </div>
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold tracking-wide bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent transition-colors duration-300 mt-12">
-          <span className="hero-anim-word">All Games.</span>
+        <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold tracking-wide bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300 mt-12">
+          <span className="hero-anim-word ml-4">All Games.</span>
+          <br />
           <span className="hero-anim-word ml-4">All Platforms.</span>
-          <span className="hero-anim-word ml-4"> One Place.</span>
+          <br />
+          <span className="hero-anim-word ml-4">One Place.</span>
         </h1>
       </div>
       <div className="w-full flex items-center justify-center">

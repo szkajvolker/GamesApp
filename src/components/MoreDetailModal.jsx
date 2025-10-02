@@ -98,6 +98,7 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
                   src={screenshot.image}
                   alt={game.name}
                   className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg mr-2 pointer-events-none"
+                  loading="lazy"
                 />
               ))}
           </div>
