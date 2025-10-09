@@ -24,9 +24,9 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
           >
             {metacritic}
           </span>
-          {rating && (
-            <span className="text-sm text-yellow-500 bg-gray-500 rounded-xl pr-2 pl-2 border border-yellow-500">
-              ⭐{rating ? rating.toFixed(1) : "N/A"}
+          {rating !== null && rating !== undefined && (
+            <span className="text-sm text-yellow-500 bg-gray-500 rounded-xl px-2 border border-yellow-500">
+              ⭐{rating > 0 ? rating.toFixed(1) : "N/A"}
             </span>
           )}
         </div>
@@ -50,14 +50,14 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-2 bg-gray-600/50 text-white py-2 px-3 rounded-xl"
+                  className="flex items-center gap-2 bg-gray-600/50 text-white py-2 px-2 rounded-xl"
                 >
                   {icon && (
                     <img
                       src={icon ? icon : placeholder}
                       loading="lazy"
                       alt={platform}
-                      className="w-10 h-10"
+                      className="w-7 h-7"
                     />
                   )}
                 </div>

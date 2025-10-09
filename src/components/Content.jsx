@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import GameCard from "./GameCard";
 import MoreDetailsModal from "./MoreDetailModal";
-import gsap from "gsap";
+
 import { toast } from "sonner";
-import { TRIPLE_GENRES } from "../constants";
 import { GENRES } from "../constants";
 
 const API_BASE_URL = "https://api.rawg.io/api";
@@ -16,10 +15,9 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const genreScrollRef = useRef(null);
-  const genreAnimationRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const fetchGames = async (search = "", genreIds = [], pageNum = 1) => {
     if (loading) return;
@@ -100,22 +98,6 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
     setIsModalOpen(true);
   };
 
-  const handleGenreClick = (genreId) => {
-    if (genreId === null) {
-      setSelectedGenres([]);
-      return;
-    }
-    setSelectedGenres((prev) => {
-      if (prev.includes(genreId)) {
-        return prev.filter((id) => id !== genreId);
-      }
-      if (prev.length < 3) {
-        return [...prev, genreId];
-      }
-      return [...prev.slice(1), genreId];
-    });
-  };
-
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -141,35 +123,12 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   }, [searchTerm, selectedGenres]);
 
   useEffect(() => {
-    if (genreScrollRef.current) {
-      const container = genreScrollRef.current;
-      const cardWidth = 300;
-      const singleSetWidth = cardWidth * GENRES.length;
-
-      gsap.set(container, { x: 0 });
-
-      genreAnimationRef.current = gsap.to(container, {
-        x: -singleSetWidth,
-        duration: 80,
-        ease: "none",
-        repeat: -1,
-        paused: false,
-      });
-      const genreCards = container.querySelectorAll(".genre-card");
-      genreCards.forEach((card) => {
-        card.addEventListener("mouseenter", () => {
-          gsap.to(genreAnimationRef.current, { timeScale: 0.2, duration: 0.5 });
-        });
-        card.addEventListener("mouseleave", () => {
-          gsap.to(genreAnimationRef.current, { timeScale: 1, duration: 0.5 });
-        });
-      });
-      return () => {
-        if (genreAnimationRef.current) {
-          genreAnimationRef.current.kill();
-        }
-      };
-    }
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const filteredGames = games.filter(
@@ -189,48 +148,39 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
       }bg-white dark:bg-gray-900 transition-colors duration-300`}
       id="Games"
     >
-      <div className="px-20 py-8">
-        <h2 className="text-white text-2xl font-bold mb-6">Browse by Genre</h2>
-
-        <button
-          onClick={() => setSelectedGenres([])}
-          className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
-            selectedGenres.length === 0
-              ? "bg-blue-600 text-white shadow-lg scale-105"
-              : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-          }`}
-        >
-          All games
-        </button>
-        <div className="relative overflow-hidden rounded-lg">
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r dark:from-gray-900 from-gray-500 via-transparent dark:to-gray-900 to-gray-500"></div>
-          <div ref={genreScrollRef} className="flex space-x-4">
-            <button
-              onClick={() => handleGenreClick(null)}
-              className={`flex-shrink-0 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                selectedGenres === null
-                  ? "bg-blue-600 text-white shadow-lg scale-105"
-                  : "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
-              }`}
-            ></button>
-
-            {TRIPLE_GENRES.map((genre, i) => (
-              <button
-                key={`${genre.id}-${i}`}
-                onClick={() => handleGenreClick(genre.id)}
-                className={`genre-card flex-shrink-0 px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all duration-300 ${
-                  selectedGenres.includes(genre.id)
-                    ? "bg-blue-600 text-white shadow-lg scale-105"
-                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                }`}
-              >
+      <div className="py-8 md:px-10">
+        <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
+        {!isMobile && (
+          <button
+            onClick={() => setSelectedGenres([])}
+            className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
+              selectedGenres.length === 0
+                ? "bg-blue-600 text-white shadow-lg scale-105"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+            }`}
+          >
+            All games
+          </button>
+        )}
+        <div className="relative overflow-hidden rounded-lg flex  py-4">
+          <select
+            className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm"
+            value={selectedGenres[0] || ""}
+            onChange={(e) => {
+              const val = e.target.value;
+              setSelectedGenres(val ? [val] : []);
+            }}
+          >
+            <option value="">Válassz műfajt</option>
+            {GENRES.map((genre) => (
+              <option key={genre.id} value={genre.id}>
                 {genre.name}
-              </button>
+              </option>
             ))}
-          </div>
+          </select>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
         {filteredGames.length > 0 &&
           filteredGames.map((game) => (
             <GameCard

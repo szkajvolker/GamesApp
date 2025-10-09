@@ -35,6 +35,7 @@ const Hero = () => {
   useEffect(() => {
     fetchFeaturedGames();
   }, []);
+
   useEffect(() => {
     if (featuredGames.length > 0 && scrollContainerRef.current) {
       const container = scrollContainerRef.current;
