@@ -172,6 +172,10 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
     }
   }, []);
 
+  const filteredGames = games.filter(
+    (game) => game.esrb_rating?.name && game.esrb_rating.name !== "Adults Only"
+  );
+
   loading && (
     <div>
       <p>LOADING</p>
@@ -227,8 +231,8 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-20">
-        {games.length > 0 &&
-          games.map((game) => (
+        {filteredGames.length > 0 &&
+          filteredGames.map((game) => (
             <GameCard
               key={game.id}
               title={game.name}

@@ -20,6 +20,16 @@ const Footer = () => {
               </span>
               thousands of titles.
             </p>
+            <p className="text-gray-500">
+              Vectors and icons by{" "}
+              <a
+                href="https://www.svgrepo.com"
+                target="_blank"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-semibold"
+              >
+                SVG Repo
+              </a>
+            </p>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
             <p className="text-gray-500 font-bold">

@@ -1,11 +1,12 @@
 import { platformIcons } from "../constants";
+import placeholder from "../assets/images/placeholder.png";
 
 const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetailsClick, id }) => {
   return (
     <div className="bg-gray-900/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-2xl shadow-black/60 overflow-hidden hover:bg-white/20 duration-600 transition-all ease-in-out">
       <div className="h-48">
         <img
-          src={image}
+          src={image ? image : placeholder}
           alt={title}
           loading="lazy"
           className="w-full h-full object-cover rounded-xl hover:scale-110 transition-transform duration-300"
@@ -49,9 +50,16 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-2 bg-gray-600/50 border border-gray-500 text-white py-1 px-3 rounded-xl"
+                  className="flex items-center gap-2 bg-gray-600/50 text-white py-2 px-3 rounded-xl"
                 >
-                  {icon && <img src={icon} loading="lazy" alt={platform} className="w-5 h-5" />}
+                  {icon && (
+                    <img
+                      src={icon ? icon : placeholder}
+                      loading="lazy"
+                      alt={platform}
+                      className="w-10 h-10"
+                    />
+                  )}
                 </div>
               );
             })}
