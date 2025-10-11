@@ -1,3 +1,21 @@
+export const PLATFORMS = [
+  { id: 1, name: "PC", icon: windowsIcon },
+  { id: 2, name: "PlayStation 4", icon: ps4Icon },
+  { id: 3, name: "Xbox One", icon: xboxoneIcon },
+  { id: 4, name: "Nintendo Switch", icon: nintendoIcon },
+  { id: 5, name: "iOS", icon: iosIcon },
+  { id: 6, name: "Android", icon: androidIcon },
+  { id: 7, name: "macOS", icon: macosIcon },
+  { id: 8, name: "Linux", icon: linuxIcon },
+  { id: 9, name: "Xbox 360", icon: xbox360Icon },
+  { id: 10, name: "PlayStation 3", icon: ps3Icon },
+  { id: 11, name: "PlayStation 2", icon: ps2Icon },
+  { id: 12, name: "PlayStation 5", icon: ps5Icon },
+  { id: 13, name: "PS Vita", icon: psvitaIcon },
+  { id: 14, name: "Wii", icon: wiiIcon },
+  { id: 15, name: "Dreamcast", icon: dreamcastIcon },
+  { id: 16, name: "Board Games" },
+];
 import {
   windowsIcon,
   xboxIcon,

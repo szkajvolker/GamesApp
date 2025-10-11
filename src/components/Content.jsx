@@ -4,6 +4,8 @@ import MoreDetailsModal from "./MoreDetailModal";
 
 import { toast } from "sonner";
 import { GENRES } from "../constants";
+import { PLATFORMS } from "../constants";
+import FilterDropdown from "./FilterDropdown";
 
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -14,21 +16,27 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const fetchGames = async (search = "", genreIds = [], pageNum = 1) => {
+  const fetchGames = async (search = "", genreId = "", platform = "", pageNum = 1) => {
     if (loading) return;
     setLoading(true);
     try {
       let url = `${API_BASE_URL}/games?key=${API_KEY}&page=${pageNum}`;
       if (search && search.trim()) {
         url += `&search=${encodeURIComponent(search)}`;
-      } else if (genreIds.length > 0) {
-        url += `&genres=${genreIds.join(",")}`;
-      } else {
+      }
+      if (genreId) {
+        url += `&genres=${genreId}`;
+      }
+      if (platform) {
+        url += `&platforms=${platform}`;
+      }
+      if (!search && !genreId && !platform) {
         url += `&ordering=-rating&metacritic=90,100`;
       }
       const res = await fetch(url);
@@ -113,14 +121,14 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   }, [loading, hasMore]);
 
   useEffect(() => {
-    fetchGames(searchTerm, selectedGenres, page);
-  }, [searchTerm, selectedGenres, page]);
+    fetchGames(searchTerm, selectedGenre, selectedPlatform, page);
+  }, [searchTerm, selectedGenre, selectedPlatform, page]);
 
   useEffect(() => {
     setGames([]);
     setPage(1);
     setHasMore(true);
-  }, [searchTerm, selectedGenres]);
+  }, [searchTerm, selectedGenre]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -131,6 +139,13 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleGenreChange = (genreId) => {
+    setSelectedGenre(genreId);
+  };
+
+  const handlePlatformChange = (platform) => {
+    setSelectedPlatform(platform);
+  };
   const filteredGames = games.filter(
     (game) => game.esrb_rating?.name && game.esrb_rating.name !== "Adults Only"
   );
@@ -152,9 +167,9 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
         <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
         {!isMobile && (
           <button
-            onClick={() => setSelectedGenres([])}
+            onClick={() => setSelectedGenre(selectedGenre)}
             className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
-              selectedGenres.length === 0
+              selectedGenre
                 ? "bg-blue-600 text-white shadow-lg scale-105"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
@@ -162,52 +177,52 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
             All games
           </button>
         )}
-        <div className="relative overflow-hidden rounded-lg flex  py-4">
-          <select
-            className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm"
-            value={selectedGenres[0] || ""}
-            onChange={(e) => {
-              const val = e.target.value;
-              setSelectedGenres(val ? [val] : []);
-            }}
-          >
-            <option value="">Válassz műfajt</option>
-            {GENRES.map((genre) => (
-              <option key={genre.id} value={genre.id}>
-                {genre.name}
-              </option>
-            ))}
-          </select>
+      </div>
+      <div className="flex flex-row">
+        <div className="flex flex-col">
+          {" "}
+          <FilterDropdown
+            label="pltform"
+            options={PLATFORMS}
+            value={selectedPlatform}
+            onChange={handlePlatformChange}
+          />
+          <FilterDropdown
+            label="genres"
+            options={GENRES}
+            value={selectedGenre}
+            onChange={handleGenreChange}
+          />
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
+          {filteredGames.length > 0 &&
+            filteredGames.map((game) => (
+              <GameCard
+                key={game.id}
+                title={game.name}
+                metacritic={game.metacritic}
+                image={game.background_image}
+                genres={game.genres?.map((g) => g.name)}
+                rating={game.rating}
+                releaseDate={game.released}
+                platforms={game.platforms?.map((p) => p.platform.name)}
+                onDetailsClick={handleDetailsClick}
+                id={game.id}
+              />
+            ))}
+        </div>
+        {selectedGame && game && (
+          <MoreDetailsModal
+            className="z-50"
+            game={game}
+            gameScreenShots={gameScreenShots}
+            onClose={() => {
+              setSelectedGame(null);
+              setIsModalOpen(false);
+            }}
+          />
+        )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
-        {filteredGames.length > 0 &&
-          filteredGames.map((game) => (
-            <GameCard
-              key={game.id}
-              title={game.name}
-              metacritic={game.metacritic}
-              image={game.background_image}
-              genres={game.genres?.map((g) => g.name)}
-              rating={game.rating}
-              releaseDate={game.released}
-              platforms={game.platforms?.map((p) => p.platform.name)}
-              onDetailsClick={handleDetailsClick}
-              id={game.id}
-            />
-          ))}
-      </div>
-      {selectedGame && game && (
-        <MoreDetailsModal
-          className="z-50"
-          game={game}
-          gameScreenShots={gameScreenShots}
-          onClose={() => {
-            setSelectedGame(null);
-            setIsModalOpen(false);
-          }}
-        />
-      )}
     </div>
   );
 };
