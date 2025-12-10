@@ -41,7 +41,9 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
-      setGames((prev) => (pageNum === 1 ? data.results : [...prev, ...data.results]));
+      setGames((prev) =>
+        pageNum === 1 ? data.results : [...prev, ...data.results]
+      );
       if (!data.next) {
         setHasMore(false);
       }
@@ -87,7 +89,9 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
     if (loading) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE_URL}/games/${id}/screenshots?key=${API_KEY}`);
+      const res = await fetch(
+        `${API_BASE_URL}/games/${id}/screenshots?key=${API_KEY}`
+      );
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setGameScreenShots(data.results);
@@ -108,7 +112,8 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 100 &&
         !loading &&
         hasMore
       ) {
@@ -157,7 +162,9 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
     >
       <div className="flex flex-row">
         <div className="py-8 md:px-10">
-          <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
+          <h2 className="text-gray-700 text-2xl font-bold mb-6">
+            Browse by Genre
+          </h2>
           {!isMobile && (
             <button
               onClick={() => setSelectedGenres([])}
@@ -189,12 +196,14 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
           </div>
         </div>
         <div className="py-8 md:px-10">
-          <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
+          <h2 className="text-gray-700 text-2xl font-bold mb-6">
+            Browse by Platform
+          </h2>
           {!isMobile && (
             <button
-              onClick={() => setSelectedGenres([])}
+              onClick={() => setSelectedPlatform(null)}
               className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
-                selectedGenres.length === 0
+                !selectedPlatform
                   ? "bg-blue-600 text-white shadow-lg scale-105"
                   : "bg-gray-700 text-gray-300 hover:bg-gray-600"
               }`}
