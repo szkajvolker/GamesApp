@@ -4,6 +4,7 @@ import MoreDetailsModal from "./MoreDetailModal";
 
 import { toast } from "sonner";
 import { GENRES } from "../constants";
+import { PLATFORMS } from "../constants";
 
 const API_BASE_URL = "https://api.rawg.io/api";
 const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -18,6 +19,7 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState(null);
 
   const fetchGames = async (search = "", genreIds = [], pageNum = 1) => {
     if (loading) return;
@@ -26,9 +28,14 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
       let url = `${API_BASE_URL}/games?key=${API_KEY}&page=${pageNum}`;
       if (search && search.trim()) {
         url += `&search=${encodeURIComponent(search)}`;
-      } else if (genreIds.length > 0) {
+      }
+      if (genreIds.length > 0) {
         url += `&genres=${genreIds.join(",")}`;
-      } else {
+      }
+      if (selectedPlatform) {
+        url += `&platforms=${selectedPlatform}`;
+      }
+      if (!search && genreIds.length === 0 && !selectedPlatform) {
         url += `&ordering=-rating&metacritic=90,100`;
       }
       const res = await fetch(url);
@@ -114,7 +121,7 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
 
   useEffect(() => {
     fetchGames(searchTerm, selectedGenres, page);
-  }, [searchTerm, selectedGenres, page]);
+  }, [searchTerm, selectedGenres, selectedPlatform, page]);
 
   useEffect(() => {
     setGames([]);
@@ -148,36 +155,70 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
       }bg-white dark:bg-gray-900 transition-colors duration-300`}
       id="Games"
     >
-      <div className="py-8 md:px-10">
-        <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
-        {!isMobile && (
-          <button
-            onClick={() => setSelectedGenres([])}
-            className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
-              selectedGenres.length === 0
-                ? "bg-blue-600 text-white shadow-lg scale-105"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-            }`}
-          >
-            All games
-          </button>
-        )}
-        <div className="relative overflow-hidden rounded-lg flex  py-4">
-          <select
-            className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm"
-            value={selectedGenres[0] || ""}
-            onChange={(e) => {
-              const val = e.target.value;
-              setSelectedGenres(val ? [val] : []);
-            }}
-          >
-            <option value="">Válassz műfajt</option>
-            {GENRES.map((genre) => (
-              <option key={genre.id} value={genre.id}>
-                {genre.name}
-              </option>
-            ))}
-          </select>
+      <div className="flex flex-row">
+        <div className="py-8 md:px-10">
+          <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
+          {!isMobile && (
+            <button
+              onClick={() => setSelectedGenres([])}
+              className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
+                selectedGenres.length === 0
+                  ? "bg-blue-600 text-white shadow-lg scale-105"
+                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+              }`}
+            >
+              All games
+            </button>
+          )}
+          <div className="relative overflow-hidden rounded-lg flex  py-4">
+            <select
+              className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm"
+              value={selectedGenres[0] || ""}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSelectedGenres(val ? [val] : []);
+              }}
+            >
+              <option value="">Choose genre</option>
+              {GENRES.map((genre) => (
+                <option key={genre.id} value={genre.id}>
+                  {genre.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="py-8 md:px-10">
+          <h2 className="text-gray-700 text-2xl font-bold mb-6">Browse by Genre</h2>
+          {!isMobile && (
+            <button
+              onClick={() => setSelectedGenres([])}
+              className={`flex-shrink-0 px-6 py-3 mb-5 rounded-lg font-semibold transition-all duration-300 cursor-pointer ${
+                selectedGenres.length === 0
+                  ? "bg-blue-600 text-white shadow-lg scale-105"
+                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+              }`}
+            >
+              All platforms
+            </button>
+          )}
+          <div className="relative overflow-hidden rounded-lg flex  py-4">
+            <select
+              className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm"
+              value={selectedPlatform || ""}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSelectedPlatform(val);
+              }}
+            >
+              <option value="">Choose platform</option>
+              {PLATFORMS.map((platform) => (
+                <option key={platform.id} value={platform.id}>
+                  {platform.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
