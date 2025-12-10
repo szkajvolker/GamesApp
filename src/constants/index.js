@@ -58,6 +58,22 @@ export const GENRES = [
   { id: 34, name: "Educational" },
   { id: 17, name: "Card" },
 ];
+export const PLATFORMS = [
+  { id: 1, name: "PC" },
+  { id: 2, name: "PlayStation" },
+  { id: 3, name: "Xbox" },
+  { id: 4, name: "Nintendo" },
+  { id: 5, name: "iOS" },
+  { id: 6, name: "Android" },
+  { id: 7, name: "macOS" },
+  { id: 8, name: "Linux" },
+  { id: 9, name: "Web" },
+  { id: 10, name: "Atari" },
+  { id: 11, name: "Commodore / Amiga" },
+  { id: 12, name: "SEGA" },
+  { id: 13, name: "3DO" },
+  { id: 14, name: "Neo Geo" },
+];
 
 export const TRIPLE_GENRES = [...GENRES, ...GENRES, ...GENRES];
 
