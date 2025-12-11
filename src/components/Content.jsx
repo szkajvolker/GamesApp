@@ -152,9 +152,7 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
 
   return (
     <div
-      className={`${
-        isModalOpen ? "pointer-events-none" : ""
-      } bg-white dark:bg-gray-900 transition-colors duration-300`}
+      className="bg-white dark:bg-gray-900 transition-colors duration-300"
       id="Games"
     >
       <div className="py-8 md:px-10">
