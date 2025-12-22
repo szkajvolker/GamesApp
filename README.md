@@ -32,17 +32,19 @@ A modern React-based game search app powered by the RAWG API.
 
 Created by: Istvan Szabo
 
-✅ Hero section with infinite scroll  
-✅ Game search functionality  
-✅ Game cards with hover effects  
-✅ Modal details view  
-✅ Responsive design  
+✅ Hero section with infinite scroll
+✅ Game search functionality
+✅ Game cards with hover effects
+✅ Modal details view
+✅ Responsive design
 ✅ GSAP animations
+✅ Winter Style
+
 
 ## 🔥 Demo
 
-Visit the live demo: [Under work]
+Visit the live demo: [https://games-store-db.netlify.app/]
 
 ---
 
-Built with using React & GSAP
+Built with using React & GSAP WIth TailwindCSS
