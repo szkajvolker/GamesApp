@@ -12,7 +12,7 @@ const GameCard = ({
   id,
 }) => {
   return (
-    <div className="bg-gray-900/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-2xl shadow-black/60 overflow-hidden hover:bg-gray-800 duration-600 transition-all ease-in-out z-11">
+    <div className="bg-gray-900/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-2xl shadow-black/60 overflow-hidden hover:bg-gray-800 duration-600 transition-all ease-in-out z-20">
       <div className="h-48">
         <img
           src={image ? image : placeholder}

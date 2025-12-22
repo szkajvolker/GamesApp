@@ -16,7 +16,7 @@ const NavBar = ({ onSearch }) => {
   }, []);
 
   return (
-    <div className="fixed flex top-0 w-full border-b-2 border-gray-200 dark:border-gray-900 dark:bg-gray-800/30 bg-white/80 backdrop-blur-lg shadow-lg h-20 transition-colors duration-300 justify-between items-center lg:px-5 z-20">
+    <div className="fixed flex top-0 w-full border-b-2 border-gray-200 dark:border-gray-900 dark:bg-gray-800/30 bg-white/80 backdrop-blur-lg shadow-lg h-20 transition-colors duration-300 justify-between items-center lg:px-5 z-30">
       <h1 className="2xl:text-5xl xl:text-4xl lg:text-3xl md:text-2xl sm:text-xl font-bold bg-linear-to-r bg-clip-text text-transparent from-purple-500 to-blue-500 transition-colors duration-300">
         GameStore.
       </h1>
