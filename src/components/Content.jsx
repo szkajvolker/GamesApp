@@ -17,7 +17,6 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const [gameScreenShots, setGameScreenShots] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState("");
 
   const fetchGames = async (
@@ -110,7 +109,6 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const handleDetailsClick = async (id) => {
     await fetchGameDetail(id);
     await fetchScreenShots(id);
-    setIsModalOpen(true);
   };
 
   useEffect(() => {
@@ -152,7 +150,7 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
 
   return (
     <div
-      className="bg-white dark:bg-gray-900 transition-colors duration-300"
+      className="flex bg-white dark:bg-gray-900 transition-colors duration-300 "
       id="Games"
     >
       <div className="py-8 md:px-10">
@@ -200,7 +198,6 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
           gameScreenShots={gameScreenShots}
           onClose={() => {
             setSelectedGame(null);
-            setIsModalOpen(false);
           }}
         />
       )}

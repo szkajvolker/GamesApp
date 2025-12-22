@@ -1,9 +1,11 @@
 const FilterDropdown = ({ label, options, value, onChange }) => {
   return (
-    <div className=" rounded-lg flex flex-col py-4">
-      {label && <label className="mb-2 text-gray-300 font-semibold">{label}</label>}
+    <div className="rounded-lg flex flex-col py-4">
+      {label && (
+        <label className="mb-2 text-gray-300 font-semibold">{label}</label>
+      )}
       <select
-        className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm"
+        className="w-40 h-10 px-5 py-2 rounded-lg bg-gray-700 text-gray-300 font-semibold text-sm cursor-pointer hover:brightness-110"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
