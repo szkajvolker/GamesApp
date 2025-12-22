@@ -1,9 +1,18 @@
 import { platformIcons } from "../constants";
 import placeholder from "../assets/images/placeholder.png";
 
-const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetailsClick, id }) => {
+const GameCard = ({
+  title,
+  image,
+  metacritic,
+  genres,
+  rating,
+  platforms,
+  onDetailsClick,
+  id,
+}) => {
   return (
-    <div className="bg-gray-900/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-2xl shadow-black/60 overflow-hidden hover:bg-white/20 duration-600 transition-all ease-in-out">
+    <div className="bg-gray-900/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-2xl shadow-black/60 overflow-hidden hover:bg-gray-800 duration-600 transition-all ease-in-out z-11">
       <div className="h-48">
         <img
           src={image ? image : placeholder}
@@ -14,12 +23,16 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
       </div>
 
       <div className="p-5">
-        <h3 className="text-lg font-semibold dark:text-white text-gray-500 mb-2">{title}</h3>
+        <h3 className="text-lg font-semibold dark:text-white text-gray-500 mb-2">
+          {title}
+        </h3>
 
         <div className="flex justify-between items-center mb-3">
           <span
             className={`text-xl font-bold bg-gray-800 pl-2 pr-2 rounded-xl ${
-              metacritic > 75 ? "text-green-500 border border-green-500" : "text-yellow-500"
+              metacritic > 75
+                ? "text-green-500 border border-green-500"
+                : "text-yellow-500"
             } ${metacritic < 50 && "text-yellow-200"}`}
           >
             {metacritic}
@@ -67,7 +80,7 @@ const GameCard = ({ title, image, metacritic, genres, rating, platforms, onDetai
         )}
         <div className=" flex w-full justify-center">
           <button
-            className="bg-gray-700 w-fit rounded-full cursor-pointer hover:bg-gray-300 p-2"
+            className="bg-gray-700 w-fit rounded-full cursor-pointer hover:bg-gray-900 p-2"
             onClick={() => onDetailsClick(id)}
           >
             🔎

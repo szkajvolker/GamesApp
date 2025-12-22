@@ -13,7 +13,7 @@ const SearchBar = ({ onSearch, placeholder = "Search any games..." }) => {
   return (
     <div className="relative transition-colors duration-300">
       <div>
-        <div className="p-[2px] md:w-[250px] lg:w-[350px] xl:w-[600px] w-full rounded-full transition-all duration-300 focus-within:bg-gradient-to-r focus-within:from-purple-500 focus-within:to-blue-500 focus-within:animate-pulse dark:focus-within:bg-gradient-to-r dark:focus-within:from-gray-700 dark:focus-within:to-gray-900 bg-transparent">
+        <div className="p-0.5 md:w-[250px] lg:w-[350px] xl:w-[600px] w-full rounded-full transition-all duration-300 focus-within:bg-linear-to-r focus-within:from-purple-500 focus-within:to-blue-500 focus-within:animate-pulse dark:focus-within:bg-linear-to-r dark:focus-within:from-gray-700 dark:focus-within:to-gray-900 bg-transparent">
           <img
             src={searchIcon}
             alt="search"

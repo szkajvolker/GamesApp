@@ -5,6 +5,7 @@ import Hero from "./components/Hero";
 import NavBar from "./components/NavBar";
 import { Toaster } from "sonner";
 import { useThemeStore } from "./constants/themeStore";
+import SnowFall from "./components/SnowFall";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,9 +18,14 @@ function App() {
 
   return (
     <>
+      <SnowFall />
       <NavBar onSearch={setSearchTerm} />
       <Hero />
-      <Content searchTerm={searchTerm} setHasMore={setHasMore} hasMore={hasMore} />
+      <Content
+        searchTerm={searchTerm}
+        setHasMore={setHasMore}
+        hasMore={hasMore}
+      />
       {!hasMore && <Footer />}
       <Toaster position="top-right" theme="dark" richColors closeButton />
     </>
