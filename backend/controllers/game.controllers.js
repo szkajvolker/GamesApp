@@ -1,12 +1,19 @@
 export const getGames = async (req, res) => {
-  const { search } = req.query;
-  const url = `https://api.rawg.io/api/games?key=${
-    process.env.RAWG_API_KEY
-  }&search=${encodeURIComponent(search || "")}`;
+  const {
+    search,
+    page = 1,
+    page_size = 50,
+    genres = "",
+    platforms = "",
+  } = req.query;
+  let url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&page=${page}&page_size=${page_size}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
+  if (genres) url += `&genres=${encodeURIComponent(genres)}`;
+  if (platforms) url += `&platforms=${encodeURIComponent(platforms)}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
-    res.status(200).json({ message: "all games", data });
+    res.status(200).json({ message: "succesfully fetched", data });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR" });
   }
