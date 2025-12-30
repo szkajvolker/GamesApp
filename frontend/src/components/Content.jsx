@@ -3,15 +3,15 @@ import GameCard from "./GameCard";
 import MoreDetailsModal from "./MoreDetailModal";
 
 import { toast } from "sonner";
+import { fetchGames, fetchGameDetail, fetchScreenShots } from "../api/rawgAPI";
 import { GENRES, PLATFORMS } from "../constants";
 import FilterDropdown from "./FilterDropdown";
+import Pagination from "./Pagination";
 
-const API_BASE_URL = "https://api.rawg.io/api";
-const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
-
-const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
+const Content = ({ searchTerm = "", setHasMore }) => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
@@ -19,116 +19,45 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
   const [loading, setLoading] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState("");
 
-  const fetchGames = async (
-    search = "",
-    genreId = "",
-    platform = "",
-    pageNum = 1
-  ) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      let url = `${API_BASE_URL}/games?key=${API_KEY}&page=${pageNum}`;
-      if (search && search.trim()) {
-        url += `&search=${encodeURIComponent(search)}`;
-      }
-      if (genreId) {
-        url += `&genres=${genreId}`;
-      }
-      if (platform) {
-        url += `&platforms=${platform}`;
-      }
-      if (!search && !genreId && !platform) {
-        url += `&ordering=-rating&metacritic=90,100`;
-      }
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Failed to fetch");
-      const data = await res.json();
-      setGames((prev) =>
-        pageNum === 1 ? data.results : [...prev, ...data.results]
-      );
-      if (!data.next) {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Failed to fetch data", error);
-      toast.error("Failed to load games. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchGameDetail = async (id) => {
-    const cacheKey = `gameDetail${id}`;
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      setGame(JSON.parse(cached));
-      setSelectedGame(id);
-      return;
-    }
-    if (loading) return;
-    setLoading(true);
-    try {
-      const res = await fetch(`${API_BASE_URL}/games/${id}?key=${API_KEY}`);
-      if (!res.ok) throw new Error("Failed to fetch!");
-      const data = await res.json();
-      setGame(data);
-      setSelectedGame(id);
-      sessionStorage.setItem(cacheKey, JSON.stringify(data));
-    } catch (error) {
-      console.error("Failed to fetch data", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchScreenShots = async (id) => {
-    const cacheKey = `screenshots_${id}`;
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      setGameScreenShots(JSON.parse(cached));
-      return;
-    }
-    if (loading) return;
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `${API_BASE_URL}/games/${id}/screenshots?key=${API_KEY}`
-      );
-      if (!res.ok) throw new Error("Failed to fetch");
-      const data = await res.json();
-      setGameScreenShots(data.results);
-      sessionStorage.setItem(cacheKey, JSON.stringify(data.results));
-    } catch (error) {
-      console.error("Failed to fetch data", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDetailsClick = async (id) => {
-    await fetchGameDetail(id);
-    await fetchScreenShots(id);
-  };
-
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >=
-          document.body.offsetHeight - 100 &&
-        !loading &&
-        hasMore
-      ) {
-        setPage((prev) => prev + 1);
+    const loadGames = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchGames(
+          page,
+          50,
+          searchTerm,
+          selectedGenre,
+          selectedPlatform
+        );
+        setGames(data.data.results);
+        setTotalPages(Math.ceil(data.data.count / 50));
+        if (!data.data.next) setHasMore(false);
+        console.log("fetchGames data:", data);
+      } catch (error) {
+        toast.error("Failed to load games, Please try again.", error);
+      } finally {
+        setLoading(false);
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading, hasMore]);
-
-  useEffect(() => {
-    fetchGames(searchTerm, selectedGenre, selectedPlatform, page);
+    loadGames();
   }, [searchTerm, selectedGenre, selectedPlatform, page]);
+
+  const handleDetailsClick = async (id) => {
+    setLoading(true);
+    try {
+      const gameData = await fetchGameDetail(id);
+      setGame(gameData.data);
+      setSelectedGame(id);
+
+      const screenShots = await fetchScreenShots(id);
+      setGameScreenShots(screenShots);
+    } catch (error) {
+      toast.error("Failed to load game details.", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     setGames([]);
@@ -144,9 +73,12 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
     setSelectedPlatform(platform);
   };
 
-  const filteredGames = games.filter(
-    (game) => game.esrb_rating?.name && game.esrb_rating.name !== "Adults Only"
-  );
+  const filteredGames = Array.isArray(games)
+    ? games.filter(
+        (game) =>
+          game.esrb_rating?.name && game.esrb_rating.name !== "Adults Only"
+      )
+    : [];
 
   return (
     <div
@@ -172,23 +104,29 @@ const Content = ({ searchTerm = "", setHasMore, hasMore }) => {
           />
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
-        {filteredGames.length > 0 &&
-          filteredGames.map((game) => (
-            <GameCard
-              key={game.id}
-              title={game.name}
-              metacritic={game.metacritic}
-              image={game.background_image}
-              genres={game.genres?.map((g) => g.name)}
-              rating={game.rating}
-              releaseDate={game.released}
-              platforms={game.platforms?.map((p) => p.platform.name)}
-              onDetailsClick={handleDetailsClick}
-              id={game.id}
-            />
-          ))}
+      <div className="flex flex-col">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
+          {filteredGames.length > 0 &&
+            filteredGames.map((game, index) => (
+              <GameCard
+                key={`${game.id}-${index}`}
+                title={game.name}
+                metacritic={game.metacritic}
+                image={game.background_image}
+                genres={game.genres?.map((g) => g.name)}
+                rating={game.rating}
+                releaseDate={game.released}
+                platforms={game.platforms?.map((p) => p.platform.name)}
+                onDetailsClick={handleDetailsClick}
+                id={game.id}
+              />
+            ))}
+        </div>
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
       </div>
 
       {selectedGame && game && (
