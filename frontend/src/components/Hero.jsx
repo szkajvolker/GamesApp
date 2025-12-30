@@ -2,38 +2,21 @@ import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-
-const API_BASE_URL = "https://api.rawg.io/api";
-const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+import { fetchFeaturedGames } from "../api/rawgAPI";
 
 const Hero = () => {
   const [featuredGames, setFeaturedGames] = useState([]);
   const scrollContainerRef = useRef(null);
   const animationRef = useRef(null);
 
-  const fetchFeaturedGames = async () => {
-    const cacheKey = "featuredGames";
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      const cachedGames = JSON.parse(cached);
-      setFeaturedGames([...cachedGames, ...cachedGames, ...cachedGames]);
-      return;
-    }
-    try {
-      const res = await fetch(
-        `${API_BASE_URL}/games?key=${API_KEY}&ordering=-rating&metacritic=90,100&page_size=12`
-      );
-      if (!res.ok) throw new Error("Failed to fetch");
-      const data = await res.json();
-      setFeaturedGames([...data.results, ...data.results, ...data.results]);
-      localStorage.setItem(cacheKey, JSON.stringify(data.results));
-    } catch (error) {
-      console.error("Failed to fetch featured games", error);
-    }
-  };
-
   useEffect(() => {
-    fetchFeaturedGames();
+    const fetchAndSetFeaturedGames = async () => {
+      const games = await fetchFeaturedGames();
+      console.log("featured games", games);
+
+      setFeaturedGames([...games, ...games, ...games]);
+    };
+    fetchAndSetFeaturedGames();
   }, []);
 
   useEffect(() => {

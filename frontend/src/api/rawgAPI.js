@@ -55,3 +55,16 @@ export const fetchScreenShots = async (id) => {
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
   return data.results;
 };
+
+export const fetchFeaturedGames = async () => {
+  const cacheKey = "featuredGames";
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    return JSON.parse(cached);
+  }
+  const res = await fetch("/api/games/featuredGames");
+  if (!res.ok) throw new Error("Failed to fetch");
+  const data = await res.json();
+  localStorage.setItem(cacheKey, JSON.stringify(data.data.results));
+  return data.data.results;
+};
