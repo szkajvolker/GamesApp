@@ -64,3 +64,17 @@ export const getGameByPlatform = async (req, res) => {
     res.status(500).json({ error: "RAWG API ERROR" });
   }
 };
+
+export const getFeaturedGames = async (req, res) => {
+  const url = `https://api/rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-added&page_size=20`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    data.results = data.results.filter(
+      (game) => game.esrb_rating?.name !== "Adults Only"
+    );
+    res.status(200).json({ message: "featured games", data });
+  } catch (e) {
+    res.status(500).json({ error: "RAWG API ERROR" });
+  }
+};
