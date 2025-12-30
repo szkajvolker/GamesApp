@@ -13,6 +13,11 @@ export const getGames = async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
+    if (Array.isArray(data.results)) {
+      data.results = data.results.filter(
+        (game) => game.esrb_rating?.name !== "Adults Only"
+      );
+    }
     res.status(200).json({ message: "succesfully fetched", data });
     console.log("latest getGames");
   } catch (e) {
