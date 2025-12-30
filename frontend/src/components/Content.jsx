@@ -73,12 +73,7 @@ const Content = ({ searchTerm = "", setHasMore }) => {
     setSelectedPlatform(platform);
   };
 
-  const filteredGames = Array.isArray(games)
-    ? games.filter(
-        (game) =>
-          game.esrb_rating?.name && game.esrb_rating.name !== "Adults Only"
-      )
-    : [];
+  const filteredGames = Array.isArray(games) ? games : [];
 
   return (
     <div
