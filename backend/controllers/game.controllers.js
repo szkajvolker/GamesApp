@@ -66,7 +66,7 @@ export const getGameByPlatform = async (req, res) => {
 };
 
 export const getFeaturedGames = async (req, res) => {
-  const url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-added&page_size=20`;
+  const url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-rating&page_size=20`;
   try {
     const response = await fetch(url);
     const data = await response.json();
