@@ -3,10 +3,9 @@ export const fetchGames = async (
   pageSize = 50,
   search = "",
   genreId = "",
-  platform = "",
-  pageNum = 1
+  platform = ""
 ) => {
-  const cacheKey = `games_${search}_${genreId}_${platform}_${pageNum}`;
+  const cacheKey = `games_${search}_${genreId}_${platform}_${page}`;
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
     return JSON.parse(cached);
