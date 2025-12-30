@@ -62,7 +62,7 @@ export const fetchFeaturedGames = async () => {
   if (cached) {
     return JSON.parse(cached);
   }
-  const res = await fetch("/api/games/featuredGames");
+  const res = await fetch("/api/games/featured");
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
   localStorage.setItem(cacheKey, JSON.stringify(data.data.results));
