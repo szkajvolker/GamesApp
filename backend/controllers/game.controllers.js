@@ -14,6 +14,7 @@ export const getGames = async (req, res) => {
     const response = await fetch(url);
     const data = await response.json();
     res.status(200).json({ message: "succesfully fetched", data });
+    console.log("latest getGames");
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR" });
   }
