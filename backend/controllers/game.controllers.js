@@ -15,7 +15,9 @@ export const getGames = async (req, res) => {
     const data = await response.json();
     if (Array.isArray(data.results)) {
       data.results = data.results.filter(
-        (game) => game.esrb_rating?.name !== "Adults Only"
+        (game) =>
+          !game.esrb_rating ||
+          (game.esrb_rating && game.esrb_rating?.name !== "Adults Only")
       );
     }
     res.status(200).json({ message: "succesfully fetched", data });
@@ -70,9 +72,13 @@ export const getFeaturedGames = async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    data.results = data.results.filter(
-      (game) => game.esrb_rating?.name !== "Adults Only"
-    );
+    if (Array.isArray(data.results)) {
+      data.results = data.results.filter(
+        (game) =>
+          !game.esrb_rating ||
+          (game.esrb_rating && game.esrb_rating?.name !== "Adults Only")
+      );
+    }
     res.status(200).json({ message: "featured games", data });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR" });
