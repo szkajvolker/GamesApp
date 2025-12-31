@@ -10,7 +10,6 @@ import SnowFall from "./components/SnowFall";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const theme = useThemeStore((state) => state.theme);
-  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -21,12 +20,8 @@ function App() {
       <SnowFall />
       <NavBar onSearch={setSearchTerm} />
       <Hero />
-      <Content
-        searchTerm={searchTerm}
-        setHasMore={setHasMore}
-        hasMore={hasMore}
-      />
-      {!hasMore && <Footer />}
+      <Content searchTerm={searchTerm} />
+      <Footer />
       <Toaster position="top-right" theme="dark" richColors closeButton />
     </>
   );

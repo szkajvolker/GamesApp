@@ -62,7 +62,6 @@ const Content = ({ searchTerm = "", setHasMore }) => {
   useEffect(() => {
     setGames([]);
     setPage(1);
-    setHasMore(true);
   }, [searchTerm, selectedGenre, selectedPlatform]);
 
   const handleGenreChange = (genreId) => {
@@ -121,6 +120,7 @@ const Content = ({ searchTerm = "", setHasMore }) => {
           currentPage={page}
           totalPages={totalPages}
           onPageChange={setPage}
+          disabled={loading}
         />
       </div>
 
