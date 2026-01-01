@@ -53,7 +53,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
       {pages.map((page, i) =>
         page === "..." ? (
           <input
-            key={i}
+            key={`${page}-${i}`}
             type="text"
             min={1}
             max={totalPages}
