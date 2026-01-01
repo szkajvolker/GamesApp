@@ -2,7 +2,7 @@ export const getGames = async (req, res) => {
   const {
     search,
     page = 1,
-    page_size = 50,
+    page_size = 40,
     genres = "",
     platforms = "",
   } = req.query;
@@ -68,7 +68,7 @@ export const getGameByPlatform = async (req, res) => {
 };
 
 export const getFeaturedGames = async (req, res) => {
-  const url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-rating&page_size=20`;
+  const url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-rating&page_size=40`;
   try {
     const response = await fetch(url);
     const data = await response.json();
