@@ -97,7 +97,7 @@ export const getScreenShots = async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    res.status(200).json({ message: "screenshots", data: data.results });
+    res.status(200).json({ message: "screenshots", data: data });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR", e });
   }
