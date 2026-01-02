@@ -29,7 +29,7 @@ export const fetchGames = async (
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
   localStorage.setItem(cacheKey, JSON.stringify(data));
-  return data.data;
+  return data;
 };
 
 export const fetchGameDetail = async (id) => {
