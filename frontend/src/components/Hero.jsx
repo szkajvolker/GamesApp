@@ -25,7 +25,7 @@ const Hero = () => {
       const totalWidth = cardWidth * (featuredGames.length / 3);
 
       const tl = gsap.timeline({ repeat: -1, defaults: { ease: "none" } });
-      tl.to(container, { x: -totalWidth, duration: 40 });
+      tl.to(container, { x: -totalWidth, duration: 60 });
       animationRef.current = tl;
 
       const cards = container.querySelectorAll(".game-card");

@@ -18,7 +18,7 @@ const GameCard = ({
           src={image ? image : placeholder}
           alt={title}
           loading="lazy"
-          className="w-full h-full object-cover rounded-xl hover:scale-110 transition-transform duration-300"
+          className="w-full h-full object-cover rounded-t-xl hover:scale-110 transition-transform duration-300"
         />
       </div>
 
