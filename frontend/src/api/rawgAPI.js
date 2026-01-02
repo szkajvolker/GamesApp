@@ -54,8 +54,9 @@ export const fetchScreenShots = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
+  console.log(data);
 
-  sessionStorage.setItem(cacheKey, JSON.stringify(data));
+  sessionStorage.setItem(cacheKey, JSON.stringify(data.data));
   return data.data;
 };
 
