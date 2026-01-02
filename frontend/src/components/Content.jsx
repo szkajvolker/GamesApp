@@ -33,7 +33,6 @@ const Content = ({ searchTerm = "", setHasMore }) => {
         setGames(data.data.results);
         setTotalPages(Math.ceil(data.data.count / 50));
         if (!data.data.next) setHasMore(false);
-        console.log("fetchGames data:", data);
       } catch (error) {
         toast.error("Failed to load games, Please try again.", error);
       } finally {
@@ -45,6 +44,7 @@ const Content = ({ searchTerm = "", setHasMore }) => {
 
   const handleDetailsClick = async (id) => {
     setLoading(true);
+    setGameScreenShots([]);
     try {
       const gameData = await fetchGameDetail(id);
       setGame(gameData.data);

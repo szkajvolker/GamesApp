@@ -12,7 +12,6 @@ const Hero = () => {
   useEffect(() => {
     const fetchAndSetFeaturedGames = async () => {
       const games = await fetchFeaturedGames();
-      console.log("featured games", games);
 
       setFeaturedGames([...games, ...games, ...games]);
     };
