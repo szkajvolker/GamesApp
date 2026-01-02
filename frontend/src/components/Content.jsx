@@ -108,9 +108,9 @@ const Content = ({ searchTerm = "", setHasMore }) => {
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15">
           {filteredGames.length > 0 &&
-            filteredGames.map((game, index) => (
+            filteredGames.map((game) => (
               <GameCard
-                key={`${game.id}-${index}`}
+                key={game.id}
                 title={game.name}
                 metacritic={game.metacritic}
                 image={game.background_image}
