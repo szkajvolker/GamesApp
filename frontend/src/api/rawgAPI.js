@@ -29,7 +29,7 @@ export const fetchGames = async (
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
   localStorage.setItem(cacheKey, JSON.stringify(data));
-  return data;
+  return data.data;
 };
 
 export const fetchGameDetail = async (id) => {
@@ -42,7 +42,7 @@ export const fetchGameDetail = async (id) => {
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
-  return data;
+  return data.data;
 };
 
 export const fetchScreenShots = async (id) => {
@@ -54,9 +54,10 @@ export const fetchScreenShots = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
+  console.log(data);
 
-  sessionStorage.setItem(cacheKey, JSON.stringify(data.data.results));
-  return data.data.results;
+  sessionStorage.setItem(cacheKey, JSON.stringify(data.data));
+  return data.data;
 };
 
 export const fetchFeaturedGames = async () => {
@@ -68,6 +69,6 @@ export const fetchFeaturedGames = async () => {
   const res = await fetch(`${BASE_URL}/games/featured`);
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
-  localStorage.setItem(cacheKey, JSON.stringify(data.data.results));
-  return data.data.results;
+  localStorage.setItem(cacheKey, JSON.stringify(data.data));
+  return data.data;
 };
