@@ -20,6 +20,7 @@ const Content = ({ searchTerm = "", setHasMore }) => {
   const [selectedPlatform, setSelectedPlatform] = useState("");
 
   useEffect(() => {
+    setGames([]);
     const loadGames = async () => {
       setLoading(true);
       try {
