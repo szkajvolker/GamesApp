@@ -47,13 +47,13 @@ export const fetchScreenShots = async (id) => {
   const cacheKey = `screenShots_${id}`;
   const cached = sessionStorage.getItem(cacheKey);
   if (cached) {
-    return JSON.parse(cached).results;
+    return JSON.parse(cached);
   }
   const res = await fetch(`/api/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
 
-  sessionStorage.setItem(cacheKey, JSON.stringify(data));
+  sessionStorage.setItem(cacheKey, JSON.stringify(data.data.results));
   return data.data.results;
 };
 
