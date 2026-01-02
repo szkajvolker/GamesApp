@@ -53,7 +53,6 @@ const Content = ({ searchTerm = "", setHasMore }) => {
 
       const screenShots = await fetchScreenShots(id);
       setGameScreenShots(screenShots);
-      console.log(gameScreenShots);
     } catch (error) {
       toast.error("Failed to load game details.", error);
     } finally {
