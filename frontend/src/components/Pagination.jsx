@@ -56,7 +56,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
             key={`${page}-${i}`}
             type="text"
             min={1}
-            max={totalPages}
+            max={Number.isFinite(totalPages) ? totalPages : 1}
             value={inputValue}
             placeholder="..."
             onFocus={() => {
@@ -92,7 +92,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
                 : "bg-gray-800 hover:bg-gray-700 cursor-pointer"
             }`}
           >
-            {page}
+            {Number.isFinite(page) ? page : ""}
           </button>
         )
       )}
