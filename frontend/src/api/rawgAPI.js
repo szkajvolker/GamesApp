@@ -1,3 +1,5 @@
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export const fetchGames = async (
   page = 1,
   pageSize = 50,
@@ -10,7 +12,7 @@ export const fetchGames = async (
   if (cached) {
     return JSON.parse(cached);
   }
-  let url = `/api/games?page=${page}&page_size=${pageSize}`;
+  let url = `${BASE_URL}/games?page=${page}&page_size=${pageSize}`;
   if (search && search.trim()) {
     url += `&search=${encodeURIComponent(search)}`;
   }
@@ -36,7 +38,7 @@ export const fetchGameDetail = async (id) => {
   if (cached) {
     return JSON.parse(cached);
   }
-  const res = await fetch(`/api/games/${id}`);
+  const res = await fetch(`${BASE_URL}/games/${id}`);
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
@@ -49,7 +51,7 @@ export const fetchScreenShots = async (id) => {
   if (cached) {
     return JSON.parse(cached);
   }
-  const res = await fetch(`/api/games/${id}/screenshots`);
+  const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
 
@@ -63,7 +65,7 @@ export const fetchFeaturedGames = async () => {
   if (cached) {
     return JSON.parse(cached);
   }
-  const res = await fetch("/api/games/featured");
+  const res = await fetch(`${BASE_URL}/games/featured`);
   if (!res.ok) throw new Error("Failed to fetch");
   const data = await res.json();
   localStorage.setItem(cacheKey, JSON.stringify(data.data.results));
