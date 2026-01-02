@@ -18,7 +18,12 @@ export const getGames = async (req, res) => {
         (game) => !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw")
       );
     }
-    res.status(200).json({ message: "succesfully fetched", data });
+    res.status(200).json({
+      message: "succesfully fetched",
+      data: data.results,
+      count: data.count,
+      next: data.next,
+    });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR", e });
   }
@@ -44,7 +49,9 @@ export const getGameByGenre = async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    res.status(200).json({ message: "games found by genre", data });
+    res
+      .status(200)
+      .json({ message: "games found by genre", data: data.results });
   } catch (e) {
     res.status(500).json({ error: "RAWG API error", e });
   }
@@ -58,7 +65,9 @@ export const getGameByPlatform = async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    res.status(200).json({ message: "games found by platform", data });
+    res
+      .status(200)
+      .json({ message: "games found by platform", data: data.results });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR", e });
   }
@@ -76,7 +85,7 @@ export const getFeaturedGames = async (req, res) => {
           (game.esrb_rating && game.esrb_rating?.name !== "Adults Only")
       );
     }
-    res.status(200).json({ message: "featured games", data });
+    res.status(200).json({ message: "featured games", data: data.results });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR", e });
   }
@@ -88,7 +97,7 @@ export const getScreenShots = async (req, res) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    res.status(200).json({ message: "screenshots", data });
+    res.status(200).json({ message: "screenshots", data: data.results });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR", e });
   }
