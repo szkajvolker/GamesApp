@@ -4,6 +4,8 @@ import {
   getGameByPlatform,
   getGameById,
   getGames,
+  getFeaturedGames,
+  getScreenShots,
 } from "../controllers/game.controllers.js";
 
 const router = express.Router();
@@ -11,6 +13,8 @@ const router = express.Router();
 router.get("/genre", getGameByGenre);
 router.get("/platform", getGameByPlatform);
 router.get("/", getGames);
+router.get("/featured", getFeaturedGames);
+router.get("/:id/screenshots", getScreenShots);
 router.get("/:id", getGameById);
 
 export default router;
