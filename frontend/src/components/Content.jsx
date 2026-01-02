@@ -25,14 +25,14 @@ const Content = ({ searchTerm = "", setHasMore }) => {
       try {
         const data = await fetchGames(
           page,
-          50,
+          40,
           searchTerm,
           selectedGenre,
           selectedPlatform
         );
-        setGames(data.data.results);
-        setTotalPages(Math.ceil(data.data.count / 50));
-        if (!data.data.next) setHasMore(false);
+        setGames(data.data);
+        setTotalPages(Math.ceil(data.count / 40));
+        if (!data.next) setHasMore(false);
       } catch (error) {
         toast.error("Failed to load games, Please try again.", error);
       } finally {
