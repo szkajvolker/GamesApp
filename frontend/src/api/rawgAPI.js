@@ -40,7 +40,6 @@ export const fetchGameDetail = async (id) => {
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
   const results = data.data || [];
-  console.log("fetchgameDetails: ", results);
   sessionStorage.setItem(cacheKey, JSON.stringify(results));
   return results;
 };
@@ -54,7 +53,6 @@ export const fetchScreenShots = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
   const { data } = await res.json();
-  console.log("screenshots :", data);
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
   return data || [];
 };
