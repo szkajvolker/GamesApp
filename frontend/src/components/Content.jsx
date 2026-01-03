@@ -81,14 +81,14 @@ const Content = ({ searchTerm = "" }) => {
 
   return (
     <div
-      className="flex bg-white dark:bg-gray-900 transition-colors duration-300 "
+      className="flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300 "
       id="Games"
     >
       <div className="py-8 md:px-10">
         <h2 className="text-gray-700 dark:text-gray-200 text-2xl font-bold mb-6">
           Browse Games
         </h2>
-        <div className="flex flex-row gap-4 flex-wrap">
+        <div className="flex flex-row gap-4 flex-wrap lg:justify-self-start justify-self-center">
           <FilterDropdown
             label="Platform"
             options={PLATFORMS}
