@@ -1,3 +1,5 @@
+import GameCache from "../models/GameCache.js";
+
 export const getGames = async (req, res) => {
   const {
     search,
@@ -6,6 +8,22 @@ export const getGames = async (req, res) => {
     genres = "",
     platforms = "",
   } = req.query;
+  const cacheKey = `games_${search}_${genres}_${platforms}_${page}_${page_size}`;
+  const cached = await GameCache.findOne({ cacheKey });
+  if (cached) {
+    const filteredResults = Array.isArray(cached.data.results)
+      ? cached.data.results.filter(
+          (game) =>
+            !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw")
+        )
+      : cached.data.results;
+    return res.status(200).json({
+      message: "from cache",
+      data: filteredResults,
+      count: cached.data.count,
+      next: cached.data.next,
+    });
+  }
   let url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&page=${page}&page_size=${page_size}`;
   if (search) url += `&search=${encodeURIComponent(search)}`;
   if (genres) url += `&genres=${encodeURIComponent(genres)}`;
@@ -18,11 +36,15 @@ export const getGames = async (req, res) => {
         (game) => !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw")
       );
     }
+    const results = data.results;
+    const count = data.count;
+    const next = data.next;
+    await GameCache.create({ cacheKey, data: { results, count, next } });
     res.status(200).json({
-      message: "succesfully fetched",
-      data: data.results,
-      count: data.count,
-      next: data.next,
+      message: "successfully fetched",
+      data: results,
+      count,
+      next,
     });
   } catch (e) {
     res.status(500).json({ error: "RAWG API ERROR", e });
