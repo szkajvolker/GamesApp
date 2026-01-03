@@ -8,12 +8,18 @@ export const getGames = async (req, res) => {
     genres = "",
     platforms = "",
   } = req.query;
-  const cacheKey = `games_${search}_${genres}_${platforms}_${page}`;
+  const cacheKey = `games_${search}_${genres}_${platforms}_${page}_${page_size}`;
   const cached = await GameCache.findOne({ cacheKey });
   if (cached) {
+    const filteredResults = Array.isArray(cached.data.results)
+      ? cached.data.results.filter(
+          (game) =>
+            !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw")
+        )
+      : cached.data.results;
     return res.status(200).json({
       message: "from cache",
-      data: cached.data.results,
+      data: filteredResults,
       count: cached.data.count,
       next: cached.data.next,
     });
@@ -35,7 +41,7 @@ export const getGames = async (req, res) => {
     const next = data.next;
     await GameCache.create({ cacheKey, data: { results, count, next } });
     res.status(200).json({
-      message: "succesfully fetched",
+      message: "successfully fetched",
       data: results,
       count,
       next,
