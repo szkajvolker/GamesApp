@@ -17,7 +17,19 @@ app.use(
 app.use(express.json());
 app.use("/api/games", rawgRoutes);
 
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server is running on http://localhost:${PORT}`);
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer().catch((error) => {
+  console.error("Unexpected error during server startup:", error);
+  process.exit(1);
 });
