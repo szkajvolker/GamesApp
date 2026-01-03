@@ -26,8 +26,8 @@ export const fetchGames = async (
           next: parsed.next ?? null,
         };
       }
-    } catch {
-      //error
+    } catch (e) {
+      console.warn("Failed to parse cached games data:", e);
     }
   }
 

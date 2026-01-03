@@ -33,7 +33,7 @@ const Content = ({ searchTerm = "" }) => {
         if (!data || !data.results) throw new Error("No data!");
         const { results, count } = data;
         setGames(results);
-        setTotalPages(Math.ceil(count / 40));
+        setTotalPages(Math.max(1, Math.ceil(count / 40)));
       } catch (e) {
         if (e.name === "QuotaExceededError") {
           localStorage.clear();

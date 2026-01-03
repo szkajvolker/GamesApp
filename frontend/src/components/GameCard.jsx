@@ -12,11 +12,12 @@ const GameCard = ({
   id,
 }) => {
   const ratingStars = (rating) => {
-    const stars = Math.round(rating);
+    const normalizedRating = Math.max(0, Math.min(5, Math.round(rating)));
+    const stars = normalizedRating;
     return Array.from({ length: stars }, () => "⭐");
   };
   return (
-    <div className="bg-gray-white/40 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-xl shadow-black/60 hover:shadow-2xl overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-800 duration-600 transition-all ease-in-out z-20">
+    <div className="bg-white/10 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-xl shadow-black/60 hover:shadow-2xl overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-800 duration-500 transition-all ease-in-out z-20">
       <div className="h-48">
         <img
           src={image ? image : placeholder}
@@ -47,7 +48,7 @@ const GameCard = ({
                 <span key={i}>{star}</span>
               ))}
               <span className="ml-1 text-xs text-gray-900 dark:text-white">
-                {rating > 0 ? rating.toFixed(1) : "N/A"}
+                {rating >= 0 ? rating.toFixed(1) : "N/A"}
               </span>
             </span>
           )}

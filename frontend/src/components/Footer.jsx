@@ -4,7 +4,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
         <div className="flex flex-row gap-8 justify-between">
           <div>
-            <h3 className="lg:text-3xl text-2xl dark:color-gray-700 bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-bold mb-4">
+            <h3 className="lg:text-3xl text-2xl dark:text-white bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-bold mb-4">
               GameStore.
             </h3>
             <p className="text-gray-900 dark:text-white mb-4 max-w-md">
