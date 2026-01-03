@@ -7,11 +7,6 @@ export const fetchGames = async (
   genreId = "",
   platform = ""
 ) => {
-  const cacheKey = `games_${search}_${genreId}_${platform}_${page}`;
-  const cached = localStorage.getItem(cacheKey);
-  if (cached) {
-    return JSON.parse(cached);
-  }
   let url = `${BASE_URL}/games?page=${page}&page_size=${pageSize}`;
   if (search && search.trim()) {
     url += `&search=${encodeURIComponent(search)}`;
@@ -27,9 +22,12 @@ export const fetchGames = async (
   }
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch");
-  const data = await res.json();
-  localStorage.setItem(cacheKey, JSON.stringify(data));
-  return data;
+  const { data, count, next } = await res.json();
+  return {
+    results: data || [],
+    count: count || 0,
+    next: next || null,
+  };
 };
 
 export const fetchGameDetail = async (id) => {
@@ -41,8 +39,10 @@ export const fetchGameDetail = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}`);
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
-  sessionStorage.setItem(cacheKey, JSON.stringify(data));
-  return data.data;
+  const results = data.data || [];
+  console.log("fetchgameDetails: ", results);
+  sessionStorage.setItem(cacheKey, JSON.stringify(results));
+  return results;
 };
 
 export const fetchScreenShots = async (id) => {
@@ -53,10 +53,10 @@ export const fetchScreenShots = async (id) => {
   }
   const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
-  const data = await res.json();
-
-  sessionStorage.setItem(cacheKey, JSON.stringify(data.data));
-  return data.data;
+  const { data } = await res.json();
+  console.log("screenshots :", data);
+  sessionStorage.setItem(cacheKey, JSON.stringify(data));
+  return data || [];
 };
 
 export const fetchFeaturedGames = async () => {
@@ -67,7 +67,7 @@ export const fetchFeaturedGames = async () => {
   }
   const res = await fetch(`${BASE_URL}/games/featured`);
   if (!res.ok) throw new Error("Failed to fetch");
-  const data = await res.json();
-  localStorage.setItem(cacheKey, JSON.stringify(data.data));
-  return data.data;
+  const { data } = await res.json();
+  localStorage.setItem(cacheKey, JSON.stringify(data));
+  return data || [];
 };

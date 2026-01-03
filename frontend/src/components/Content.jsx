@@ -8,7 +8,7 @@ import { GENRES, PLATFORMS } from "../constants";
 import FilterDropdown from "./FilterDropdown";
 import Pagination from "./Pagination";
 
-const Content = ({ searchTerm = "", setHasMore }) => {
+const Content = ({ searchTerm = "" }) => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -31,11 +31,16 @@ const Content = ({ searchTerm = "", setHasMore }) => {
           selectedGenre,
           selectedPlatform
         );
-        setGames(data.data);
-        setTotalPages(Math.ceil(data.count / 40));
-        if (!data.next) setHasMore(false);
-      } catch (error) {
-        toast.error("Failed to load games, Please try again.", error);
+        if (!data || !data.results) throw new Error("No data!");
+        const { results, count } = data;
+        setGames(results);
+        setTotalPages(Math.max(1, Math.ceil(count / 40)));
+      } catch (e) {
+        if (e.name === "QuotaExceededError") {
+          localStorage.clear();
+        }
+        console.error("loadgames error", e);
+        toast.error("Failed to load games, Please try again.");
       } finally {
         setLoading(false);
       }
@@ -48,7 +53,7 @@ const Content = ({ searchTerm = "", setHasMore }) => {
     setGameScreenShots([]);
     try {
       const gameData = await fetchGameDetail(id);
-      setGame(gameData.data);
+      setGame(gameData);
       setSelectedGame(id);
 
       const screenShots = await fetchScreenShots(id);

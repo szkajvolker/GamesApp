@@ -76,7 +76,7 @@ const Hero = () => {
             GAMESTORE
           </span>
         </h1>
-        <p className="text-xl md:text-2xl text-gray-500 font-light">
+        <p className="text-xl md:text-2xl text-gray-800  dark:text-gray-200 shadow-3xl font-medium max-w-fit justify-self-center">
           Search for any game you like...
         </p>
       </div>
