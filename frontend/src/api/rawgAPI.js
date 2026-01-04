@@ -6,13 +6,13 @@ export const fetchGames = async (
   searchTerm = "",
   filters = {}
 ) => {
-  let url = `/api/games?page=${page}&page_size=${pageSize}`;
+  let url = `/games?page=${page}&page_size=${pageSize}`;
   if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
   if (filters.platform)
     url += `&platforms=${encodeURIComponent(filters.platform)}`;
   if (filters.genre) url += `&genres=${encodeURIComponent(filters.genre)}`;
 
-  const res = await fetch(url);
+  const res = await fetch(`${BASE_URL}${url}`);
   if (!res.ok) throw new Error("Failed to fetch");
   return await res.json();
 };
