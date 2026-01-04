@@ -1,17 +1,17 @@
-git clone https://github.com/szkajvolker/GamesApp.git
-
 # GamesApp
 
 A modern React-based game search app powered by the RAWG API.
 
 ## Main Features
 
-- 🔍 Search for games
-- 🌑 Dark mode (toggle between light/dark theme)
-- 🎮 Filter by genre
-- 📊 Display Metacritic and ratings
-- 🖱️ Lazy loading, infinite scroll
-- 📱 Responsive, mobile-friendly UI
+-  Search for games
+-  Dark mode (toggle between light/dark theme)
+-  Filter by genre
+-  Filter by platform
+-  Display detailed details about games (metacritic,ratings,genres,developers,platforms,screenshots)
+-  Pagination
+-  Lazy loading, infinite scroll
+-  Responsive, mobile-friendly UI
 
 ## Tech Stack
 
@@ -21,30 +21,14 @@ A modern React-based game search app powered by the RAWG API.
 - **Tailwind CSS** (modern, responsive design)
 - **Session/local storage** (reduce API calls, cache)
 - **FontAwesome** (icons)
-
-## Developer Tips
-
-- Add your API key in `.env`: `VITE_RAWG_API_KEY=...`
-- Start: `npm install && npm run dev`
-- The dark mode toggle uses Zustand store, theme is also saved in session storage.
-
----
+- MongoDB(store API calls) (reduce API calls,cache)
+- Render (Run backend for deploy)
+- Netlify (Run deployed project)
 
 Created by: Istvan Szabo
-
-✅ Hero section with infinite scroll
-✅ Game search functionality
-✅ Game cards with hover effects
-✅ Modal details view
-✅ Responsive design
-✅ GSAP animations
-✅ Winter Style
-
-
-## 🔥 Demo
-
-Visit the live demo: [https://games-store-db.netlify.app/]
+##  Live Demo
+[https://games-store-db.netlify.app/]
 
 ---
 
-Built with using React & GSAP WIth TailwindCSS
+Built with using React & GSAP With TailwindCSS
