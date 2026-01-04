@@ -1,4 +1,4 @@
-import { platformIcons } from "../constants";
+import { MAIN_PLATFORMS, platformIcons } from "../constants";
 import placeholder from "../assets/images/placeholder.png";
 
 const GameCard = ({
@@ -16,6 +16,10 @@ const GameCard = ({
     const stars = normalizedRating;
     return Array.from({ length: stars }, () => "⭐");
   };
+
+  const sortedPlatforms = MAIN_PLATFORMS.map((sortedplatform) =>
+    (platforms || []).find((p) => p.toLowerCase().includes(sortedplatform))
+  ).filter(Boolean);
   return (
     <div className="bg-white/10 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-xl shadow-black/60 hover:shadow-2xl overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-800 duration-500 transition-all ease-in-out z-20">
       <div className="h-48">
@@ -68,7 +72,7 @@ const GameCard = ({
 
         {platforms && (
           <div className="flex flex-wrap gap-2 mb-3">
-            {platforms.slice(0, 3).map((platform, index) => {
+            {sortedPlatforms.slice(0, 4).map((platform, index) => {
               const icon = platformIcons.getPlatformIcon(platform);
               return (
                 <div

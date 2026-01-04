@@ -4,9 +4,8 @@ import MoreDetailsModal from "./MoreDetailModal";
 
 import { toast } from "sonner";
 import { fetchGames, fetchGameDetail, fetchScreenShots } from "../api/rawgAPI";
-import { GENRES, PLATFORMS } from "../constants";
-import FilterDropdown from "./FilterDropdown";
 import Pagination from "./Pagination";
+import SidebarFilters from "./SidebarFilters";
 
 const Content = ({ searchTerm = "" }) => {
   const [games, setGames] = useState([]);
@@ -15,25 +14,19 @@ const Content = ({ searchTerm = "" }) => {
   const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState("");
+  const [filters, setFilters] = useState({ platform: null, genre: null });
 
   useEffect(() => {
-    setGames([]);
     const loadGames = async () => {
       setLoading(true);
       try {
-        const data = await fetchGames(
-          page,
-          40,
-          searchTerm,
-          selectedGenre,
-          selectedPlatform
-        );
-        if (!data || !data.results) throw new Error("No data!");
-        const { results, count } = data;
+        const data = await fetchGames(page, 40, searchTerm, filters);
+        if (!data || !data.data) throw new Error("No data!");
+        const results = data.data;
+        const count = data.count;
         setGames(results);
+
         setTotalPages(Math.max(1, Math.ceil(count / 40)));
       } catch (e) {
         if (e.name === "QuotaExceededError") {
@@ -46,7 +39,7 @@ const Content = ({ searchTerm = "" }) => {
       }
     };
     loadGames();
-  }, [searchTerm, selectedGenre, selectedPlatform, page]);
+  }, [searchTerm, filters, page]);
 
   const handleDetailsClick = async (id) => {
     setLoading(true);
@@ -59,6 +52,7 @@ const Content = ({ searchTerm = "" }) => {
       const screenShots = await fetchScreenShots(id);
       setGameScreenShots(screenShots);
     } catch (error) {
+      console.error("api error", error);
       toast.error("Failed to load game details.", error);
     } finally {
       setLoading(false);
@@ -67,22 +61,25 @@ const Content = ({ searchTerm = "" }) => {
 
   useEffect(() => {
     setGames([]);
-    setPage(1);
-  }, [searchTerm, selectedGenre, selectedPlatform]);
+  }, [searchTerm]);
 
-  const handleGenreChange = (genreId) => {
-    setSelectedGenre(genreId);
-  };
-
-  const handlePlatformChange = (platform) => {
-    setSelectedPlatform(platform);
+  const handleFilterChange = (newFilters) => {
+    setFilters((prev) => {
+      if (
+        prev.platform === newFilters.platform &&
+        prev.genre === newFilters.genre
+      ) {
+        return prev;
+      }
+      return newFilters;
+    });
   };
 
   const filteredGames = Array.isArray(games) ? games : [];
 
   return (
     <div
-      className="flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300 "
+      className="flex bg-white dark:bg-gray-900 transition-colors duration-300 "
       id="Games"
     >
       <div className="py-8 md:px-10">
@@ -90,18 +87,7 @@ const Content = ({ searchTerm = "" }) => {
           Browse Games
         </h2>
         <div className="flex flex-row gap-4 flex-wrap lg:justify-self-start justify-self-center">
-          <FilterDropdown
-            label="Platform"
-            options={PLATFORMS}
-            value={selectedPlatform}
-            onChange={handlePlatformChange}
-          />
-          <FilterDropdown
-            label="Genre"
-            options={GENRES}
-            value={selectedGenre}
-            onChange={handleGenreChange}
-          />
+          <SidebarFilters onFilterChange={handleFilterChange}></SidebarFilters>
         </div>
       </div>
       <div className="flex flex-col items-center">

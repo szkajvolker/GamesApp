@@ -34,8 +34,11 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
             <div className="flex-1">
               <p className="text-white/80">Genres:</p>
               <div className="flex flex-wrap gap-1 mt-1">
-                {game.genres?.slice(0, 3).map((genre, index) => (
-                  <span key={index} className="bg-blue-500/30 text-white px-2 py-1 rounded text-xs">
+                {game.genres?.slice(0, 5).map((genre, index) => (
+                  <span
+                    key={index}
+                    className="bg-blue-500/30 text-white px-2 py-1 rounded text-xs"
+                  >
                     {genre.name}
                   </span>
                 ))}
@@ -44,8 +47,11 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
             <div className="flex-1">
               <p className="text-white/80">Platforms:</p>
               <div className="flex flex-wrap gap-1 mt-1">
-                {game.platforms?.slice(0, 2).map((platform, index) => (
-                  <span key={index} className="bg-gray-600/50 text-white px-2 py-1 rounded text-xs">
+                {game.platforms?.slice(0, 9).map((platform, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-600/50 text-white px-2 py-1 rounded text-xs"
+                  >
                     {platform.platform.name}
                   </span>
                 ))}
@@ -60,7 +66,10 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
               <p className="text-white/80">Developers:</p>
               <div className="flex flex-wrap gap-1 mt-1">
                 {game.developers?.slice(0, 1).map((dev, i) => (
-                  <span key={i} className="bg-blue-500/30 text-white px-2 py-1 rounded text-sx">
+                  <span
+                    key={i}
+                    className="bg-blue-500/30 text-white px-2 py-1 rounded text-sx"
+                  >
                     {dev.name}
                   </span>
                 ))}
@@ -70,7 +79,10 @@ const MoreDetailsModal = ({ game, gameScreenShots, onClose }) => {
               <p className="text-white/80">Publisher:</p>
               <div className="flex flex-wrap gap-1 mt-1">
                 {game.publishers?.slice(0, 1).map((pub, i) => (
-                  <span key={i} className="bg-blue-500/30 text-white px-2 py-1 rounded text-sx">
+                  <span
+                    key={i}
+                    className="bg-blue-500/30 text-white px-2 py-1 rounded text-sx"
+                  >
                     {pub.name}
                   </span>
                 ))}

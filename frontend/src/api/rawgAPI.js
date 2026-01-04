@@ -2,32 +2,19 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const fetchGames = async (
   page = 1,
-  pageSize = 50,
-  search = "",
-  genreId = "",
-  platform = ""
+  pageSize = 40,
+  searchTerm = "",
+  filters = {}
 ) => {
-  let url = `${BASE_URL}/games?page=${page}&page_size=${pageSize}`;
-  if (search && search.trim()) {
-    url += `&search=${encodeURIComponent(search)}`;
-  }
-  if (genreId) {
-    url += `&genres=${genreId}`;
-  }
-  if (platform) {
-    url += `&platforms=${platform}`;
-  }
-  if (!search && !genreId && !platform) {
-    url += `&ordering=-rating&metacritic=90,100`;
-  }
+  let url = `/api/games?page=${page}&page_size=${pageSize}`;
+  if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
+  if (filters.platform)
+    url += `&platforms=${encodeURIComponent(filters.platform)}`;
+  if (filters.genre) url += `&genres=${encodeURIComponent(filters.genre)}`;
+
   const res = await fetch(url);
   if (!res.ok) throw new Error("Failed to fetch");
-  const { data, count, next } = await res.json();
-  return {
-    results: data || [],
-    count: count || 0,
-    next: next || null,
-  };
+  return await res.json();
 };
 
 export const fetchGameDetail = async (id) => {
@@ -40,7 +27,7 @@ export const fetchGameDetail = async (id) => {
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
   const results = data.data || [];
-  console.log("fetchgameDetails: ", results);
+
   sessionStorage.setItem(cacheKey, JSON.stringify(results));
   return results;
 };
@@ -54,7 +41,6 @@ export const fetchScreenShots = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
   if (!res.ok) throw new Error("Failed to fetch");
   const { data } = await res.json();
-  console.log("screenshots :", data);
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
   return data || [];
 };
