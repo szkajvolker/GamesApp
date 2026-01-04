@@ -1,4 +1,4 @@
-import windowsIcon from "./icons/platformIcons/windows.png";
+import windowsIcon from "./icons/platformicons/windows.png";
 import xboxIcon from "./icons/platformicons/xbox.png";
 import dreamcastIcon from "./icons/dreamcast.svg";
 import playStationIcon from "./icons/platformIcons/playstation.png";
