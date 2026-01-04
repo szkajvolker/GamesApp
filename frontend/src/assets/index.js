@@ -1,41 +1,45 @@
-import windowsIcon from "./icons/windows.svg";
-import xboxIcon from "./icons/xbox.svg";
-import xbox360Icon from "./icons/xbox360.svg";
-import xboxoneIcon from "./icons/xboxone.svg";
+import windowsIcon from "./icons/platformIcons/windows.png";
+import xboxIcon from "./icons/platformicons/xbox.png";
 import dreamcastIcon from "./icons/dreamcast.svg";
-import playStationIcon from "./icons/playstation.svg";
-import linuxIcon from "./icons/linux.svg";
-import appleIcon from "./icons/apple.svg";
-import iosIcon from "./icons/ios.svg";
-import macosIcon from "./icons/macos.svg";
+import playStationIcon from "./icons/platformIcons/playstation.png";
+import linuxIcon from "./icons/platformicons/linux.png";
+import iosIcon from "./icons/platformicons/apple.png";
+import macosIcon from "./icons/platformicons/mac.png";
 import searchIcon from "./icons/search.svg";
-import nintendoIcon from "./icons/nintendo.svg";
-import androidIcon from "./icons/android.svg";
-import ps2Icon from "./icons/playstation2.svg";
-import ps3Icon from "./icons/playstation3.svg";
-import ps4Icon from "./icons/playstation4.svg";
-import ps5Icon from "./icons/playstation5.svg";
+import nintendoIcon from "./icons/platformicons/nintendo.png";
+import androidIcon from "./icons/platformicons/android.png";
 import psvitaIcon from "./icons/playstationvita.svg";
 import wiiIcon from "./icons/wii.svg";
+import actionIcon from "./icons/genreicons/action.png";
+import sportsIcon from "./icons/genreicons/sports.png";
+import adventureIcon from "./icons/genreicons/adventure.png";
+import strategyIcon from "./icons/genreicons/strategy.png";
+import puzzleIcon from "./icons/genreicons/puzzle.png";
+import rpgIcon from "./icons/genreicons/rpg.png";
+import racingIcon from "./icons/genreicons/racing.png";
+import shooterIcon from "./icons/genreicons/shooter.png";
+import multiplayerIcon from "./icons/genreicons/multiplayer.png";
 
 export {
   windowsIcon,
   xboxIcon,
-  xbox360Icon,
-  xboxoneIcon,
   dreamcastIcon,
   playStationIcon,
   linuxIcon,
-  appleIcon,
   iosIcon,
   macosIcon,
   searchIcon,
   nintendoIcon,
   androidIcon,
-  ps2Icon,
-  ps3Icon,
-  ps4Icon,
-  ps5Icon,
   psvitaIcon,
   wiiIcon,
+  actionIcon,
+  sportsIcon,
+  adventureIcon,
+  strategyIcon,
+  puzzleIcon,
+  rpgIcon,
+  racingIcon,
+  shooterIcon,
+  multiplayerIcon,
 };
