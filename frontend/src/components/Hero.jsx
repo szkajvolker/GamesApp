@@ -67,7 +67,7 @@ const Hero = () => {
   }, []);
   return (
     <div
-      className="flex flex-col justify-between min-h-screen dark:bg-gray-900  bg-white  text-white py-20 overflow-hidden w-full transition-colors duration-300"
+      className="flex flex-col justify-between min-h-screen dark:bg-gray-900  bg-gray-100  text-white py-20 overflow-hidden w-full transition-colors duration-300"
       id="Home"
     >
       <div className="text-center mt-10">
@@ -95,7 +95,7 @@ const Hero = () => {
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 pointer-events-none bg-linear-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-500 via-transparent to-gray-500 transition-colors duration-300"></div>
+        <div className="absolute inset-0 pointer-events-none bg-linear-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-900 via-transparent to-gray-900 transition-colors duration-300"></div>
       </div>
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold tracking-wide bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300 mt-12">
