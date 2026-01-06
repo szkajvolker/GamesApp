@@ -45,7 +45,7 @@ const SidebarFilters = ({ onFilterChange }) => {
         </ul>
         <button
           onClick={() => setShowAllPlatforms((prev) => !prev)}
-          className="flex dark:text-white text-black font-bold mt-2 border-2 rounded-xl p-2 justify-self-center dark:hover:text-gray-900 hover:border-black hover:bg-gray-800 hover:text-white cursor-pointer"
+          className="flex dark:text-white text-black font-bold mt-2 border-2 rounded-xl p-2 justify-self-center dark:hover:text-white  hover:bg-gray-800 hover:text-white cursor-pointer"
         >
           {showAllPlatforms ? "Hide" : "Show all"}
         </button>
@@ -75,7 +75,7 @@ const SidebarFilters = ({ onFilterChange }) => {
         </ul>
         <button
           onClick={() => setShowAllGenres((prev) => !prev)}
-          className="flex dark:text-white text-black font-bold mt-2 border-2 rounded-xl p-2 justify-self-center dark:hover:text-gray-900 hover:border-black hover:bg-gray-800 hover:text-white cursor-pointer"
+          className="flex dark:text-white text-black font-bold mt-2 border-2 rounded-xl p-2 justify-self-center dark:hover:text-white  hover:bg-gray-800 hover:text-white cursor-pointer"
         >
           {showAllGenres ? "Hide" : "Show all"}
         </button>

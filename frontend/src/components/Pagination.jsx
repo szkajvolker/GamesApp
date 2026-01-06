@@ -46,7 +46,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
       <button
         disabled={disabled === 1}
         onClick={() => handlePageChange(currentPage - 1)}
-        className="p-2 font-bold text-gray-800 bg-linear-to-r from-purple-500 to-blue-500 rounded-2xl mr-2 hover:brightness-120 cursor-pointer"
+        className="p-2 font-bold text-gray-800 dark:text-white bg-linear-to-r from-purple-500 to-blue-500 rounded-2xl mr-2 hover:brightness-120 cursor-pointer"
       >
         Prev
       </button>
@@ -75,7 +75,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
               }
             }}
             style={{ width: 60 }}
-            className="bg-gray-800 p-2 text-center hover:bg-gray-700 border"
+            className="bg-gray-800 p-2 text-center text-white hover:bg-gray-700 border border-black"
             disabled={page === currentPage}
           />
         ) : (
@@ -86,7 +86,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
               fontWeight: page === currentPage ? "bold" : "normal",
             }}
             disabled={page === currentPage}
-            className={`border p-2  ${
+            className={`border p-2 text-white  ${
               page === currentPage
                 ? "bg-gray-900"
                 : "bg-gray-800 hover:bg-gray-700 cursor-pointer"
@@ -99,7 +99,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
       <button
         disabled={currentPage === totalPages}
         onClick={() => handlePageChange(currentPage + 1)}
-        className="p-2 font-bold text-gray-800 bg-linear-to-r from-purple-500 to-blue-500 rounded-2xl ml-2 hover:brightness-120 cursor-pointer"
+        className="p-2 font-bold dark:text-white text-gray-800 bg-linear-to-r from-purple-500 to-blue-500 rounded-2xl ml-2 hover:brightness-120 cursor-pointer"
       >
         Next
       </button>
