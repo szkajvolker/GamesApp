@@ -42,7 +42,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
   const pages = getPageNumbers(currentPage, totalPages);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div style={{ display: "flex", alignItems: "center" }} className="gap-0.5">
       <button
         disabled={disabled === 1}
         onClick={() => handlePageChange(currentPage - 1)}
@@ -86,7 +86,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
               fontWeight: page === currentPage ? "bold" : "normal",
             }}
             disabled={page === currentPage}
-            className={`border p-2 text-white  ${
+            className={`border border-black p-2 text-white  ${
               page === currentPage
                 ? "bg-gray-900"
                 : "bg-gray-800 hover:bg-gray-700 cursor-pointer"
