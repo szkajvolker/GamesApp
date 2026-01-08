@@ -1,4 +1,4 @@
-import GameCache from "../models/GameCache.js";
+import GameCache from "../models/cache/GameCache.js";
 
 export const getGames = async (req, res) => {
   const {

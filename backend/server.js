@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
-import rawgRoutes from "./routes/rawg.js";
+import rawgRoutes from "./routes/rawg.routes.js";
+import userRoutes from "./routes/user.routes.js";
 import cors from "cors";
 
 dotenv.config();
@@ -16,20 +17,21 @@ app.use(
 
 app.use(express.json());
 app.use("/api/games", rawgRoutes);
+app.use("/api/users", userRoutes);
 
 const startServer = async () => {
   try {
     await connectDB();
     app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+      console.log(`🟢 Server is running on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error("Failed to start server:", error);
+    console.error("🔴 Failed to start server:", error);
     process.exit(1);
   }
 };
 
 startServer().catch((error) => {
-  console.error("Unexpected error during server startup:", error);
+  console.error("⛔ Unexpected error during server startup:", error);
   process.exit(1);
 });
