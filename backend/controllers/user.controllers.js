@@ -34,7 +34,7 @@ export const addNewUser = async (req, res) => {
         .status(409)
         .json({ message: "Email or username already exists." });
     } else {
-      return res.status(400).json({ message: "Internal error", error });
+      return res.status(500).json({ message: "Internal error" });
     }
   }
 };
@@ -64,6 +64,11 @@ export const getUser = async (req, res) => {
 export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -96,15 +101,23 @@ export const userLogin = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    }).select("-password");
+    const { username, name, email } = req.body;
+    const allowedUpdates = { username, name, email };
+    Object.keys(allowedUpdates).forEach(
+    res.status(200).json({ user: updatedUser });    );
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      allowedUpdates,
+      {
+        new: true,
+        runValidators: true,
+      }
+    ).select("-password");
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({ updateUser });
+    res.status(200).json({ user: updatedUser });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
