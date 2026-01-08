@@ -1,5 +1,5 @@
 export const protectOwnUser = (req, res, next) => {
-  if (!RegExp.user || !req.user._id) {
+  if (!req.user || !req.user._id) {
     return res.status(401).json({ message: "Authentication required" });
   }
 

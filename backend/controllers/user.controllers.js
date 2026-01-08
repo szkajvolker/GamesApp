@@ -104,7 +104,9 @@ export const updateUser = async (req, res) => {
     const { username, name, email } = req.body;
     const allowedUpdates = { username, name, email };
     Object.keys(allowedUpdates).forEach(
-    res.status(200).json({ user: updatedUser });    );
+      (key) => allowedUpdates[key] === undefined && delete allowedUpdates[key]
+    );
+
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
       allowedUpdates,
