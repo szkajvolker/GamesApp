@@ -4,16 +4,30 @@ import SearchBar from "./SearchBar";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ToggleDarkmode from "./ToggleDarkmode";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = ({ onSearch }) => {
+const NavBar = ({ onSearch, setIsLoggedIn }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window - innerWidth <= 768);
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("token");
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     window.addEventListener("resize", handleResize);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
+  const handleNavigate = (path) => {
+    navigate(path.toLowerCase());
+  };
 
   return (
     <div className="fixed flex top-0 w-full border-b-2 border-gray-200 dark:border-gray-900 dark:bg-gray-800/30 bg-white/80 backdrop-blur-lg shadow-lg h-20 transition-colors duration-300 justify-between items-center lg:px-5 px-2 z-30">
@@ -27,15 +41,44 @@ const NavBar = ({ onSearch }) => {
           {navLinks.map((link) => (
             <a
               key={link.name}
-              href={`#${link.name}`}
-              className="hover:brightness-120 hover:scale-120 px-2 py-2 rounded-md font-bold lg:text-lg bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300"
+              onClick={() => handleNavigate(`/${link.name}`)}
+              href=""
+              className="hover:brightness-120 hover:scale-120 px-2 py-2 rounded-md font-bold lg:text-lg bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300 cursor-pointer"
             >
               {link.name}
             </a>
           ))}
+          <a
+            onClick={() => navigate("/home")}
+            href="#games"
+            className="hover:brightness-120 hover:scale-120 px-2 py-2 rounded-md font-bold lg:text-lg bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300 cursor-pointer"
+          >
+            Games
+          </a>
         </div>
       )}
-      <ToggleDarkmode isMobile={isMobile} />
+      <div className="flex flex-row items-center gap-3">
+        {!isMobile && (
+          <div className="flex flex-col">
+            <button
+              className="text-blue-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
+              onClick={handleLogout}
+            >
+              {`${isLoggedIn ? "Logout" : "Login"}`}
+            </button>
+            {!isLoggedIn && (
+              <button
+                className="text-purple-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
+                onClick={() => navigate("/register")}
+              >
+                Sign up
+              </button>
+            )}
+          </div>
+        )}
+
+        <ToggleDarkmode isMobile={isMobile} />
+      </div>
       {isMobile && (
         <button onClick={() => setIsMenuOpen(true)}>
           <FontAwesomeIcon icon={faBars} size="2x" className="text-gray-500" />
@@ -54,11 +97,46 @@ const NavBar = ({ onSearch }) => {
               key={link.name}
               href={`#${link.name}`}
               className="bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300 text-3xl mb-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                navigate("/home");
+                setIsMenuOpen(false);
+              }}
             >
               {link.name}
             </a>
           ))}
+          <a
+            href="#games"
+            className="hover:brightness-120 hover:scale-120 px-2 py-2 rounded-md font-bold lg:text-lg bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300 cursor-pointer"
+            onClick={() => {
+              navigate("/home");
+              setIsMenuOpen(false);
+            }}
+          >
+            Games
+          </a>
+          <div className="flex flex-col">
+            <button
+              className="text-blue-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
+              onClick={() => {
+                handleLogout();
+                setIsMenuOpen(false);
+              }}
+            >
+              {`${isLoggedIn ? "Logout" : "Login"}`}
+            </button>
+            {!isLoggedIn && (
+              <button
+                className="text-purple-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
+                onClick={() => {
+                  navigate("/register");
+                  setIsMenuOpen(false);
+                }}
+              >
+                Sign up
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

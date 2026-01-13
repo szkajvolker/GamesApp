@@ -26,7 +26,8 @@ export const fetchGameDetail = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}`);
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
-  const results = data.data || [];
+  console.log(data);
+  const results = data.data;
 
   sessionStorage.setItem(cacheKey, JSON.stringify(results));
   return results;
@@ -51,9 +52,11 @@ export const fetchFeaturedGames = async () => {
   if (cached) {
     return JSON.parse(cached);
   }
+
   const res = await fetch(`${BASE_URL}/games/featured`);
   if (!res.ok) throw new Error("Failed to fetch");
   const { data } = await res.json();
+
   localStorage.setItem(cacheKey, JSON.stringify(data));
   return data || [];
 };

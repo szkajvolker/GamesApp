@@ -1,0 +1,93 @@
+import { useState } from "react";
+import { login } from "../api/userAPI";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { backgroundImage } from "../assets";
+
+const Login = ({ setIsLoggedIn }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login(email, password);
+      localStorage.setItem("token", res.token);
+      setIsLoggedIn(true);
+      toast.success("Successfully logged in");
+      navigate("/home");
+    } catch (e) {
+      toast.error(e.message || "Wrong email or password", e);
+    }
+  };
+
+  return (
+    <div className="flex w-full min-h-screen items-center justify-center pt-16 relative">
+      <img
+        src={backgroundImage}
+        alt="background"
+        className="absolute inset-0 w-full h-full object-cover object-center z-0 pt-20 border-2 border-gray-400"
+      />
+      <form
+        className="bg-gray-100/30 shadow-2xl backdrop-blur-xs shadow-gray-600 dark:shadow-none dark:bg-gray-400/30 p-8 rounded flex flex-col gap-4 min-w-75 z-10"
+        onSubmit={handleSubmit}
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+          Login
+        </h2>
+        <div>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="border-2 w-full border-gray-500 p-2 rounded focus:border-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+        <div className="relative flex items-center">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="border-2 w-full border-gray-500 p-2 rounded focus:border-blue-500 focus:outline-none"
+            required
+          />
+          <span
+            className="absolute right-3 cursor-pointer text-gray-600 hover:text-blue-500"
+            onClick={() => setShowPassword((prev) => !prev)}
+            onMouseDown={(e) => e.preventDefault()}
+            tabIndex={0}
+            aria-label={showPassword ? "Hide" : "Show"}
+            role="button"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+
+        <div className="flex flex-row gap-2">
+          <p className="font-bold text-gray-800">Don't have an account yet?</p>
+          <p
+            className="text-blue-700 font-bold underline cursor-pointer hover:scale-110"
+            onClick={() => navigate("/register")}
+          >
+            Sign Up
+          </p>
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 rounded font-bold cursor-pointer hover:brightness-125 hover:text-gray-800"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Login;

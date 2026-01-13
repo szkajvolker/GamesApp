@@ -4,3 +4,15 @@
 html {
   scroll-behavior: smooth;
 }
+
+body {
+  background-color: oklch(0.21 0.03 263.45);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
