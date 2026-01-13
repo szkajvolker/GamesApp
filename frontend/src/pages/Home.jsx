@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import GameCard from "./GameCard";
-import MoreDetailsModal from "./MoreDetailModal";
-
+import { fetchGames } from "../api/rawgAPI";
 import { toast } from "sonner";
-import { fetchGames, fetchGameDetail, fetchScreenShots } from "../api/rawgAPI";
-import Pagination from "./Pagination";
 import SidebarFilters from "../UI/SidebarFilters";
 import Loading from "../UI/Loading";
+import Pagination from "../components/Pagination";
+import GameCard from "../components/GameCard";
+import { useNavigate } from "react-router-dom";
 
-const Content = ({ searchTerm = "" }) => {
+const Home = ({ searchTerm = "" }) => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [game, setGame] = useState(null);
-  const [selectedGame, setSelectedGame] = useState(null);
-  const [gameScreenShots, setGameScreenShots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ platform: null, genre: null });
-
   useEffect(() => {
     const loadGames = async () => {
       setLoading(true);
@@ -41,23 +36,9 @@ const Content = ({ searchTerm = "" }) => {
     };
     loadGames();
   }, [searchTerm, filters, page]);
-
-  const handleDetailsClick = async (id) => {
-    setLoading(true);
-    setGameScreenShots([]);
-    try {
-      const gameData = await fetchGameDetail(id);
-      setGame(gameData);
-      setSelectedGame(id);
-
-      const screenShots = await fetchScreenShots(id);
-      setGameScreenShots(screenShots);
-    } catch (error) {
-      console.error("api error", error);
-      toast.error("Failed to load game details.", error);
-    } finally {
-      setLoading(false);
-    }
+  const navigate = useNavigate();
+  const handleDetailsClick = (id) => {
+    navigate(`/details/${id}`);
   };
 
   useEffect(() => {
@@ -81,13 +62,10 @@ const Content = ({ searchTerm = "" }) => {
   return (
     <div
       className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-900 transition-colors duration-300"
-      id="Games"
+      id="games"
     >
       <div className="py-8 md:px-10">
-        <h2 className="text-gray-700 dark:text-gray-200 text-2xl font-bold mb-6">
-          Browse Games
-        </h2>
-        <div className="flex flex-row gap-4 flex-wrap lg:justify-self-start justify-self-center">
+        <div className="flex sticky top-10 left-0 z-20 max-h-[calc(100vh-5rem)] w-full md:w-30 overflow-y-auto flex-row gap-4 flex-wrap lg:justify-self-start justify-center scrollbar-hide ">
           <SidebarFilters onFilterChange={handleFilterChange} />
         </div>
       </div>
@@ -102,7 +80,7 @@ const Content = ({ searchTerm = "" }) => {
           {loading ? (
             <Loading />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
               {filteredGames.length > 0 &&
                 filteredGames.map((game) => (
                   <GameCard
@@ -118,6 +96,11 @@ const Content = ({ searchTerm = "" }) => {
                     id={game.id}
                   />
                 ))}
+              {filteredGames.length === 0 && (
+                <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
+                  No games found. Try adjusting your search or filters.
+                </div>
+              )}{" "}
             </div>
           )}
         </div>
@@ -128,19 +111,8 @@ const Content = ({ searchTerm = "" }) => {
           disabled={loading}
         />
       </div>
-
-      {selectedGame && game && (
-        <MoreDetailsModal
-          className="z-50"
-          game={game}
-          gameScreenShots={gameScreenShots}
-          onClose={() => {
-            setSelectedGame(null);
-          }}
-        />
-      )}
     </div>
   );
 };
 
-export default Content;
+export default Home;

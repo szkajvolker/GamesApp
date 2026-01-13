@@ -36,13 +36,16 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
 
   const handlePageChange = (newPage) => {
     onPageChange(newPage);
-    window.scrollTo({ top: 750, behavior: "smooth" });
+    window.scrollTo({ top: 975, behavior: "smooth" });
   };
 
   const pages = getPageNumbers(currentPage, totalPages);
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }} className="gap-0.5">
+    <div
+      style={{ display: "flex", alignItems: "center" }}
+      className="gap-0.5 mt-25"
+    >
       <button
         disabled={disabled === 1}
         onClick={() => handlePageChange(currentPage - 1)}

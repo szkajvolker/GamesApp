@@ -147,4 +147,4 @@ export const genres = [
   { id: 15, name: "Sports", slug: "sports" },
 ];
 
-export const navLinks = [{ name: "Home" }, { name: "Games" }];
+export const navLinks = [{ name: "Home" }];

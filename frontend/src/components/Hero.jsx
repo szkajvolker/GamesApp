@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { fetchFeaturedGames } from "../api/rawgAPI";
+import { heroBackgroundImage } from "../assets";
 
 const Hero = () => {
   const [featuredGames, setFeaturedGames] = useState([]);
@@ -67,10 +68,18 @@ const Hero = () => {
   }, []);
   return (
     <div
-      className="flex flex-col justify-between min-h-screen dark:bg-gray-900  bg-gray-100  text-white py-20 overflow-hidden w-full transition-colors duration-300"
+      className="relative flex flex-col justify-between min-h-screen dark:bg-gray-900 bg-gray-100 text-white py-20 overflow-hidden w-full transition-colors duration-300"
       id="Home"
     >
-      <div className="text-center mt-10">
+      <div className="absolute inset-0 w-full h-full z-0">
+        <img
+          src={heroBackgroundImage}
+          alt="background"
+          className="w-full h-full object-cover object-center pt-20 border-2 border-gray-400 opacity-60"
+        />
+        <div className="absolute inset-0 w-full h-full backdrop-blur-xs bg-white/10"></div>
+      </div>
+      <div className="text-center mt-10 z-10">
         <h1 className="lg:text-7xl text-5xl md:text-6xl font-bold tracking-wide">
           <span className="bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300">
             GAMESTORE
@@ -80,7 +89,7 @@ const Hero = () => {
           Search for any game you like...
         </p>
       </div>
-      <div className="relative overflow-hidden rounded-lg p-2">
+      <div className="relative overflow-hidden rounded-lg p-2 z-10">
         <div ref={scrollContainerRef} className="flex space-x-6">
           {featuredGames.map((game, i) => (
             <div
@@ -97,7 +106,7 @@ const Hero = () => {
         </div>
         <div className="absolute inset-0 pointer-events-none bg-linear-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-900 via-transparent to-gray-900 transition-colors duration-300"></div>
       </div>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center z-10">
         <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold tracking-wide bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300 mt-12">
           <span className="hero-anim-word ml-4">All Games.</span>
           <br />
