@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 export const addNewUser = async (req, res) => {
   try {
-    const { username, email, password, name, role } = req.body;
-    if (!username || !email || !password || !role) {
+    const { username, email, password, name } = req.body;
+    if (!username || !email || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const salt = await bcrypt.genSalt(10);
@@ -15,7 +15,7 @@ export const addNewUser = async (req, res) => {
       username,
       email,
       name,
-      role,
+
       password: hashedPassword,
     });
 
@@ -25,7 +25,6 @@ export const addNewUser = async (req, res) => {
         id: newUser._id,
         username: newUser.username,
         email: newUser.email,
-        role: newUser.role,
       },
     });
   } catch (error) {
