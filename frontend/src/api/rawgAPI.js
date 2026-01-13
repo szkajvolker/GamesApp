@@ -26,9 +26,7 @@ export const fetchGameDetail = async (id) => {
   const res = await fetch(`${BASE_URL}/games/${id}`);
   if (!res.ok) throw new Error("Failed to fetch!");
   const data = await res.json();
-  console.log(data);
-  const results = data.data;
-
+  const results = data.data || [];
   sessionStorage.setItem(cacheKey, JSON.stringify(results));
   return results;
 };

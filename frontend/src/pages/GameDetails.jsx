@@ -9,8 +9,7 @@ const GameDetails = () => {
 
   const [game, setGame] = useState(null);
   const [gameScreenshots, setGameScreenshots] = useState([]);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -21,7 +20,7 @@ const GameDetails = () => {
         const screenshots = await fetchScreenShots(id);
         setGameScreenshots(screenshots);
       } catch (error) {
-        toast.error("Something went wrong", error);
+        toast.error("Something went wrong");
         console.error("failed to fetch ", error);
       } finally {
         setLoading(false);
@@ -54,7 +53,6 @@ const GameDetails = () => {
           </h1>
         </div>
       </div>
-
       <div className="flex flex-row p-4 border-b border-white/10">
         <div className="flex flex-row flex-1">
           <div className="flex-1">
@@ -67,7 +65,6 @@ const GameDetails = () => {
           </div>
         </div>
       </div>
-
       <div className="flex flex-row p-4">
         <div className="flex flex-row flex-1">
           <div className="flex-1">
@@ -98,7 +95,6 @@ const GameDetails = () => {
           </div>
         </div>
       </div>
-
       <div className="flex flex-row p-4">
         <div className="flex flex-row flex-1 gap-2">
           <div className="flex-col">
@@ -107,7 +103,7 @@ const GameDetails = () => {
               {game.developers?.slice(0, 1).map((dev, i) => (
                 <span
                   key={i}
-                  className="bg-blue-500/30 text-white px-2 py-1 rounded text-sx"
+                  className="bg-blue-500/30 text-white px-2 py-1 rounded text-xs"
                 >
                   {dev.name}
                 </span>
@@ -129,7 +125,6 @@ const GameDetails = () => {
           </div>
         </div>
       </div>
-
       <div className="flex flex-row p-4 border-b border-white/10">
         <div className="flex flex-row flex-1">
           <div className="flex-1">
@@ -139,7 +134,6 @@ const GameDetails = () => {
           </div>
         </div>
       </div>
-
       <div className="relative flex flex-row p-4 justify-center">
         <div className="flex overflow-x-auto pb-2 gap-2">
           {gameScreenshots?.length > 0 &&
@@ -166,7 +160,7 @@ const GameDetails = () => {
         Where you can buy?
       </h2>
       <ul className="grid grid-cols-2 gap-2 list-none w-fit ml-2 justify-self-center mb-2">
-        {game.stores.map((store, id) => (
+        {game.stores?.map((store, id) => (
           <li
             key={`${store.store.slug}-${id}`}
             className="flex bg-gray-800 text-gray-300 font-bold p-2 rounded-xl"
@@ -174,7 +168,7 @@ const GameDetails = () => {
             {store.store.name}
           </li>
         ))}
-      </ul>
+      </ul>{" "}
     </div>
   );
 };

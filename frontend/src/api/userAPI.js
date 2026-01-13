@@ -6,7 +6,7 @@ export const login = async (email, password) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  if (!res.ok) throw new Error("Login failed");
+  if (!res.ok) throw new Error("Sign up failed");
   return await res.json();
 };
 

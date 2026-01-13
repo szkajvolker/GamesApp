@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const NavBar = ({ onSearch, setIsLoggedIn }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window - innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token");
 
@@ -62,10 +62,10 @@ const NavBar = ({ onSearch, setIsLoggedIn }) => {
           <div className="flex flex-col">
             <button
               className="text-blue-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
-              onClick={handleLogout}
+              onClick={isLoggedIn ? handleLogout : () => navigate("/login")}
             >
               {`${isLoggedIn ? "Logout" : "Login"}`}
-            </button>
+            </button>{" "}
             {!isLoggedIn && (
               <button
                 className="text-purple-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
@@ -119,12 +119,16 @@ const NavBar = ({ onSearch, setIsLoggedIn }) => {
             <button
               className="text-blue-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"
               onClick={() => {
-                handleLogout();
+                if (isLoggedIn) {
+                  handleLogout();
+                } else {
+                  navigate("/login");
+                }
                 setIsMenuOpen(false);
               }}
             >
               {`${isLoggedIn ? "Logout" : "Login"}`}
-            </button>
+            </button>{" "}
             {!isLoggedIn && (
               <button
                 className="text-purple-500 font-bold cursor-pointer hover:scale-120 transition-transform duration-300"

@@ -10,7 +10,7 @@ const ToggleDarkmode = () => {
     <div
       className="w-15 h-8 flex items-center bg-gray-300 dark:bg-gray-700 rounded-full px-1 cursor-pointer transition-colors hover:scale-110 hover:brightness-110"
       onClick={toggleTheme}
-      area-label="Toggle dark mode"
+      aria-label="Toggle dark mode"
       onMouseDown={(e) => e.preventDefault()}
     >
       <div

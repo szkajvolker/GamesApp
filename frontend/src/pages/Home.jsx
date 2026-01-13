@@ -96,6 +96,11 @@ const Home = ({ searchTerm = "" }) => {
                     id={game.id}
                   />
                 ))}
+              {filteredGames.length === 0 && (
+                <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
+                  No games found. Try adjusting your search or filters.
+                </div>
+              )}{" "}
             </div>
           )}
         </div>

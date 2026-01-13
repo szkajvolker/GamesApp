@@ -21,7 +21,7 @@ const Login = ({ setIsLoggedIn }) => {
       toast.success("Successfully logged in");
       navigate("/home");
     } catch (e) {
-      toast.error(e.message || "Wrong email or password", e);
+      toast.error(e.message || "Wrong email or password");
     }
   };
 
@@ -62,12 +62,18 @@ const Login = ({ setIsLoggedIn }) => {
             className="absolute right-3 cursor-pointer text-gray-600 hover:text-blue-500"
             onClick={() => setShowPassword((prev) => !prev)}
             onMouseDown={(e) => e.preventDefault()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setShowPassword((prev) => !prev);
+              }
+            }}
             tabIndex={0}
-            aria-label={showPassword ? "Hide" : "Show"}
+            aria-label={showPassword ? "Hide password" : "Show password"}
             role="button"
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </span>
+          </span>{" "}
         </div>
 
         <div className="flex flex-row gap-2">

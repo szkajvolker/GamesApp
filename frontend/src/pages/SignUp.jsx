@@ -18,10 +18,10 @@ const SignUp = ({ setIsLoggedIn }) => {
       const res = await signUp(username, email, password, name);
       localStorage.setItem("token", res.token);
       setIsLoggedIn(true);
-      toast.success("Successfully logged in");
+      toast.success("Account created successfully");
       navigate("/home");
     } catch (e) {
-      toast.error(e.message || "Wrong email or password", e);
+      toast.error(e.message || "Sign up failed. Please try again.");
     }
   };
 
