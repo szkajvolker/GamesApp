@@ -28,11 +28,11 @@ const SignUp = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="flex w-full h-screen items-center justify-center pt-16 relative">
+    <div className="flex w-full min-h-screen items-center justify-center relative">
       <img
         src={signUpBackgoundImage}
         alt="background"
-        className="absolute inset-0 w-full h-full object-cover object-center z-0 pt-19 border-2 border-gray-400"
+        className="absolute inset-0 w-full h-full object-cover lg:object-fill object-center z-0 pt-20"
       />
       <form
         className="bg-gray-100/30 shadow-2xl backdrop-blur-xs shadow-gray-600 dark:shadow-none dark:bg-gray-200/30 p-8 rounded flex flex-col gap-4 min-w-75 z-10"

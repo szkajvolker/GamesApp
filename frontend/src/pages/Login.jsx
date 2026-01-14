@@ -26,7 +26,7 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="flex w-full min-h-screen items-center justify-center pt-16 relative">
+    <div className="flex w-full min-h-screen items-center justify-center relative">
       <img
         src={backgroundImage}
         alt="background"
