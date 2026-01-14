@@ -32,9 +32,13 @@ Backend
 - Authentication
 
 Frontend
-- Login and registration UI
+- Login and registration UI /Login data stored in MongoDB
 - Loading UI
 
+Testing
+- just for test account
+email:test@smth.com
+password:User12345!
 
 Created by: Istvan Szabo
 ##  Live Demo
