@@ -28,12 +28,15 @@ A modern React-based game search app powered by the RAWG API.
 ##Future Plans
 
 Backend
-- User login and registration
-- Authentication
+- User login and registration (implemented)
+- Authentication (implemented)
+- Admin page
+- User able to save favourite into collection,rate it etc.
 
 Frontend
-- Login and registration UI /Login data stored in MongoDB
-- Loading UI
+- Login and registration UI (implemented)
+- Loading UI (implemented)
+---------------------------
 
 Testing
 - just for test account
