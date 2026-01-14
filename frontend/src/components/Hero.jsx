@@ -75,9 +75,9 @@ const Hero = () => {
         <img
           src={heroBackgroundImage}
           alt="background"
-          className="w-full h-full object-cover object-center pt-20 border-2 border-gray-400 opacity-60"
+          className="w-full h-full object-cover object-center pt-20 "
         />
-        <div className="absolute inset-0 w-full h-full backdrop-blur-xs bg-white/10"></div>
+        <div className="absolute inset-0 w-full h-full backdrop-blur-xs"></div>
       </div>
       <div className="text-center mt-10 z-10">
         <h1 className="lg:text-7xl text-5xl md:text-6xl font-bold tracking-wide">
@@ -104,7 +104,7 @@ const Hero = () => {
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 pointer-events-none bg-linear-to-r dark:from-gray-900 dark:via-transparent  dark:to-gray-900 from-gray-900 via-transparent to-gray-900 transition-colors duration-300"></div>
+        <div className="absolute inset-0 pointer-events-none bg-linear-to-r  dark:via-transparent   from-black via-transparent to-black transition-colors duration-300"></div>
       </div>
       <div className="flex flex-col items-center justify-center z-10">
         <h1 className="text-3xl lg:text-5xl md:text-4xl font-bold tracking-wide bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300 mt-12">
