@@ -12,6 +12,7 @@ A modern React-based game search app powered by the RAWG API.
 -  Pagination
 -  Lazy loading
 -  Responsive, mobile-friendly UI (WIP)
+-  Registration/Login
 
 ## Tech Stack
 
