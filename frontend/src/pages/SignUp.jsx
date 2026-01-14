@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { signUp } from "../api/userAPI";
 import { signUpBackgoundImage } from "../assets";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignUp = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -55,14 +57,31 @@ const SignUp = ({ setIsLoggedIn }) => {
           className="border-2 border-gray-500 p-2 rounded focus:border-blue-500 focus:outline-none"
           required
         />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          className="border-2 border-gray-500 p-2 rounded focus:border-blue-500 focus:outline-none"
-          required
-        />
+        <div className="relative flex items-center">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="border-2 w-full border-gray-500 p-2 rounded focus:border-blue-500 focus:outline-none"
+            required
+          />
+          <span
+            className="absolute right-3 cursor-pointer text-gray-600 hover:text-blue-500"
+            onClick={() => setShowPassword((prev) => !prev)}
+            onMouseDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setShowPassword((prev) => !prev);
+              }
+            }}
+            tabIndex={0}
+            aria-label={showPassword ? "Hide password" : "Show pasword"}
+            role="button"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
         <input
           type="text"
           value={name}
@@ -71,7 +90,6 @@ const SignUp = ({ setIsLoggedIn }) => {
           className="border-2 border-gray-500 p-2 rounded focus:border-blue-500 focus:outline-none"
           required
         />
-
         <div className="flex flex-row gap-2">
           <p className="font-bold text-gray-800">
             You already have an account?
