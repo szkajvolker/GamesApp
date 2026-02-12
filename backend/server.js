@@ -5,6 +5,10 @@ import rawgRoutes from "./routes/rawg.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import cors from "cors";
 
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
+dns.setServers(["8.8.8.8"]);
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3333;
@@ -12,7 +16,7 @@ const PORT = process.env.PORT || 3333;
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://games-store-db.netlify.app"],
-  })
+  }),
 );
 
 app.use(express.json());
