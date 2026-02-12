@@ -2,6 +2,11 @@
 
 A modern React-based game search app powered by the RAWG API.
 
+Project Progress Description:
+This project was created mainly to practice working with REST APIs. The application integrates the RAWG REST API to fetch video game data.
+Initially, the project was built as a frontend-only application. However, due to security concerns (such as exposing API keys), a backend was later implemented using Express.js and MongoDB for secure data handling and storage.
+Through this project, I gained hands-on experience with how data flows between the API → backend → frontend, as well as building a more secure full-stack architecture.
+
 ## Main Features
 
 -  Search for games
@@ -31,8 +36,8 @@ A modern React-based game search app powered by the RAWG API.
 Backend
 - User login and registration (implemented)
 - Authentication (implemented)
-- Admin page
-- User able to save favourite into collection,rate it etc.
+- Admin page (WIP)
+- User able to save favourite into collection,rate it etc. (WIP)
 
 Frontend
 - Login and registration UI (implemented)
@@ -41,7 +46,7 @@ Frontend
 
 Testing
 - just for test account
-email:test@smth.com
+email:user@test.com
 password:User12345!
 
 Created by: Istvan Szabo
