@@ -80,13 +80,13 @@ const Hero = () => {
         />
         <div className="absolute inset-0 w-full h-full backdrop-blur-xs"></div>
       </div>
-      <div className="text-center mt-10 z-10">
+      <div className="flex flex-col text-center mt-10 z-10 justify-items-center items-center">
         <h1 className="lg:text-7xl text-5xl md:text-6xl font-bold tracking-wide">
           <span className="bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-colors duration-300">
             GAMESTORE
           </span>
         </h1>
-        <p className="text-xl md:text-2xl text-gray-800  dark:text-gray-200 shadow-3xl font-medium max-w-fit justify-self-center">
+        <p className="text-xl md:text-2xl font-bold text-white/60 dark:text-gray-200 justify-self-center ">
           Search for any game you like...
         </p>
       </div>
