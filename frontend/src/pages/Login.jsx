@@ -3,7 +3,6 @@ import { login } from "../api/userAPI";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { backgroundImage } from "../assets";
 
 const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
@@ -26,12 +25,7 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="flex w-full min-h-screen items-center justify-center relative">
-      <img
-        src={backgroundImage}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover lg:object-fill object-center z-0 pt-20"
-      />
+    <div className="signin flex w-full min-h-screen items-center justify-center relative mt-20">
       <form
         className="bg-gray-100/30 shadow-2xl backdrop-blur-xs shadow-gray-600 dark:shadow-none dark:bg-gray-400/30 p-8 rounded flex flex-col gap-4 min-w-75 z-10"
         onSubmit={handleSubmit}
@@ -87,6 +81,7 @@ const Login = ({ setIsLoggedIn }) => {
         </div>
         <button
           type="submit"
+          aria-label="login"
           className="bg-blue-500 text-white py-2 rounded font-bold cursor-pointer hover:brightness-125 hover:text-gray-800"
         >
           Login

@@ -18,7 +18,7 @@ const GameCard = ({
   };
 
   const sortedPlatforms = MAIN_PLATFORMS.map((sortedplatform) =>
-    (platforms || []).find((p) => p.toLowerCase().includes(sortedplatform))
+    (platforms || []).find((p) => p.toLowerCase().includes(sortedplatform)),
   ).filter(Boolean);
   return (
     <div className="bg-white/10 backdrop-blur-lg lg:rounded-t-[330px] hover:rounded-t-[30px] rounded-[20px] dark:shadow-xl shadow-xl shadow-black/60 hover:shadow-2xl overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-800 duration-500 transition-all ease-in-out z-20">
@@ -92,10 +92,11 @@ const GameCard = ({
             })}
           </div>
         )}
-        <div className=" flex w-full justify-center">
+        <div className="flex w-full justify-center">
           <button
             className="bg-gray-700 w-fit rounded-full cursor-pointer hover:bg-gray-900 hover:scale-125 transition-all duration-300 p-2"
             onClick={() => onDetailsClick(id)}
+            aria-label="show-details"
           >
             🔎
           </button>

@@ -16,3 +16,26 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.signup {
+  background-image: url("./assets/images/mobilebg.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.signin {
+  background-image: url("./assets/images/mobilebg.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+@media (min-width: 768px) {
+  .signup {
+    background-image: url("./assets/images/signupbg.webp");
+  }
+}
+@media (min-width: 768px) {
+  .signin {
+    background-image: url("./assets/images/signupbg.webp");
+  }
+}

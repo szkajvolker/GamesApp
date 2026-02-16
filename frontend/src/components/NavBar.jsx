@@ -80,7 +80,10 @@ const NavBar = ({ onSearch, setIsLoggedIn }) => {
         <ToggleDarkmode isMobile={isMobile} />
       </div>
       {isMobile && (
-        <button onClick={() => setIsMenuOpen(true)}>
+        <button
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Open navigation menu"
+        >
           <FontAwesomeIcon icon={faBars} size="2x" className="text-gray-500" />
         </button>
       )}
@@ -88,6 +91,7 @@ const NavBar = ({ onSearch, setIsLoggedIn }) => {
         <div className="fixed inset-0 w-full h-screen bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center z-10">
           <button
             onClick={() => setIsMenuOpen(false)}
+            aria-label="Close navigation menu"
             className="mb-8 bg-linear-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent transition-transform duration-300 text-5xl"
           >
             X

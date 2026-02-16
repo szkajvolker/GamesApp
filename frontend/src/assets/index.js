@@ -19,8 +19,7 @@ import rpgIcon from "./icons/genreicons/rpg.png";
 import racingIcon from "./icons/genreicons/racing.png";
 import shooterIcon from "./icons/genreicons/shooter.png";
 import multiplayerIcon from "./icons/genreicons/multiplayer.png";
-import backgroundImage from "./images/background.png";
-import signUpBackgoundImage from "./images/background1.png";
+
 import heroBackgroundImage from "./images/heroBgImg.png";
 
 export {
@@ -45,7 +44,5 @@ export {
   racingIcon,
   shooterIcon,
   multiplayerIcon,
-  backgroundImage,
-  signUpBackgoundImage,
   heroBackgroundImage,
 };

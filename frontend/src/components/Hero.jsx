@@ -60,7 +60,7 @@ const Hero = () => {
             duration: i === 0 ? 0.4 : 0.6,
             ease: "power2.inOut",
           },
-          i === 0 ? 0 : i * 0.8
+          i === 0 ? 0 : i * 0.8,
         );
       });
       return () => tl.kill();
@@ -75,7 +75,8 @@ const Hero = () => {
         <img
           src={heroBackgroundImage}
           alt="background"
-          className="w-full h-full object-cover object-center pt-20 "
+          className="w-full h-full object-cover object-center pt-20"
+          loading="eager"
         />
         <div className="absolute inset-0 w-full h-full backdrop-blur-xs"></div>
       </div>
@@ -99,7 +100,7 @@ const Hero = () => {
               <img
                 src={game.background_image}
                 alt={game.title}
-                loading="lazy"
+                loading="eager"
               />
             </div>
           ))}

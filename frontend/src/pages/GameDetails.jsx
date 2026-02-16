@@ -44,6 +44,7 @@ const GameDetails = () => {
           src={game.background_image || game.background_image_additional}
           alt="background"
           className="w-full h-full object-cover object-center border-gray-400 opacity-10"
+          loading="lazy"
         />
       </div>
       <div className="flex flex-row justify-between mt-20">

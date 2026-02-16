@@ -40,8 +40,9 @@ const SidebarFilters = ({ onFilterChange }) => {
               >
                 <img
                   src={platformIcons.getPlatformIcon(platform.name)}
-                  alt={platform.name}
+                  alt={`${platform.name} platform icon`}
                   className="w-10 h-10 items-center p-2 bg-gray-600/90 dark:bg-gray-600/50 group-hover:bg-gray-300 rounded-xl"
+                  loading="lazy"
                 />
                 {platform.name}
               </li>
@@ -49,6 +50,7 @@ const SidebarFilters = ({ onFilterChange }) => {
           </ul>
           <button
             onClick={() => setShowAllPlatforms((prev) => !prev)}
+            aria-label={showAllPlatforms ? "Hide platform list" : "Show all platforms"}
             className="flex dark:text-white text-black font-bold mt-2 border-2 rounded-xl p-2 justify-self-center dark:hover:text-white  hover:bg-gray-800 hover:text-white cursor-pointer"
           >
             {showAllPlatforms ? "Hide" : "Show all"}
@@ -70,8 +72,9 @@ const SidebarFilters = ({ onFilterChange }) => {
                 {" "}
                 <img
                   src={genreIcons.getGenreIcon(genre.name)}
-                  alt={genre.name}
+                  alt={`${genre.name} genre icon`}
                   className="w-10 h-10 items-center p-2 bg-gray-600/90 dark:bg-gray-600/50 group-hover:bg-gray-300 rounded-xl"
+                  loading="lazy"
                 />
                 {genre.name}
               </li>
@@ -79,6 +82,7 @@ const SidebarFilters = ({ onFilterChange }) => {
           </ul>
           <button
             onClick={() => setShowAllGenres((prev) => !prev)}
+            aria-label={showAllGenres ? "Hide genre list" : "Show all genres"}
             className="flex dark:text-white text-black font-bold mt-2 border-2 rounded-xl p-2 justify-self-center dark:hover:text-white  hover:bg-gray-800 hover:text-white cursor-pointer"
           >
             {showAllGenres ? "Hide" : "Show all"}
