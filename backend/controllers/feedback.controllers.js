@@ -3,9 +3,19 @@ dotenv.config();
 
 import { Resend } from "resend";
 
+const escapeHtml = (str) => {
+  if (!str) return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FEEDBACK_EMAIL = "ist9595@windowslive.com";
+const FEEDBACK_EMAIL = process.env.FEEDBACK_EMAIL;
 
 export const sendFeedback = async (req, res) => {
   try {
@@ -18,18 +28,22 @@ export const sendFeedback = async (req, res) => {
       });
     }
 
+    const safeType = escapeHtml(type);
+    const safeSubject = escapeHtml(subject);
+    const safeMessage = escapeHtml(message);
+
     await resend.emails.send({
       from: "feedback@resend.dev",
       to: [FEEDBACK_EMAIL],
-      subject: `${type || "Feedback"} : ${subject || "GameStore Feedback"}`,
+      subject: `${safeType || "Feedback"} : ${safeSubject || "GameStore Feedback"}`,
       html: `
-      <h2>New ${type || "feedback"} arrived</h2>
+      <h2>New ${safeType || "feedback"} arrived</h2>
       <p><strong>From:</strong> Anonymous User</p>
-      <p><strong>Type:</strong> ${type || "Normal feedback"}</p>
-      <p><strong>Subject:</strong> ${subject || "No subject"}</p>
+      <p><strong>Type:</strong> ${safeType || "Normal feedback"}</p>
+      <p><strong>Subject:</strong> ${safeSubject || "No subject"}</p>
       <p><strong>Message:</strong></p>
       <div style="background: #f5f5f5; padding: 15px; border-radius:5px;">
-      ${message.replace(/\n/g, "<br>")}
+      ${safeMessage.replace(/\n/g, "<br>")}
       </div>
       <p style="color: #666; font-size: 12px; margin-top: 20px;">
       Time: ${new Date().toLocaleString("hu-HU")}
