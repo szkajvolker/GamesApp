@@ -33,7 +33,7 @@ const Feedback = ({ onClose }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}api/feedback/send`,
+        `${import.meta.env.VITE_API_URL}/feedback/send`,
         {
           method: "POST",
           headers: {
