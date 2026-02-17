@@ -6,7 +6,7 @@ html {
 }
 
 body {
-  background-color: oklch(0.21 0.03 263.45);
+  @apply bg-white dark:bg-gray-900;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
