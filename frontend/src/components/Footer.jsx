@@ -1,4 +1,9 @@
+import { useState } from "react";
+import Feedback from "./Feedback";
+
 const Footer = () => {
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+
   return (
     <footer className="dark:bg-gray-900 bg-white border-t-2 border-black/30 w-full p-2">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
@@ -30,6 +35,14 @@ const Footer = () => {
                 SVG Repo
               </a>
             </p>
+
+            <button
+              onClick={() => setIsFeedbackModalOpen(true)}
+              className="bg-linear-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 flex items-center gap-2"
+            >
+              <span>💬</span>
+              Feedback/ Bug report
+            </button>
           </div>
           <div className="border-t border-gray-900  dark:border-white mt-8 pt-8 text-center">
             <p className="text-gray-900 dark:text-white font-bold">
@@ -38,6 +51,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      {isFeedbackModalOpen && (
+        <Feedback onClose={() => setIsFeedbackModalOpen(false)} />
+      )}
     </footer>
   );
 };

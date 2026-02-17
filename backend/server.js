@@ -1,8 +1,9 @@
-import express from "express";
 import dotenv from "dotenv";
+import express from "express";
 import { connectDB } from "./config/db.js";
 import rawgRoutes from "./routes/rawg.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import feedbackRoutes from "./routes/feedback.routes.js";
 import cors from "cors";
 
 import dns from "dns";
@@ -22,6 +23,7 @@ app.use(
 app.use(express.json());
 app.use("/api/games", rawgRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 const startServer = async () => {
   try {
