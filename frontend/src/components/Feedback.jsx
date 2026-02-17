@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const Feedback = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -8,6 +8,16 @@ const Feedback = ({ onClose }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -22,28 +32,30 @@ const Feedback = ({ onClose }) => {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch("http://localhost:3333/api/feedback/send", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}api/feedback/send`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok && data.success) {
         setStatus({
           type: "success",
           message: "Feedback sent successfully! Thank you!",
         });
-        setFormData({ subject: "", message: "", type: "" });
-        setTimeout(() => onClose(), 2000);
+        setFormData({ subject: "", message: "", type: "Feedback" });
+        timeoutRef.current = setTimeout(() => onClose(), 2000);
       } else {
         setStatus({
           type: "error",
-          message:
-            data.message || "An error occured while sending the messsage",
+          message: data.message || "An error occurred. Please try again later",
         });
       }
     } catch (error) {
