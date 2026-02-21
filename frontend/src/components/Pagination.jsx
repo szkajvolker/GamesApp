@@ -36,7 +36,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
 
   const handlePageChange = (newPage) => {
     onPageChange(newPage);
-    window.scrollTo({ top: 975, behavior: "smooth" });
+    window.scrollTo({ top: 900, behavior: "smooth" });
   };
 
   const pages = getPageNumbers(currentPage, totalPages);
@@ -97,7 +97,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
           >
             {Number.isFinite(page) ? page : ""}
           </button>
-        )
+        ),
       )}
       <button
         disabled={currentPage === totalPages}
