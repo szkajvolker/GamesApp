@@ -81,45 +81,43 @@ const Home = ({ searchTerm = "" }) => {
           onPageChange={setPage}
           disabled={loading}
         />
-        <div className="relative min-h-screen flex items-center justify-center w-full px-2 py-2">
-          <div className="relative z-10 w-full">
-            {loading ? (
-              <Loading />
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
-                {filteredGames.length > 0 &&
-                  filteredGames.map((game) => {
-                    const isActiveCard = hoveredCardId === game.id;
-                    return (
-                      <GameCard
-                        key={game.id}
-                        title={game.name}
-                        metacritic={game.metacritic}
-                        image={game.background_image}
-                        genres={game.genres?.map((g) => g.name)}
-                        rating={game.rating}
-                        releaseDate={game.released}
-                        stores={game.stores?.map((s) => s.store.name)}
-                        esrbRating={game.esrb_rating?.name}
-                        platforms={game.platforms?.map((p) => p.platform.name)}
-                        shortScreenshots={game.short_screenshots?.map(
-                          (item) => item.image,
-                        )}
-                        onDetailsClick={handleDetailsClick}
-                        id={game.id}
-                        onHover={handleCardHover}
-                        isOpen={isActiveCard}
-                      />
-                    );
-                  })}
-                {filteredGames.length === 0 && (
-                  <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
-                    No games found. Try adjusting your search or filters.
-                  </div>
-                )}{" "}
-              </div>
-            )}
-          </div>
+        <div className="flex relative min-h-screen items-center justify-center w-full px-2 py-2 z-10">
+          {loading ? (
+            <Loading />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
+              {filteredGames.length > 0 &&
+                filteredGames.map((game) => {
+                  const isActiveCard = hoveredCardId === game.id;
+                  return (
+                    <GameCard
+                      key={game.id}
+                      title={game.name}
+                      metacritic={game.metacritic}
+                      image={game.background_image}
+                      genres={game.genres?.map((g) => g.name)}
+                      rating={game.rating}
+                      releaseDate={game.released}
+                      stores={game.stores?.map((s) => s.store.name)}
+                      esrbRating={game.esrb_rating?.name}
+                      platforms={game.platforms?.map((p) => p.platform.name)}
+                      shortScreenshots={game.short_screenshots?.map(
+                        (item) => item.image,
+                      )}
+                      onDetailsClick={handleDetailsClick}
+                      id={game.id}
+                      onHover={handleCardHover}
+                      isOpen={isActiveCard}
+                    />
+                  );
+                })}
+              {filteredGames.length === 0 && (
+                <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
+                  No games found. Try adjusting your search or filters.
+                </div>
+              )}{" "}
+            </div>
+          )}
         </div>
 
         <Pagination
