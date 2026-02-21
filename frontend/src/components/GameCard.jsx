@@ -184,7 +184,9 @@ const GameCard = ({
             <div className="space-y-2 text-sm">
               {genres && (
                 <div className="flex flex-wrap gap-1 mb-3 justify-between items-center">
-                  <p>Genres:</p>
+                  <p className="text-gray-700">
+                    <strong>Genres:</strong>
+                  </p>
                   <div className="flex gap-2">
                     {genres.slice(0, 3).map((g, i) => (
                       <span
