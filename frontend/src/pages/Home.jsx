@@ -11,6 +11,7 @@ const Home = ({ searchTerm = "" }) => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [hoveredCardId, setHoveredCardId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ platform: null, genre: null });
   useEffect(() => {
@@ -59,9 +60,13 @@ const Home = ({ searchTerm = "" }) => {
 
   const filteredGames = Array.isArray(games) ? games : [];
 
+  const handleCardHover = (cardId) => {
+    setHoveredCardId(cardId);
+  };
+
   return (
     <div
-      className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-900 transition-colors duration-300"
+      className="flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-950 transition-colors duration-300 px-6"
       id="games"
     >
       <div className="py-8 md:px-10">
@@ -76,34 +81,47 @@ const Home = ({ searchTerm = "" }) => {
           onPageChange={setPage}
           disabled={loading}
         />
-        <div className="min-h-screen flex items-center justify-center w-full">
-          {loading ? (
-            <Loading />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
-              {filteredGames.length > 0 &&
-                filteredGames.map((game) => (
-                  <GameCard
-                    key={game.id}
-                    title={game.name}
-                    metacritic={game.metacritic}
-                    image={game.background_image}
-                    genres={game.genres?.map((g) => g.name)}
-                    rating={game.rating}
-                    releaseDate={game.released}
-                    platforms={game.platforms?.map((p) => p.platform.name)}
-                    onDetailsClick={handleDetailsClick}
-                    id={game.id}
-                  />
-                ))}
-              {filteredGames.length === 0 && (
-                <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
-                  No games found. Try adjusting your search or filters.
-                </div>
-              )}{" "}
-            </div>
-          )}
+        <div className="relative min-h-screen flex items-center justify-center w-full px-2 py-2">
+          <div className="relative z-10 w-full">
+            {loading ? (
+              <Loading />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
+                {filteredGames.length > 0 &&
+                  filteredGames.map((game) => {
+                    const isActiveCard = hoveredCardId === game.id;
+                    return (
+                      <GameCard
+                        key={game.id}
+                        title={game.name}
+                        metacritic={game.metacritic}
+                        image={game.background_image}
+                        genres={game.genres?.map((g) => g.name)}
+                        rating={game.rating}
+                        releaseDate={game.released}
+                        stores={game.stores?.map((s) => s.store.name)}
+                        esrbRating={game.esrb_rating?.name}
+                        platforms={game.platforms?.map((p) => p.platform.name)}
+                        shortScreenshots={game.short_screenshots?.map(
+                          (item) => item.image,
+                        )}
+                        onDetailsClick={handleDetailsClick}
+                        id={game.id}
+                        onHover={handleCardHover}
+                        isOpen={isActiveCard}
+                      />
+                    );
+                  })}
+                {filteredGames.length === 0 && (
+                  <div className="col-span-full text-center text-gray-500 dark:text-gray-400 py-8">
+                    No games found. Try adjusting your search or filters.
+                  </div>
+                )}{" "}
+              </div>
+            )}
+          </div>
         </div>
+
         <Pagination
           currentPage={page}
           totalPages={totalPages}

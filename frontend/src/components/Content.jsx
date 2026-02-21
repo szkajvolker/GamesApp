@@ -14,9 +14,14 @@ const Content = ({ searchTerm = "" }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [game, setGame] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
+  const [hoveredCardId, setHoveredCardId] = useState(null);
   const [gameScreenShots, setGameScreenShots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ platform: null, genre: null });
+
+  const handleCardHover = (cardId) => {
+    setHoveredCardId(cardId);
+  };
 
   useEffect(() => {
     const loadGames = async () => {
@@ -80,7 +85,7 @@ const Content = ({ searchTerm = "" }) => {
 
   return (
     <div
-      className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-900 transition-colors duration-300"
+      className="relative flex flex-col md:flex-row bg-gray-100 dark:bg-gray-200 transition-colors duration-300"
       id="Games"
     >
       <div className="py-8 md:px-10">
@@ -102,22 +107,33 @@ const Content = ({ searchTerm = "" }) => {
           {loading ? (
             <Loading />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full items-start">
               {filteredGames.length > 0 &&
-                filteredGames.map((game) => (
-                  <GameCard
-                    key={game.id}
-                    title={game.name}
-                    metacritic={game.metacritic}
-                    image={game.background_image}
-                    genres={game.genres?.map((g) => g.name)}
-                    rating={game.rating}
-                    releaseDate={game.released}
-                    platforms={game.platforms?.map((p) => p.platform.name)}
-                    onDetailsClick={handleDetailsClick}
-                    id={game.id}
-                  />
-                ))}
+                filteredGames.map((game) => {
+                  const isActiveCard = hoveredCardId === game.id;
+
+                  return (
+                    <GameCard
+                      key={game.id}
+                      id={game.id}
+                      title={game.name}
+                      metacritic={game.metacritic}
+                      image={game.background_image}
+                      genres={game.genres?.map((g) => g.name)}
+                      rating={game.rating}
+                      releaseDate={game.released}
+                      platforms={game.platforms?.map((p) => p.platform.name)}
+                      stores={game.stores?.map((s) => s.store.name)}
+                      esrbRating={game.esrb_rating?.name}
+                      shortScreenshots={game.short_screenshots?.map(
+                        (item) => item.image,
+                      )}
+                      onDetailsClick={handleDetailsClick}
+                      onHover={handleCardHover}
+                      isOpen={isActiveCard}
+                    />
+                  );
+                })}
             </div>
           )}
         </div>

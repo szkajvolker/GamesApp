@@ -148,3 +148,51 @@ export const genres = [
 ];
 
 export const navLinks = [{ name: "Home" }];
+
+export const storeColors = [
+  {
+    storeName: "steam",
+    borderColor: "border-cyan-400",
+    bgColor: "bg-cyan-900/40",
+  }, // Steam
+  {
+    storeName: "epic",
+    borderColor: "border-violet-400",
+    bgColor: "bg-violet-900/40",
+  }, // Epic Games Store
+  {
+    storeName: "gog",
+    borderColor: "border-purple-400",
+    bgColor: "bg-purple-900/40",
+  }, // GOG
+  {
+    storeName: "playstation",
+    borderColor: "border-blue-400",
+    bgColor: "bg-blue-900/40",
+  }, // PlayStation Store
+  {
+    storeName: "xbox",
+    borderColor: "border-green-400",
+    bgColor: "bg-green-900/40",
+  }, // Xbox Store
+  {
+    storeName: "nintendo",
+    borderColor: "border-red-400",
+    bgColor: "bg-red-900/40",
+  }, // Nintendo Store
+  {
+    storeName: "itch",
+    borderColor: "border-pink-400",
+    bgColor: "bg-pink-900/40",
+  }, // itch.io
+  {
+    storeName: "app store",
+    borderColor: "border-indigo-400",
+    bgColor: "bg-indigo-900/40",
+  }, // Apple App Store
+  {
+    storeName: "google play",
+    borderColor: "border-emerald-400",
+    bgColor: "bg-emerald-900/40",
+  }, // Google Play
+];
