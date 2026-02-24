@@ -14,7 +14,7 @@ export const getGames = async (req, res) => {
     const filteredResults = Array.isArray(cached.data.results)
       ? cached.data.results.filter(
           (game) =>
-            !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw")
+            !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw"),
         )
       : cached.data.results;
     return res.status(200).json({
@@ -33,7 +33,7 @@ export const getGames = async (req, res) => {
     const data = await response.json();
     if (Array.isArray(data.results)) {
       data.results = data.results.filter(
-        (game) => !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw")
+        (game) => !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw"),
       );
     }
     const results = data.results;
@@ -94,15 +94,15 @@ export const getGameByPlatform = async (req, res) => {
 };
 
 export const getFeaturedGames = async (req, res) => {
-  const url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-rating&page_size=40`;
+  const url = `https://api.rawg.io/api/games?key=${process.env.RAWG_API_KEY}&ordering=-metacritic&metacritic=85,100&platforms=4&page_size=40`;
   try {
     const response = await fetch(url);
     const data = await response.json();
     if (Array.isArray(data.results)) {
       data.results = data.results.filter(
         (game) =>
-          !game.esrb_rating ||
-          (game.esrb_rating && game.esrb_rating?.name !== "Adults Only")
+          (!game.esrb_rating || game.esrb_rating?.name !== "Adults Only") &&
+          !game.tags?.some((tag) => tag.name?.toLowerCase() === "nsfw"),
       );
     }
     res.status(200).json({ message: "featured games", data: data.results });

@@ -22,7 +22,7 @@ const GameCard = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef(null);
 
-  const visibleScreenshots = shortScreenshots.slice(0, 5);
+  const visibleScreenshots = shortScreenshots.slice(0, shortScreenshots.length);
   const hasScreenshots = visibleScreenshots.length > 0;
   const isGalleryActive = isOpen && hasScreenshots;
 
