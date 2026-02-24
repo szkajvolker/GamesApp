@@ -9,4 +9,29 @@ export default defineConfig({
       "/api": "http://localhost:3333",
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("react-router-dom")
+            ) {
+              return "react-vendor";
+            }
+            if (id.includes("framer-motion") || id.includes("gsap")) {
+              return "animation-vendor";
+            }
+            if (id.includes("@fortawesome") || id.includes("react-icons")) {
+              return "icons-vendor";
+            }
+            return "vendor";
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+  },
 });
