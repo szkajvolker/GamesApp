@@ -3,6 +3,12 @@ import { MAIN_PLATFORMS, platformIcons, storeColors } from "../constants";
 import placeholder from "../assets/images/placeholder.png";
 import { useState, useRef } from "react";
 
+const getRawOptimizedUrl = (url, width = 600) => {
+  if (!url) return url;
+  if (!url.includes("/media/")) return url;
+  return url.replace("/media/", `/media/resize/${width}/-/`);
+};
+
 const GameCard = ({
   title,
   image,
@@ -26,9 +32,11 @@ const GameCard = ({
   const hasScreenshots = visibleScreenshots.length > 0;
   const isGalleryActive = isOpen && hasScreenshots;
 
-  const mainImage = isGalleryActive
+  const rawMainImage = isGalleryActive
     ? visibleScreenshots[activeIndex] || image || placeholder
     : image || placeholder;
+
+  const mainImage = getRawOptimizedUrl(rawMainImage, 600);
 
   const handleMouseMove = (e) => {
     if (!isGalleryActive || visibleScreenshots.length <= 1) return;
@@ -85,6 +93,7 @@ const GameCard = ({
       >
         <img
           src={mainImage}
+          sizes="(max-width: 640px) 100vw, 600px"
           alt={title}
           loading="lazy"
           className="w-full h-full object-cover"
