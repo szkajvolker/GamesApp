@@ -2,6 +2,7 @@ import { motion as Motion, AnimatePresence } from "framer-motion";
 import { MAIN_PLATFORMS, platformIcons, storeColors } from "../constants";
 import placeholder from "../assets/images/placeholder.png";
 import { useState, useRef } from "react";
+import { fetchGameTrailers } from "../api/rawgAPI";
 
 const getRawOptimizedUrl = (url, width = 600) => {
   if (!url) return url;
@@ -26,6 +27,9 @@ const GameCard = ({
   shortScreenshots = [],
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [trailerUrl, setTrailerUrl] = useState(null);
+  const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
+  const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
   const containerRef = useRef(null);
 
   const visibleScreenshots = shortScreenshots.slice(0, shortScreenshots.length);
@@ -37,6 +41,30 @@ const GameCard = ({
     : image || placeholder;
 
   const mainImage = getRawOptimizedUrl(rawMainImage, 600);
+
+  const loadTrailer = async () => {
+    if (isLoadingTrailer || trailerUrl) return;
+
+    try {
+      setIsLoadingTrailer(true);
+      const trailers = await fetchGameTrailers(id);
+      if (!trailers.length) return;
+
+      const first = trailers[0];
+      const url =
+        first?.data.max ||
+        first?.data?.["480"] ||
+        Object.values(first?.data || {})[0];
+
+      if (url) {
+        setTrailerUrl(url);
+      }
+    } catch (e) {
+      console.error("Failed to load trailer", e);
+    } finally {
+      setIsLoadingTrailer(false);
+    }
+  };
 
   const handleMouseMove = (e) => {
     if (!isGalleryActive || visibleScreenshots.length <= 1) return;
@@ -79,8 +107,11 @@ const GameCard = ({
       <Motion.div
         ref={containerRef}
         className="h-48 relative overflow-hidden"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setActiveIndex(activeIndex)}
+        onMouseMove={isTrailerPlaying ? undefined : handleMouseMove}
+        onMouseEnter={() => loadTrailer()}
+        onMouseLeave={() => {
+          setActiveIndex(activeIndex);
+        }}
         initial={{
           borderTopLeftRadius: "999px",
           borderTopRightRadius: "999px",
@@ -91,30 +122,83 @@ const GameCard = ({
         }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <img
-          src={mainImage}
-          sizes="(max-width: 640px) 100vw, 600px"
-          alt={title}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
-        {isGalleryActive && visibleScreenshots.length > 1 && (
-          <div className="absolute bottom-2 left-0 right-0 flex h-3 items-center gap-1 px-4">
-            {visibleScreenshots.map((shot, index) => (
-              <button
-                key={`${shot}-${index}`}
-                type="button"
-                className="flex-1 h-full cursor-default"
-              >
-                <span
-                  className={`block h-1.5 w-full rounded-full transition-colors duration-200 ${index === activeIndex ? "bg-white" : "bg-white/40"}`}
-                ></span>
-              </button>
-            ))}
-          </div>
-        )}
-      </Motion.div>
+        {isTrailerPlaying && trailerUrl ? (
+          <>
+            <video
+              src={trailerUrl}
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!trailerUrl) {
+                  loadTrailer();
+                } else {
+                  setIsTrailerPlaying(false);
+                }
+              }}
+            />
+            <button
+              type="button"
+              className="absolute top-3 right-6 bg-black/70 text-white text-xs px-3 py-1 rounded-full cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsTrailerPlaying(false);
+              }}
+              hidden={!trailerUrl}
+            >
+              Stop
+            </button>
+          </>
+        ) : (
+          <>
+            <img
+              src={mainImage}
+              sizes="(max-width: 640px) 100vw, 600px"
+              alt={title}
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
 
+            <button
+              type="button"
+              className="absolute top-3 right-6 bg-black/70 text-white text-xs px-3 py-1 hover:brightness-110 rounded-full cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!trailerUrl) {
+                  loadTrailer();
+                } else {
+                  setIsTrailerPlaying(true);
+                }
+              }}
+              hidden={!trailerUrl}
+            >
+              Play
+            </button>
+          </>
+        )}
+
+        {!isTrailerPlaying &&
+          isGalleryActive &&
+          visibleScreenshots.length > 1 && (
+            <div className="absolute bottom-2 left-0 right-0 flex h-3 items-center gap-1 px-4">
+              {visibleScreenshots.map((shot, index) => (
+                <button
+                  key={`${shot}-${index}`}
+                  type="button"
+                  className="flex-1 h-full cursor-default"
+                >
+                  <span
+                    className={`block h-1.5 w-full rounded-full transition-colors duration-200 ${
+                      index === activeIndex ? "bg-white" : "bg-white/40"
+                    }`}
+                  ></span>
+                </button>
+              ))}
+            </div>
+          )}
+      </Motion.div>
       <div className="p-5">
         <button onClick={() => onDetailsClick(id)} className="cursor-pointer">
           <h3 className="text-lg font-semibold dark:text-white text-gray-900 mb-2 hover:brightness-50 hover:underline">

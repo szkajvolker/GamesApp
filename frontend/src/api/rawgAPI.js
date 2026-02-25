@@ -4,7 +4,7 @@ export const fetchGames = async (
   page = 1,
   pageSize = 40,
   searchTerm = "",
-  filters = {}
+  filters = {},
 ) => {
   let url = `/games?page=${page}&page_size=${pageSize}`;
   if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
@@ -38,6 +38,19 @@ export const fetchScreenShots = async (id) => {
     return JSON.parse(cached);
   }
   const res = await fetch(`${BASE_URL}/games/${id}/screenshots`);
+  if (!res.ok) throw new Error("Failed to fetch");
+  const { data } = await res.json();
+  sessionStorage.setItem(cacheKey, JSON.stringify(data));
+  return data || [];
+};
+
+export const fetchGameTrailers = async (id) => {
+  const cacheKey = `gameTrailer_${id}`;
+  const cached = sessionStorage.getItem(cacheKey);
+  if (cached) {
+    return JSON.parse(cached);
+  }
+  const res = await fetch(`${BASE_URL}/games/${id}/gametrailer`);
   if (!res.ok) throw new Error("Failed to fetch");
   const { data } = await res.json();
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
