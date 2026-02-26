@@ -66,11 +66,11 @@ const Home = ({ searchTerm = "" }) => {
 
   return (
     <div
-      className="flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-950 transition-colors duration-300"
+      className="flex flex-col md:flex-row bg-white dark:bg-gray-dark transition-colors duration-300"
       id="games"
     >
       <div className="py-8 px-10">
-        <div className="flex sticky top-10 left-0 z-20 max-h-[calc(100vh-5rem)] md:w-40 overflow-y-auto w-full flex-row gap-2 flex-wrap lg:justify-self-start justify-center scrollbar-hide ">
+        <div className="flex sticky top-10 left-0 z-20 max-h-[calc(100vh-5rem)] md:w-50 overflow-y-auto w-full flex-row gap-2 flex-wrap lg:justify-self-start justify-center scrollbar-hide">
           <SidebarFilters onFilterChange={handleFilterChange} />
         </div>
       </div>
@@ -125,7 +125,6 @@ const Home = ({ searchTerm = "" }) => {
           totalPages={totalPages}
           onPageChange={setPage}
           disabled={loading}
-          
         />
       </div>
     </div>

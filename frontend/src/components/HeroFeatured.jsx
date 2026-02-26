@@ -43,14 +43,19 @@ const HeroFeatured = () => {
     }
   }, [featuredGames]);
   return (
-    <div className="relative overflow-hidden rounded-lg p-2 z-10">
+    <div className="relative overflow-hidden rounded-lg p-4 z-10">
       <div ref={scrollContainerRef} className="flex space-x-6">
         {featuredGames.map((game, i) => (
           <div
             key={`${game.id}-${i}`}
-            className="game-card shrink-0 w-64 h-36 bg-gray-800 rounded-lg overflow-hidden relative "
+            className="game-card shrink-0 w-32 h-16 md:w-xs md:h-48 bg-gray-800 rounded-lg overflow-hidden relative"
           >
-            <img src={game.background_image} alt={game.title} loading="eager" />
+            <img
+              src={game.background_image}
+              alt={game.title}
+              loading="eager"
+              className="w-full h-full object-cover object-center"
+            />
           </div>
         ))}
       </div>

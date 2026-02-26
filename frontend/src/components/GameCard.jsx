@@ -30,6 +30,7 @@ const GameCard = ({
   const [trailerUrl, setTrailerUrl] = useState(null);
   const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
   const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
+  const [shouldPlaySound, setShouldPlaySound] = useState(false);
   const containerRef = useRef(null);
 
   const visibleScreenshots = shortScreenshots.slice(0, shortScreenshots.length);
@@ -94,7 +95,7 @@ const GameCard = ({
 
   return (
     <Motion.div
-      className={`relative bg-gray-950/90 backdrop-blur-lg rounded-t-full  ${isOpen ? "z-50 rounded-b-none " : "z-10"}`}
+      className={`relative  dark:bg-gray-soft bg-white backdrop-blur-lg shadow-xl rounded-t-full  ${isOpen ? "z-50 rounded-b-none" : "z-10"}`}
       onHoverStart={() => {
         if (typeof onHover === "function") onHover(id);
       }}
@@ -106,21 +107,12 @@ const GameCard = ({
     >
       <Motion.div
         ref={containerRef}
-        className="h-48 relative overflow-hidden"
+        className={`h-48 relative overflow-hidden rounded-t-xl`}
         onMouseMove={isTrailerPlaying ? undefined : handleMouseMove}
         onMouseEnter={() => loadTrailer()}
         onMouseLeave={() => {
           setActiveIndex(activeIndex);
         }}
-        initial={{
-          borderTopLeftRadius: "999px",
-          borderTopRightRadius: "999px",
-        }}
-        whileHover={{
-          borderTopLeftRadius: "64px",
-          borderTopRightRadius: "64px",
-        }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         {isTrailerPlaying && trailerUrl ? (
           <>
@@ -128,7 +120,7 @@ const GameCard = ({
               src={trailerUrl}
               className="w-full h-full object-cover"
               autoPlay
-              muted
+              muted={!shouldPlaySound}
               loop
               onClick={(e) => {
                 e.stopPropagation();
@@ -136,20 +128,38 @@ const GameCard = ({
                   loadTrailer();
                 } else {
                   setIsTrailerPlaying(false);
+                  setShouldPlaySound(false);
                 }
               }}
             />
-            <button
-              type="button"
-              className="absolute top-3 right-6 bg-black/70 text-white text-xs px-3 py-1 rounded-full cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsTrailerPlaying(false);
-              }}
-              hidden={!trailerUrl}
-            >
-              Stop
-            </button>
+            <div className="flex flex-row absolute top-3 right-6 gap-2">
+              <button
+                type="button"
+                className=" bg-black/70 text-white text-xs px-3 py-1 rounded-full cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsTrailerPlaying(false);
+                  if (shouldPlaySound) {
+                    setShouldPlaySound(false);
+                  }
+                }}
+                hidden={!trailerUrl}
+              >
+                Stop
+              </button>
+              <button
+                type="button"
+                className=" bg-black/70 text-white text-xs px-3 py-1 rounded-full cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  shouldPlaySound
+                    ? setShouldPlaySound(false)
+                    : setShouldPlaySound(true);
+                }}
+              >
+                🔉
+              </button>
+            </div>
           </>
         ) : (
           <>
@@ -268,7 +278,7 @@ const GameCard = ({
       <AnimatePresence>
         {isOpen && (
           <Motion.div
-            className="absolute left-0 right-0 top-full bg-gray-950 rounded-b-2xl text-white  shadow-xl z-30 p-4 transition-all duration-200"
+            className="absolute left-0 right-0 top-full dark:bg-gray-soft bg-white rounded-b-2xl text-white  shadow-xl z-30 p-4 transition-all duration-200"
             initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -277,29 +287,35 @@ const GameCard = ({
             <div className="space-y-2 text-sm">
               {genres && (
                 <div className="flex flex-wrap gap-1 mb-3 justify-between items-center">
-                  <p className="text-gray-700">
+                  <p className="text-gray">
                     <strong>Genres:</strong>
                   </p>
                   <div className="flex gap-2">
                     {genres.slice(0, 3).map((g, i) => (
                       <span
                         key={i}
-                        className="px-2 py-1 dark:bg-gray-500/50 bg-gray-900 text-white border-2 border-gray-300 text-xs rounded-full font-bold"
+                        className="px-2 py-1 dark:bg-gray-dark bg-white shadow-xl text-white border-2 border-gray-300 text-xs rounded-full font-bold"
                       >
-                        {g}
+                        <span className="text-gray-dark dark:text-white font-bold">
+                          {g}
+                        </span>
                       </span>
                     ))}
                   </div>
                 </div>
               )}
-              <p className="flex text-gray-700 w-full justify-between">
+              <p className="flex text-gray w-full justify-between">
                 <strong>Release Date:</strong>{" "}
-                <span className="text-white">{releaseDate || "TBA"}</span>
+                <span className="text-gray-dark dark:text-white font-bold">
+                  {releaseDate || "TBA"}
+                </span>
               </p>
 
-              <p className="flex text-gray-700 w-full justify-between">
+              <p className="flex text-gray w-full justify-between">
                 <strong>Rating:</strong>{" "}
-                <span className="text-white">{esrbRating || "N/A"}</span>
+                <span className="text-gray-dark dark:text-white font-bold">
+                  {esrbRating || "N/A"}
+                </span>
               </p>
               {stores && (
                 <div className="flex flex-wrap gap-1 mb-3">
@@ -309,12 +325,12 @@ const GameCard = ({
                     );
 
                     const borderColor = store?.borderColor ?? "border-white";
-                    const bgColor = store?.bgColor ?? "bg-gray-800";
+                    const bgColor = store?.bgColor ?? "bg-gray-dark";
 
                     return (
                       <span
                         key={i}
-                        className={`px-2 py-1 text-white text-xs rounded-full font-bold border-2 ${borderColor} ${bgColor}`}
+                        className={`px-2 py-1 text-white text-md rounded-full font-bold border-2 ${borderColor} ${bgColor}`}
                       >
                         {storeName}
                       </span>

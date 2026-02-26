@@ -7,7 +7,6 @@ import { heroBackgroundImage } from "../assets";
 import HeroFeatured from "./HeroFeatured";
 
 const Hero = () => {
-  
   useEffect(() => {
     const words = document.querySelectorAll(".hero-anim-word");
     if (words.length) {
@@ -38,7 +37,7 @@ const Hero = () => {
         <img
           src={heroBackgroundImage}
           alt="background"
-          className="w-full h-full object-cover object-center pt-20"
+          className="w-full h-full object-cover object-center pt-20 "
           loading="eager"
         />
         <div className="absolute inset-0 w-full h-full backdrop-blur-xs"></div>

@@ -1,12 +1,19 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-gray-dark: #151515;
+  --color-gray-soft: #202020;
+  --color-gray-darker: #333333;
+  --color-gray: #4d4d4d;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  @apply bg-white dark:bg-gray-900;
+  @apply bg-white dark:bg-gray-dark;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

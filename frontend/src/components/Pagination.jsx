@@ -42,14 +42,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
   const pages = getPageNumbers(currentPage, totalPages);
 
   return (
-    <div
-      style={{ display: "flex", alignItems: "center" }}
-      className="gap-0.5 mt-25 mb-10"
-    >
+    <div className="flex items-center justify-center gap-0.5 mt-25 mb-10">
       <button
         disabled={disabled === 1}
         onClick={() => handlePageChange(currentPage - 1)}
-        className="p-2 font-bold text-gray-800 dark:text-white bg-linear-to-r from-purple-500 to-blue-500 rounded-2xl mr-2 hover:brightness-120 cursor-pointer"
+        className="flex dark:text-white text-gray-dark bg-white dark:bg-gray-dark shadow-xl font-bold rounded-xl p-2 mx-2 dark:hover:text-gray-darker dark:hover:bg-gray-soft  hover:bg-gray-dark hover:text-white cursor-pointer"
       >
         Prev
       </button>
@@ -78,7 +75,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
               }
             }}
             style={{ width: 60 }}
-            className="bg-gray-800 p-2 text-center text-white hover:bg-gray-700 border border-black"
+            className="bg-gray-800 p-2 text-center text-white hover:bg-gray-700"
             disabled={page === currentPage}
           />
         ) : (
@@ -89,10 +86,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
               fontWeight: page === currentPage ? "bold" : "normal",
             }}
             disabled={page === currentPage}
-            className={`border border-black p-2 text-white  ${
+            className={` p-2  ${
               page === currentPage
-                ? "bg-gray-900"
-                : "bg-gray-800 hover:bg-gray-700 cursor-pointer"
+                ? "bg-gray-900 text-purple-600"
+                : "bg-gray-800 hover:bg-gray-700 cursor-pointer text-white"
             }`}
           >
             {Number.isFinite(page) ? page : ""}
@@ -102,7 +99,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
       <button
         disabled={currentPage === totalPages}
         onClick={() => handlePageChange(currentPage + 1)}
-        className="p-2 font-bold dark:text-white text-gray-800 bg-linear-to-r from-purple-500 to-blue-500 rounded-2xl ml-2 hover:brightness-120 cursor-pointer"
+        className="flex dark:text-white text-gray-dark bg-white dark:bg-gray-dark shadow-xl font-bold rounded-xl p-2 mx-2  dark:hover:text-gray-darker dark:hover:bg-gray-soft  hover:bg-gray-dark hover:text-white cursor-pointer"
       >
         Next
       </button>
