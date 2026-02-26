@@ -66,11 +66,11 @@ const Home = ({ searchTerm = "" }) => {
 
   return (
     <div
-      className="flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-950 transition-colors duration-300 px-6"
+      className="flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-950 transition-colors duration-300"
       id="games"
     >
-      <div className="py-8 md:px-10">
-        <div className="flex sticky top-10 left-0 z-20 max-h-[calc(100vh-5rem)] w-full md:w-30 overflow-y-auto flex-row gap-4 flex-wrap lg:justify-self-start justify-center scrollbar-hide ">
+      <div className="py-8 px-10">
+        <div className="flex sticky top-10 left-0 z-20 max-h-[calc(100vh-5rem)] md:w-40 overflow-y-auto w-full flex-row gap-2 flex-wrap lg:justify-self-start justify-center scrollbar-hide ">
           <SidebarFilters onFilterChange={handleFilterChange} />
         </div>
       </div>
@@ -81,11 +81,11 @@ const Home = ({ searchTerm = "" }) => {
           onPageChange={setPage}
           disabled={loading}
         />
-        <div className="flex relative min-h-screen items-center justify-center w-full px-2 py-2 z-10">
+        <div className="flex relative min-h-screen items-center justify-center w-full py-2 z-10">
           {loading ? (
             <Loading />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-15 md:py-15 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2 md:px-10 md:py-10 w-full">
               {filteredGames.length > 0 &&
                 filteredGames.map((game) => {
                   const isActiveCard = hoveredCardId === game.id;
@@ -125,6 +125,7 @@ const Home = ({ searchTerm = "" }) => {
           totalPages={totalPages}
           onPageChange={setPage}
           disabled={loading}
+          
         />
       </div>
     </div>

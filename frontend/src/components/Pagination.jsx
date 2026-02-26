@@ -44,7 +44,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, disabled }) => {
   return (
     <div
       style={{ display: "flex", alignItems: "center" }}
-      className="gap-0.5 mt-25"
+      className="gap-0.5 mt-25 mb-10"
     >
       <button
         disabled={disabled === 1}
