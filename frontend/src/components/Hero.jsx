@@ -39,6 +39,7 @@ const Hero = () => {
           alt="background"
           className="w-full h-full object-cover object-center pt-20 "
           loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 w-full h-full backdrop-blur-xs"></div>
       </div>

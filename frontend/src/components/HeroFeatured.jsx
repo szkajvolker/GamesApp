@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { fetchFeaturedGames } from "../api/rawgAPI";
 import gsap from "gsap/all";
 
+const getRawOptimizedUrl = (url, width = 600) => {
+  if (!url) return url;
+  if (!url.includes("/media/")) return url;
+  return url.replace("/media/", `/media/resize/${width}/-/`);
+};
+
 const HeroFeatured = () => {
   const [featuredGames, setFeaturedGames] = useState([]);
   const scrollContainerRef = useRef(null);
@@ -51,9 +57,10 @@ const HeroFeatured = () => {
             className="game-card shrink-0 w-32 h-16 md:w-xs md:h-48 bg-gray-800 rounded-lg overflow-hidden relative"
           >
             <img
-              src={game.background_image}
+              src={getRawOptimizedUrl(game.background_image, 600)}
               alt={game.title}
               loading="eager"
+              fetchPriority="high"
               className="w-full h-full object-cover object-center"
             />
           </div>
