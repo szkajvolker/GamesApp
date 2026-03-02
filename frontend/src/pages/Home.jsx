@@ -14,6 +14,7 @@ const Home = ({ searchTerm = "" }) => {
   const [hoveredCardId, setHoveredCardId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({ platform: null, genre: null });
+  const [playingId, setPlayingId] = useState(null);
   useEffect(() => {
     const loadGames = async () => {
       setLoading(true);
@@ -80,6 +81,7 @@ const Home = ({ searchTerm = "" }) => {
           totalPages={totalPages}
           onPageChange={setPage}
           disabled={loading}
+          setPlayingId={null}
         />
         <div className="flex relative min-h-screen items-center justify-center w-full py-2 z-10">
           {loading ? (
@@ -108,6 +110,8 @@ const Home = ({ searchTerm = "" }) => {
                       id={game.id}
                       onHover={handleCardHover}
                       isOpen={isActiveCard}
+                      playingId={playingId}
+                      onPlay={setPlayingId}
                     />
                   );
                 })}
