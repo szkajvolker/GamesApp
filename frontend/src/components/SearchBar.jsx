@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { searchIcon } from "../assets";
 import { useDebounce } from "use-debounce";
@@ -26,6 +27,7 @@ const SearchBar = ({ onSearch, placeholder = "Search any games..." }) => {
             value={searchTerm}
             className="bg-white dark:bg-gray-900 dark:border-gray-500 backdrop-blur-md border border-gray-300 lg:text-xl text-[11px] text-gray-900 placeholder-gray-500 dark:text-white px-4 py-2 rounded-full shadow-lg md:w-75 g:w-10 xl:w-175 max-w-full focus:outline-none border-none transition-colors duration-300 pr-1"
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && onSearch(e.target.value)}
           />
         </div>
       </div>

@@ -1,4 +1,6 @@
+import React from "react";
 import { useState, useRef, useEffect } from "react";
+import { sendFeedback } from "../api/feedbackAPI";
 
 const Feedback = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,9 @@ const Feedback = ({ onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
   const timeoutRef = useRef(null);
+  const [characterCount, setCharacterCount] = useState(0);
+  const [saveMsgText, setSaveMsgText] = useState("");
+  const maxLenght = 200;
 
   useEffect(() => {
     return () => {
@@ -24,7 +29,19 @@ const Feedback = ({ onClose }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    if (e.target.name === "message") {
+      setCharacterCount(e.target.value.length);
+      setSaveMsgText(e.target.value);
+      sessionStorage.setItem("savedMsgText", e.target.value);
+      sessionStorage.setItem("savedMsgTextCount", e.target.value.length);
+    }
   };
+  useEffect(() => {
+    const savedText = sessionStorage.getItem("savedMsgText");
+    const savedTextCount = sessionStorage.getItem("savedMsgTextCount");
+    if (savedText && savedTextCount) setSaveMsgText(savedText);
+    setCharacterCount(savedTextCount);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,20 +49,8 @@ const Feedback = ({ onClose }) => {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/feedback/send`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
+      const data = await sendFeedback(formData);
+      if (data.success) {
         setStatus({
           type: "success",
           message: "Feedback sent successfully! Thank you!",
@@ -135,16 +140,28 @@ const Feedback = ({ onClose }) => {
           </div>
 
           <div>
-            <label className="block text-white/80 mb-2">Message</label>
+            <label htmlFor="message" className="block text-white/80 mb-2">
+              Message
+            </label>
             <textarea
+              id="message"
               name="message"
-              value={formData.message}
+              value={saveMsgText}
               onChange={handleChange}
               rows="4"
               placeholder="Please describe the issue or suggestion in detail..."
               className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+              maxLength={maxLenght}
               required
             />
+            <div className="flex flex-row items-center gap-2 justify-end">
+              <p className="text-xs text-red-600/80">
+                {characterCount === maxLenght && "Out of characters"}
+              </p>
+              <p className="text-xs text-white/60">
+                {characterCount} / {maxLenght}
+              </p>
+            </div>
           </div>
 
           <button

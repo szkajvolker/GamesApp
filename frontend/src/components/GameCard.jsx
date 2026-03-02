@@ -1,3 +1,4 @@
+import React from "react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import { MAIN_PLATFORMS, platformIcons, storeColors } from "../constants";
 import placeholder from "../assets/images/placeholder.png";
@@ -25,6 +26,8 @@ const GameCard = ({
   onHover,
   isOpen,
   shortScreenshots = [],
+  playingId = undefined,
+  onPlay,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trailerUrl, setTrailerUrl] = useState(null);
@@ -42,6 +45,27 @@ const GameCard = ({
     : image || placeholder;
 
   const mainImage = getRawOptimizedUrl(rawMainImage, 600);
+
+  const isControlled = playingId !== undefined;
+
+  const isActive = isControlled ? playingId === id : isTrailerPlaying;
+
+  const startPlaying = () => {
+    if (isControlled) {
+      onPlay?.(id);
+    } else {
+      setIsTrailerPlaying(true);
+    }
+  };
+
+  const stopPlaying = () => {
+    if (isControlled) {
+      onPlay?.(null);
+    } else {
+      setIsTrailerPlaying(false);
+    }
+    setShouldPlaySound(false);
+  };
 
   const loadTrailer = async () => {
     if (isLoadingTrailer || trailerUrl) return;
@@ -95,7 +119,7 @@ const GameCard = ({
 
   return (
     <Motion.div
-      className={`relative  dark:bg-gray-soft bg-white backdrop-blur-lg shadow-xl rounded-t-full  ${isOpen ? "z-50 rounded-b-none" : "z-10"}`}
+      className={`relative  dark:bg-gray-soft bg-white backdrop-blur-lg shadow-xl rounded-t-xl ${isOpen ? "z-50 rounded-b-none" : "z-10"}`}
       onHoverStart={() => {
         if (typeof onHover === "function") onHover(id);
       }}
@@ -108,15 +132,16 @@ const GameCard = ({
       <Motion.div
         ref={containerRef}
         className={`h-48 relative overflow-hidden rounded-t-xl`}
-        onMouseMove={isTrailerPlaying ? undefined : handleMouseMove}
+        onMouseMove={isActive ? undefined : handleMouseMove}
         onMouseEnter={() => loadTrailer()}
         onMouseLeave={() => {
           setActiveIndex(activeIndex);
         }}
       >
-        {isTrailerPlaying && trailerUrl ? (
+        {isActive && trailerUrl ? (
           <>
             <video
+              data-testid="game-trailer"
               src={trailerUrl}
               className="w-full h-full object-cover"
               autoPlay
@@ -124,12 +149,7 @@ const GameCard = ({
               loop
               onClick={(e) => {
                 e.stopPropagation();
-                if (!trailerUrl) {
-                  loadTrailer();
-                } else {
-                  setIsTrailerPlaying(false);
-                  setShouldPlaySound(false);
-                }
+                stopPlaying();
               }}
             />
             <div className="flex flex-row absolute top-3 right-6 gap-2">
@@ -138,10 +158,7 @@ const GameCard = ({
                 className=" bg-black/70 text-white text-xs px-3 py-1 rounded-full cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsTrailerPlaying(false);
-                  if (shouldPlaySound) {
-                    setShouldPlaySound(false);
-                  }
+                  stopPlaying();
                 }}
                 hidden={!trailerUrl}
               >
@@ -157,7 +174,7 @@ const GameCard = ({
                     : setShouldPlaySound(true);
                 }}
               >
-                🔉
+                {shouldPlaySound ? "🔊" : "🔇"}
               </button>
             </div>
           </>
@@ -176,11 +193,12 @@ const GameCard = ({
               className="absolute top-3 right-6 bg-black/70 text-white text-xs px-3 py-1 hover:brightness-110 rounded-full cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
+
                 if (!trailerUrl) {
                   loadTrailer();
-                } else {
-                  setIsTrailerPlaying(true);
+                  return;
                 }
+                startPlaying();
               }}
               hidden={!trailerUrl}
             >
@@ -189,25 +207,23 @@ const GameCard = ({
           </>
         )}
 
-        {!isTrailerPlaying &&
-          isGalleryActive &&
-          visibleScreenshots.length > 1 && (
-            <div className="absolute bottom-2 left-0 right-0 flex h-3 items-center gap-1 px-4">
-              {visibleScreenshots.map((shot, index) => (
-                <button
-                  key={`${shot}-${index}`}
-                  type="button"
-                  className="flex-1 h-full cursor-default"
-                >
-                  <span
-                    className={`block h-1.5 w-full rounded-full transition-colors duration-200 ${
-                      index === activeIndex ? "bg-white" : "bg-white/40"
-                    }`}
-                  ></span>
-                </button>
-              ))}
-            </div>
-          )}
+        {!isActive && isGalleryActive && visibleScreenshots.length > 1 && (
+          <div className="absolute bottom-2 left-0 right-0 flex h-3 items-center gap-1 px-4">
+            {visibleScreenshots.map((shot, index) => (
+              <button
+                key={`${shot}-${index}`}
+                type="button"
+                className="flex-1 h-full cursor-default"
+              >
+                <span
+                  className={`block h-1.5 w-full rounded-full transition-colors duration-200 ${
+                    index === activeIndex ? "bg-white" : "bg-white/40"
+                  }`}
+                ></span>
+              </button>
+            ))}
+          </div>
+        )}
       </Motion.div>
       <div className="p-5">
         <button onClick={() => onDetailsClick(id)} className="cursor-pointer">
