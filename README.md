@@ -49,6 +49,9 @@ Testing
 email:user@test.com
 password:User12345!
 
+-Dev Testing
+with JEST
+
 Created by: Istvan Szabo
 ##  Live Demo
 [https://games-store-db.netlify.app/]
