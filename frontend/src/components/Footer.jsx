@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Feedback from "./Feedback";
 
 const Footer = () => {
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [show, setShow] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <footer className="flex dark:bg-gray-900 bg-white border-t-2 border-white/40 w-full p-2 mt-5 px-5">
+    <footer className="flex dark:bg-gray-900 bg-white border-t-2 border-white/40 w-full px-5">
       <div className="w-full mx-auto sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col gap-8">
           <div className="flex flex-row justify-between">
@@ -41,7 +52,9 @@ const Footer = () => {
               </p>
 
               <button
-                onMouseEnter={() => setShow(true)}
+                onMouseEnter={() => {
+                  if (!isMobile) setShow(true);
+                }}
                 onMouseLeave={() => setShow(false)}
                 onClick={() => setIsFeedbackModalOpen(true)}
                 className="group w-fit bg-linear-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden"

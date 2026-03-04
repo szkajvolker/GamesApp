@@ -38,7 +38,7 @@ const GameDetails = () => {
   if (!game) return <div>No data or error happened</div>;
 
   return (
-    <div className="relative min-h-screen z-10">
+    <div className="relative min-h-screen z-10 bg-neutral-900 dark:bg-neutral-900">
       <div className="absolute inset-0 w-full h-full z-0">
         <img
           src={game.background_image || game.background_image_additional}
@@ -160,16 +160,18 @@ const GameDetails = () => {
       <h2 className="flex justify-self-center text-2xl w-fit text-white font-bold border-2 border-white p-2 rounded-xl m-2 bg-gray-900">
         Where you can buy?
       </h2>
-      <ul className="grid grid-cols-2 gap-2 list-none w-fit ml-2 justify-self-center mb-2">
-        {game.stores?.map((store, id) => (
-          <li
-            key={`${store.store.slug}-${id}`}
-            className="flex bg-gray-800 text-gray-300 font-bold p-2 rounded-xl"
-          >
-            {store.store.name}
-          </li>
-        ))}
-      </ul>{" "}
+      <div className="pb-10">
+        <ul className="grid grid-cols-2 gap-2 list-none w-fit ml-2 justify-self-center">
+          {game.stores?.map((store, id) => (
+            <li
+              key={`${store.store.slug}-${id}`}
+              className="flex bg-gray-800 text-gray-300 font-bold p-2 rounded-xl"
+            >
+              {store.store.name}
+            </li>
+          ))}
+        </ul>{" "}
+      </div>
     </div>
   );
 };
