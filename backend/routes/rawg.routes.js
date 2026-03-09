@@ -8,12 +8,20 @@ import {
   getScreenShots,
   getGameTrailer,
 } from "../controllers/game.controllers.js";
+import { logVisit } from "../controllers/statictics.controllers.js";
 
 const router = express.Router();
 
 router.get("/genre", getGameByGenre);
 router.get("/platform", getGameByPlatform);
-router.get("/", getGames);
+router.get(
+  "/",
+  async (req, res, next) => {
+    await logVisit();
+    next();
+  },
+  getGames,
+);
 router.get("/featured", getFeaturedGames);
 router.get("/:id/screenshots", getScreenShots);
 router.get("/:id/gametrailer", getGameTrailer);

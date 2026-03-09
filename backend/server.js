@@ -7,6 +7,7 @@ import feedbackRoutes from "./routes/feedback.routes.js";
 import cors from "cors";
 
 import dns from "dns";
+
 dns.setDefaultResultOrder("ipv4first");
 dns.setServers(["8.8.8.8"]);
 
@@ -21,6 +22,7 @@ app.use(
 );
 
 app.use(express.json());
+
 app.use("/api/games", rawgRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/feedback", feedbackRoutes);
